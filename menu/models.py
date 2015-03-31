@@ -33,3 +33,18 @@ class Order(models.Model):
 	status = models.CharField(max_length=64, choices=status_choices, default='in-progress')
 	total_price = models.DecimalField(max_digits=8, decimal_places=2)
 	timestamp_created = models.DateTimeField(auto_now_add=True)
+
+# Class Survey
+class Survey(models.Model):
+"""
+Setting up the survey class, initialize setups some default variables such as the variables below,
+since they will always be used when a survey is created. 
+
+TJ
+	
+"""
+	def __init__(self, serviceRating, foodRating, orderRating, customerComments):
+		self.serviceRating = serviceRating
+		self.foodRating = foodRating
+		self.orderRating = orderRating
+		self.customerComments = customerComments
