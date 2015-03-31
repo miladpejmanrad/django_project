@@ -76,7 +76,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-TEMPLATE_DIRS = ( ##Added templates directory "Milad"
+TEMPLATE_DIRS = ( #Added templates directory "Milad"
     os.path.join(BASE_DIR, 'templates'),
     
 )
@@ -85,3 +85,7 @@ TEMPLATE_DIRS = ( ##Added templates directory "Milad"
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'django_project/media')
+MEDIA_URL = '/media/'
+
