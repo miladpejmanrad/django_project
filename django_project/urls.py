@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^menu/', include('menu.urls')),
+    url(r'^mainMenu/', include('menu.urls')),
 )
 
 if settings.DEBUG:

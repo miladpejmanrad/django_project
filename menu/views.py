@@ -10,3 +10,8 @@ def index(request):
 
 def categories(request, category_id):
 	return HttpResponse("You're looking at category %s." % category_id)
+
+def mainMenu(request):
+	context = {}
+	template = "menu/mainMenu.html"
+	return render(request, template, context)
