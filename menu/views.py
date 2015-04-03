@@ -13,5 +13,5 @@ def categories(request, category_id):
 
 def mainMenu(request):
 	context = {}
-	template = "menu/mainMenu.html"
+	template = "mainMenu.html"
 	return render(request, template, context)
