@@ -15,7 +15,7 @@ class Category(models.Model):
 	# This sets the name as the main identifier for the object.
 	# e.g. "Appetizers" will show up in the admin panel instead of an ID number
 	def __unicode__(self):
-		return self.name
+		return unicode(self.name)
 
 	# This sets the plural name, so it's not "Categorys"
 	class Meta:
@@ -45,7 +45,7 @@ class MenuItem(models.Model):
 	# This sets the name as the main identifier for the object.
 	# e.g. "Bacon-wrapped Shrimp" will show up in the admin panel instead of an ID number
 	def __unicode__(self):
-		return self.name
+		return unicode(self.name)
 
 # Order class. Defines our orders and their relationships to other classes.
 class Order(models.Model):
@@ -57,7 +57,7 @@ class Order(models.Model):
 	        ('served', 'Served'),
 	        ('paid', 'Paid')
     	)
-	menu_items = models.ForeignKey(MenuItem) # Defines a many-to-one relationship with the MenuItems class
+	menu_items = models.ManyToManyField(MenuItem) # Defines a many-to-many relationship with the MenuItems class
 	table_number = models.IntegerField()
 	modifications = models.TextField()
 	status = models.CharField(max_length=64, choices=status_choices, default='in-progress')
@@ -66,7 +66,7 @@ class Order(models.Model):
 
 	# Sets the ID as the identifier for orders.
 	def __unicode__(self):
-		return self.id
+		return unicode(self.id)
 
 # Class Survey
 class Survey(models.Model):
