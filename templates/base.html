@@ -40,18 +40,26 @@
 			line-height: 1.3333333;
 			border-radius: 6px;
 			margin-top : 110px;
-			}
+		}
 
 		.btn-s {
-			position:absolute;
+			/*position:absolute;*/
 			transition: .5s ease;
-			    left: 810px;
-			    top: 20px;
+			/*left: 810px;
+			top: 20px;*/
 			padding: 9px 18px;
 			font-size: 38px;
 			line-height: 1.3333333;
 			border-radius: 6px;
-			}
+		}
+		
+		.helper-buttons {
+			text-align:right;
+		}
+		
+		/*.home-menu .btn-lg {
+			width:49%;
+		} */
 
     </style>
     
@@ -59,12 +67,14 @@
 
   <body role="document">
  
-  <div>
-
-            <button type="button" class="btn btn-s btn-danger">HELP</button>
+  <div class="container">
+  <div class="helper-buttons">
+  <!-- Need to conditionally show REFILL button, it's visible all the time for now though -->
+  <button type="button" class="btn btn-s btn-danger">REFILL</button>
+  <button type="button" class="btn btn-s btn-danger">HELP</button>
+  </div>
 
 {% block content %}
-
 
 
 {% endblock %}
