@@ -4,6 +4,7 @@
 {% block content %}
 
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,9 +12,9 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="getbootstrap.com/favicon.ico">
+    <link rel="icon" href="http://www.getbootstrap.com/favicon.ico">
 
-    <title>Theme Template for Bootstrap</title>
+    <title>Home Screen</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://www.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -36,49 +37,37 @@
 
   <body role="document">
 
+            <button type="button" class="btn btn-s btn-danger">HELP</button>
 
-
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">l
-            <li><a href="#contact">Help</a></li>
-
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <div class="container theme-showcase" role="main">
-
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Welcome to our restaurant :)</h1>
-        <p>We hope you will have a great time here!</p>
-      </div>
-
-
-      <div class="page-header">
-        
-      </div>
       <p>
-        <button type="button" class="btn btn-lg btn-success">Eat</button>
-        <button type="button" class="btn btn-lg btn-primary">Play</button>
+        <button type="button" class="btn btn-lg btn-success">EAT</button>
 
+        <button type="button" class="btn btn-lg btn-primary">PLAY</button>
+        <style> 
+        
+		 .btn-lg {
+			padding: 180px 185px;
+			font-size: 48px;
+			line-height: 1.3333333;
+			border-radius: 6px;
+			margin-top : 110px;
+			}
+
+		.btn-s {
+			position:absolute;
+			transition: .5s ease;
+			    left: 810px;
+			    top: 20px;
+			padding: 9px 18px;
+			font-size: 38px;
+			line-height: 1.3333333;
+			border-radius: 6px;
+			}
+
+        </style>
       </p>
 
     </div> <!-- /container -->
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
