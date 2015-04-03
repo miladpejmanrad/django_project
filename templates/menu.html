@@ -47,7 +47,32 @@
 		color:#fff;
 		text-decoration:none;
 		font-size:72px;
+		z-index:100;
 	}
+	
+	#menu-items img {
+		width:100%;
+    	vertical-align:top;
+	}
+	
+	#menu-items .menuitem-container:after {
+		content:attr(data-content);
+		position:absolute;
+		width:100%;
+		height:100%;
+		top:0;
+		left:0;
+		background:rgba(0,0,0,0.1);
+		opacity:1;
+		transition: all .5s;
+		-webkit-transition: all .5s;
+		padding:10% 5%;
+	}
+	
+	#menu-items .menuitem-container:hover:after {
+		background:rgba(0,0,0,0.6);
+	}
+	
 </style>
 
 <div id="categories" class="col-md-4">
@@ -66,7 +91,7 @@
 {% if menuitems_list %}
 	<ul>
 	{% for menuitem in menuitems_list %}
-		<li><a href="/menu/category/items/{{ menuitem.id }}/"><span class="menuitem-container"><span class="menuitem-name">{{ menuitem.name }}</span>
+		<li><a href="/menu/category/items/{{ menuitem.id }}/"><span class="menuitem-container" data-content="{{ menuitem.name }}">
 		<img src="{{ menuitem.main_photo.url }}"></span></a></li>
 	{% endfor %}
 	</ul>
