@@ -1,3 +1,9 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
 <html lang="en">
 
   <head>
@@ -79,6 +85,20 @@
 	
 </style>
 <div class="text-right"><button type="button" class="btn btn-s btn-danger">HELP</button></div>
+		<style>
+
+		.btn-s {
+			position:absolute;
+			transition: .5s ease;
+			    left: 810px;
+			    top: 20px;
+			padding: 9px 18px;
+			font-size: 38px;
+			line-height: 1.3333333;
+			border-radius: 6px;
+			}
+
+        </style>
 {% if categories_list %}
 	<ul>
 	{% for category in categories_list %}
@@ -101,3 +121,5 @@
     <script src="http://www.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
+
+{% endblock %}
