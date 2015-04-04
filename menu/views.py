@@ -22,8 +22,18 @@ def categories(request, category_id):
 
 def menu_items(request, menu_item_id):
 	# return HttpResponse("You're looking at menu item %s." % menu_item_id)
-	order_form = OrderForm()
 	menu_item = MenuItem.objects.get(id=menu_item_id)
+	added_menu_item = MenuItem.objects.filter(id=menu_item_id)
+	
+	# This generates the form that appears on an individual menu item page.
+	order_form = OrderForm(
+		initial={
+			'menu_items': [menu_item_id],
+			'table_number': 12, # This is a dummy value that needs to be replaced.
+			'total_price': menu_item.price
+		}
+	)
+	
 	context = {
 		'menu_item': menu_item,
 		'form': order_form
@@ -31,7 +41,7 @@ def menu_items(request, menu_item_id):
 
 	if request.method == "POST":
 		order_form = OrderForm(request.POST)
-		if form.is_valid():
+		if order_form.is_valid():
 			order = order_form.save(commit=False)
 			order.save()
 			return HttpResponseRedirect("/menu/")
@@ -39,7 +49,26 @@ def menu_items(request, menu_item_id):
 	return render(request, 'menu-item.html', context)
 
 def add_to_order(request, menu_item_id):
+	menu_item = MenuItem.objects.get(id=menu_item_id)
+	order_form = OrderForm(
+		initial={
+			'menu_item': menu_item_id,
+			'table_number': 12,
+			'total_price': menu_item.price
+		}
+	)
+	context = {
+		'menu_item': menu_item,
+		'form': order_form
+	}
+
+	if request.method == "POST":
+		order_form = OrderForm(request.POST)
+		if order_form.is_valid():
+			# order = order_form.save()
+			order_form.save()
+			return HttpResponseRedirect("/menu/")
+			
 	menu_item_name = MenuItem.objects.get(id=menu_item_id)
-	return HttpResponse("You're trying to order %s." % menu_item_name)
-	
+	return HttpResponse("You're trying to order %s, but it didn't go through." % menu_item_name)
     

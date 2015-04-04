@@ -10,7 +10,7 @@ from django.db import models
 # Category class. Defines the categories that menu items fall under.
 class Category(models.Model):
 	name = models.CharField(max_length=200)
-	main_photo = models.ImageField(upload_to = 'menu/categories/')
+	# main_photo = models.ImageField(upload_to = 'menu/categories/')
 	
 	# This sets the name as the main identifier for the object.
 	# e.g. "Appetizers" will show up in the admin panel instead of an ID number
@@ -59,7 +59,7 @@ class Order(models.Model):
     	)
 	menu_items = models.ManyToManyField(MenuItem) # Defines a many-to-many relationship with the MenuItems class
 	table_number = models.IntegerField()
-	modifications = models.TextField()
+	modifications = models.TextField(blank=True)
 	status = models.CharField(max_length=64, choices=status_choices, default='in-progress')
 	total_price = models.DecimalField(max_digits=8, decimal_places=2)
 	timestamp_created = models.DateTimeField(auto_now_add=True)
