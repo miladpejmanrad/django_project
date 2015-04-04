@@ -15,7 +15,7 @@ class Category(models.Model):
 	# This sets the name as the main identifier for the object.
 	# e.g. "Appetizers" will show up in the admin panel instead of an ID number
 	def __str__(self):
-		return self.name
+		return str(self.name)
 
 	# This sets the plural name, so it's not "Categorys"
 	class Meta:
@@ -45,7 +45,7 @@ class MenuItem(models.Model):
 	# This sets the name as the main identifier for the object.
 	# e.g. "Bacon-wrapped Shrimp" will show up in the admin panel instead of an ID number
 	def __str__(self):
-		return self.name
+		return str(self.name)
 
 # Order class. Defines our orders and their relationships to other classes.
 class Order(models.Model):
@@ -66,7 +66,8 @@ class Order(models.Model):
 
 	# Sets the ID as the identifier for orders.
 	def __str__(self):
-		return self.id
+		return str(self.id)
+		
 
 # Class Survey
 class Survey(models.Model):

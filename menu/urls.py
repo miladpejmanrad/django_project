@@ -6,6 +6,8 @@ urlpatterns = patterns('',
 	url(r'^$', views.menu, name='menu'),
 	# /menu/category/7
 	url(r'^category/(?P<category_id>\d+)/$', views.categories, name='category'),
-	# /menu/category/items/7
-	url(r'^category/items/(?P<menu_item_id>\d+)/$', views.menu_items, name='menu_item')
+	# /menu/items/3
+	url(r'^items/(?P<menu_item_id>\d+)/$', views.menu_items, name='menu_item'),
+	# /menu/items/3/order
+	url(r'^items/(?P<menu_item_id>\d+)/order/$', views.add_to_order, name='add_to_order')
 )

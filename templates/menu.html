@@ -91,7 +91,7 @@
 {% if menuitems_list %}
 	<ul>
 	{% for menuitem in menuitems_list %}
-		<li><a href="/menu/category/items/{{ menuitem.id }}/"><span class="menuitem-container" data-content="{{ menuitem.name }}">
+		<li><a href="/menu/items/{{ menuitem.id }}/"><span class="menuitem-container" data-content="{{ menuitem.name }}">
 		<img src="{{ menuitem.main_photo.url }}"></span></a></li>
 	{% endfor %}
 	</ul>
