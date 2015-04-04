@@ -71,14 +71,13 @@
   <div class="container">
   <div class="helper-buttons">
   <a href="javascript:history.back()"><button type="button" class="btn btn-s btn-danger" style="float:left;">BACK</button></a>
-  <!-- Need to conditionally show REFILL button, it's visible all the time for now though -->
+  {% block extra_buttons %}{% endblock %}
+  {% if order_exists %}<button type="button" class="btn btn-s btn-success" style="font-size:18px; margin-right:36px;">Review Order</button>{% endif %}
   <button type="button" class="btn btn-s btn-danger">REFILL</button>
   <button type="button" class="btn btn-s btn-danger">HELP</button>
   </div>
 
 {% block content %}
-
-
 {% endblock %}
 
    </div> <!-- /container -->

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 # Create your models here.
 # NOTE: Syncdb will NOT create tables/columns for MODIFIED classes in 1.6.
@@ -68,6 +69,7 @@ class Order(models.Model):
 	# Sets the ID as the identifier for orders.
 	def __str__(self):
 		return str(self.id)
+		
 		
 
 # Class Survey

@@ -4,24 +4,46 @@ from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem, Order
 from menu.modelforms import OrderForm
 from menu import settings
-from itertools import chain
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
-	context = {'categories_list': categories_list}
+	context = {
+		'categories_list': categories_list,
+		'order_exists': existing_order.exists(),
+	}
 	return render(request, 'menu.html', context)
 
 # This returns and sets up the contexts for the individual categories and their menu items for the menu.html template
 def categories(request, category_id):
-	# return HttpResponse("You're looking at category %s." % category_id)
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
 	menuitems_list = MenuItem.objects.filter(category=category_id)
+	allergies_list = MenuItem.allergen_choices
 	context = {
 		'menuitems_list': menuitems_list,
-		'categories_list': categories_list
+		'categories_list': categories_list,
+		'order_exists': existing_order.exists(),
+		'allergies_list': allergies_list,
+		'current_category': category_id
 	}
 	return render(request, 'menu.html', context)
+
+# This returns and sets up the contexts for allergy filtered menu items within a category
+def filtered_categories(request, category_id, allergy_name):
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
+	categories_list = Category.objects.order_by('name')
+	allergies_list = MenuItem.allergen_choices
+	menuitems_list = MenuItem.objects.filter(category=category_id).exclude(allergens__contains=allergy_name)
+	context = {
+		'menuitems_list': menuitems_list,
+		'categories_list': categories_list,
+		'order_exists': existing_order.exists(),
+		'allergies_list': allergies_list,
+		'current_category': category_id
+	}
+	return render(request, 'menu.html', context)	
 
 # This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):
@@ -34,7 +56,8 @@ def menu_items(request, menu_item_id):
 	if existing_order.exists():
 		order_form = OrderForm(instance=existing_order.get()) # Grab the form data first so we can modify it
 		ordered_items = list(existing_order.get().menu_items.all()) # Get the menu items already on the order
-		ordered_items.append(menu_item) # Add the new menu item
+		if not menu_item in ordered_items:
+			ordered_items.append(menu_item) # Add the new menu item if it's not already there
 		
 		# Calculate the new total price
 		total_price = 0
@@ -63,7 +86,8 @@ def menu_items(request, menu_item_id):
 	# This sets up the contexts to use in the menu-item.html template.
 	context = {
 		'menu_item': menu_item,
-		'form': order_form
+		'form': order_form,
+		'order_exists': existing_order.exists()
 	}
 			
 	return render(request, 'menu-item.html', context)

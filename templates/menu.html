@@ -1,7 +1,27 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block extra_buttons %}
+	{% if allergies_list %}
+	<!-- If we're at the menu, render the allergies dropdown so users can filter items. -->
+	<div class="dropdown" style="float:left; margin-left:36px;">
+	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+		Allergens
+		<span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+		&nbsp;&nbsp;&nbsp;Exclude these
+		<ul>
+		{% for allergy in allergies_list %}
+			<!-- allergy.0 pulls the key, allergy.1 pulls the value -->
+			<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.0 }}">{{ allergy.1 }}</a></li>
+		{% endfor %}
+		</ul>
+	  </ul>
+	</div>
+	{% endif %}
+{% endblock %}
 
+{% block content %}
 <style>
 	#categories {
 		background-color:#eee;
