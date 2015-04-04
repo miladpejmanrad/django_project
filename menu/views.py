@@ -18,7 +18,8 @@ def categories(request, category_id):
 	}
 	return render(request, 'menu.html', context)
 
-def mainMenu(request):
-	context = {}
-	template = "mainMenu.html"
-	return render(request, template, context)
+def menu_items(request, menu_item_id):
+	# return HttpResponse("You're looking at menu item %s." % menu_item_id)
+	menu_item = MenuItem.objects.get(id=menu_item_id)
+	context = {'menu_item': menu_item}
+	return render(request, 'menu-item.html', context)

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if menu_item %}
+<style>
+#menu-item {
+	width:100%;
+	height:480px;
+	background-size:cover;
+	background-repeat:none;
+	background-image:url('{{ menu_item.main_photo.url }}');
+	overflow:hidden;
+}
+
+#menu-item h1 {
+	font-size:48px;
+	font-weight:bold;
+}
+
+#menu-item .description {
+	font-size:18px;
+}
+
+#menu-item .price {
+	float:right;
+	font-size:18px;
+}
+
+#menu-item .item-info {
+	position:relative;
+	background:rgba(0,0,0,0.5);
+	opacity:1;
+	top:-20px;
+	left:-15px;
+	width:75%;
+	padding:36px;
+	color:#fff;
+}
+
+#menu-item .order-input {
+	position:absolute;
+	bottom:36px;
+	right:36px;
+	width:33%;
+	text-align:right;
+}
+
+.add-order {
+	font-size:24px;
+}
+</style>
+<div id="menu-item" class="col-md-12">
+	<div class="item-info">
+		<h1>{{ menu_item.name }}</h1><span class="price">${{ menu_item.price }}</span>
+		<span class="description">{{ menu_item.description }}</span>
+	</div>
+	<div class="order-input">
+		<textarea style="width:100%; height:100px">Need any modifications? Add 'em here</textarea>
+		<br><br>
+		<button type="button" class="btn btn-s btn-danger add-order" style="width:100%;">+ Add to order</button>
+	</div>
+</div>
+
+{% else %}
+	<p>There is no menu item to display.</p>
+{% endif %}
+
+{% endblock %}
