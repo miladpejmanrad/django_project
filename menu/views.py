@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem, Order
 from menu.modelforms import OrderForm
 from menu import settings
+from itertools import chain
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
@@ -31,7 +32,24 @@ def menu_items(request, menu_item_id):
 	
 	# This generates the form that appears on an individual menu item page.
 	if existing_order.exists():
-		order_form = OrderForm(instance=existing_order.get())
+		order_form = OrderForm(instance=existing_order.get()) # Grab the form data first so we can modify it
+		ordered_items = list(existing_order.get().menu_items.all()) # Get the menu items already on the order
+		ordered_items.append(menu_item) # Add the new menu item
+		
+		# Calculate the new total price
+		total_price = 0
+		for item in ordered_items:
+			item_price = MenuItem.objects.get(id=item.id)
+			total_price = total_price + item_price.price
+		
+		# Set the form to use the new data
+		order_form = OrderForm(
+			initial={
+				'menu_items': ordered_items,
+				'total_price': total_price
+			},
+			instance=existing_order.get()
+		)
 	
 	else:
 		order_form = OrderForm(
