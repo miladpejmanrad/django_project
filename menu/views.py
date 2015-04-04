@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, MenuItem
+from menu.models import Category, MenuItem, Order
 from menu.modelforms import OrderForm
+from menu import settings
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
@@ -23,17 +24,23 @@ def categories(request, category_id):
 
 # This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):
-	# return HttpResponse("You're looking at menu item %s." % menu_item_id)
+	
+	# Check to see if an order is already set for this table. If so, modify it. If not, create a new one.
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	menu_item = MenuItem.objects.get(id=menu_item_id)
 	
 	# This generates the form that appears on an individual menu item page.
-	order_form = OrderForm(
-		initial={
-			'menu_items': [menu_item_id],
-			'table_number': 12, # This is a dummy value that needs to be replaced.
-			'total_price': menu_item.price
-		}
-	)
+	if existing_order.exists():
+		order_form = OrderForm(instance=existing_order.get())
+	
+	else:
+		order_form = OrderForm(
+			initial={
+				'menu_items': [menu_item_id],
+				'table_number': settings.TABLE_NUMBER, # This is a dummy value that needs to be replaced.
+				'total_price': menu_item.price
+			}
+		)
 	
 	# This sets up the contexts to use in the menu-item.html template.
 	context = {
@@ -43,15 +50,21 @@ def menu_items(request, menu_item_id):
 			
 	return render(request, 'menu-item.html', context)
 
-# This view processes the order form sent from the menu-item.html template
+# This view processes the form sent by the menu-item.html template
 def add_to_order(request, menu_item_id):
+
+	# Check to see if an order is already set for this table. If so, modify it. If not, create a new one.
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	menu_item = MenuItem.objects.get(id=menu_item_id)
 
 	if request.method == "POST":
-		order_form = OrderForm(request.POST)
+		if existing_order.exists():
+			order_form = OrderForm(request.POST, instance=existing_order.get())
+		else:
+			order_form = OrderForm(request.POST)
 		if order_form.is_valid():
 			order_form.save()
-			return HttpResponseRedirect("/menu/") # Redirect them to the main menu if it was successful
+			return HttpResponseRedirect("/menu/")
 			
 	return HttpResponse("You're trying to order %s, but it didn't go through." % menu_item)
     

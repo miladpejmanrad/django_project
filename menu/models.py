@@ -51,6 +51,7 @@ class MenuItem(models.Model):
 class Order(models.Model):
 	# Sets up the available choices for the status field.
 	status_choices = (
+			('ordering', 'Ordering'),
 	        ('in-progress', 'In Progress'),
 	        ('cooking', 'Cooking'),
 	        ('ready-to-serve', 'Ready to Serve'),
@@ -60,7 +61,7 @@ class Order(models.Model):
 	menu_items = models.ManyToManyField(MenuItem) # Defines a many-to-many relationship with the MenuItems class
 	table_number = models.IntegerField()
 	modifications = models.TextField(blank=True)
-	status = models.CharField(max_length=64, choices=status_choices, default='in-progress')
+	status = models.CharField(max_length=64, choices=status_choices, default='ordering')
 	total_price = models.DecimalField(max_digits=8, decimal_places=2)
 	timestamp_created = models.DateTimeField(auto_now_add=True)
 
