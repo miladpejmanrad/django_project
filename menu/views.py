@@ -4,12 +4,13 @@ from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem
 from menu.modelforms import OrderForm
 
-# Create your views here.
+# This returns and sets up the contexts for the main menu.html template
 def menu(request):
 	categories_list = Category.objects.order_by('name')
 	context = {'categories_list': categories_list}
 	return render(request, 'menu.html', context)
 
+# This returns and sets up the contexts for the individual categories and their menu items for the menu.html template
 def categories(request, category_id):
 	# return HttpResponse("You're looking at category %s." % category_id)
 	categories_list = Category.objects.order_by('name')
@@ -20,10 +21,10 @@ def categories(request, category_id):
 	}
 	return render(request, 'menu.html', context)
 
+# This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):
 	# return HttpResponse("You're looking at menu item %s." % menu_item_id)
 	menu_item = MenuItem.objects.get(id=menu_item_id)
-	added_menu_item = MenuItem.objects.filter(id=menu_item_id)
 	
 	# This generates the form that appears on an individual menu item page.
 	order_form = OrderForm(
@@ -34,41 +35,23 @@ def menu_items(request, menu_item_id):
 		}
 	)
 	
+	# This sets up the contexts to use in the menu-item.html template.
 	context = {
 		'menu_item': menu_item,
 		'form': order_form
 	}
-
-	if request.method == "POST":
-		order_form = OrderForm(request.POST)
-		if order_form.is_valid():
-			order = order_form.save(commit=False)
-			order.save()
-			return HttpResponseRedirect("/menu/")
 			
 	return render(request, 'menu-item.html', context)
 
+# This view processes the order form sent from the menu-item.html template
 def add_to_order(request, menu_item_id):
 	menu_item = MenuItem.objects.get(id=menu_item_id)
-	order_form = OrderForm(
-		initial={
-			'menu_item': menu_item_id,
-			'table_number': 12,
-			'total_price': menu_item.price
-		}
-	)
-	context = {
-		'menu_item': menu_item,
-		'form': order_form
-	}
 
 	if request.method == "POST":
 		order_form = OrderForm(request.POST)
 		if order_form.is_valid():
-			# order = order_form.save()
 			order_form.save()
-			return HttpResponseRedirect("/menu/")
+			return HttpResponseRedirect("/menu/") # Redirect them to the main menu if it was successful
 			
-	menu_item_name = MenuItem.objects.get(id=menu_item_id)
-	return HttpResponse("You're trying to order %s, but it didn't go through." % menu_item_name)
+	return HttpResponse("You're trying to order %s, but it didn't go through." % menu_item)
     
