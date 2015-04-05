@@ -3,9 +3,13 @@
 
 {% block content %}
 
-      <div class="home-menu">
-        <a href="/menu/"><button type="button" class="btn btn-lg btn-success col-md-6">EAT</button></a>
-        <a href="/games/"><button type="button" class="btn btn-lg btn-primary col-md-6" style="float:right;">PLAY</button></a>
-      </div>
-
+	<div class="home-menu">
+		<a href="/menu/"><button type="button" class="btn btn-lg btn-success col-md-6">EAT</button></a>
+		<a href="/games/"><button type="button" class="btn btn-lg btn-primary col-md-6" style="float:right;">PLAY</button></a>
+	</div>
+	
+	{% if ready_to_pay %}
+		<a href="/pay/"><button class="btn btn-s btn-danger" style="width:100%;">PAY</button></a>
+	{% endif %}
+	
 {% endblock %}

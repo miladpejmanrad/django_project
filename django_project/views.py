@@ -2,10 +2,16 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
-
+from menu.models import Order 
+from menu import settings
 
 def home(request):
-	context = {}
+	# If an order for this table has been served, show the PAY button on the home screen.
+	payable_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {
+		'ready_to_pay': payable_order.exists(),
+	}
+	
 	template = "home.html"
 	return render(request, template, context)
 
