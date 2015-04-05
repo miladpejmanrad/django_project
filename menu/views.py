@@ -35,7 +35,7 @@ def filtered_categories(request, category_id, allergy_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
 	allergies_list = Allergen.objects.all()
-	menuitems_list = MenuItem.objects.filter(category=category_id, allergens=allergy_id)
+	menuitems_list = MenuItem.objects.filter(category=category_id).exclude(allergens=allergy_id)
 	context = {
 		'menuitems_list': menuitems_list,
 		'categories_list': categories_list,
