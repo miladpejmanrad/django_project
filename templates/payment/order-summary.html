@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if order %}
+	<table class="table table-striped">
+	<tr>
+		<th>Item</th>
+		<th>Price</th>
+	</tr>
+	{% for item in ordered_items %}
+		<tr>
+			<td>{{ item.name }}</td>
+			<td>{{ item.price }}</td>
+		</tr>
+	{% endfor %}
+	<tr class="info">
+	<td><strong>Total</strong></td>
+	<td><strong>{{ order.total_price }}</strong></td>
+	</tr>
+	</table>
+	{% block payment_buttons %}
+	<button class="btn btn-s btn-danger col-xs-4">Pay with a card</button>
+	<button class="btn btn-s btn-success col-xs-4">Pay with cash</button>
+	<button class="btn btn-s col-xs-4">Split the bill</button>
+	{% endblock %}
+{% endif %}
+{% endblock %}

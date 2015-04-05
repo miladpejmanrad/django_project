@@ -31,12 +31,13 @@ class Allergen(models.Model):
 		
 # MenuItem class. Defines our menu items and their relationships to other classes.
 class MenuItem(models.Model):
+	visible = models.BooleanField(default=True) # This controls whether or not the menu item shows up on the customer-facing menu
 	vegetarian = models.BooleanField(default=False)
-	category = models.ForeignKey(Category) # This sets up a many-to-one relationship with the Category class
 	name = models.CharField(max_length=200)
-	description = models.TextField()
 	price = models.DecimalField(max_digits=8, decimal_places=2)
 	main_photo = models.ImageField(upload_to = 'menu/items/')
+	category = models.ForeignKey(Category) # This sets up a many-to-one relationship with the Category class
+	description = models.TextField()
 	allergens = models.ManyToManyField(Allergen)
 	
 	# This sets the name as the main identifier for the object.

@@ -19,7 +19,7 @@ def menu(request):
 def categories(request, category_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
-	menuitems_list = MenuItem.objects.filter(category=category_id)
+	menuitems_list = MenuItem.objects.filter(category=category_id, visible=True)
 	allergies_list = Allergen.objects.all()
 	context = {
 		'menuitems_list': menuitems_list,
@@ -35,7 +35,7 @@ def filtered_categories(request, category_id, allergy_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
 	allergies_list = Allergen.objects.all()
-	menuitems_list = MenuItem.objects.filter(category=category_id).exclude(allergens=allergy_id)
+	menuitems_list = MenuItem.objects.filter(category=category_id, visible=True).exclude(allergens=allergy_id)
 	context = {
 		'menuitems_list': menuitems_list,
 		'categories_list': categories_list,
@@ -51,7 +51,7 @@ def vegetarian(request, category_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
 	allergies_list = Allergen.objects.all()
-	menuitems_list = MenuItem.objects.filter(category=category_id).exclude(vegetarian=False) # Exclude items that aren't vegetarian
+	menuitems_list = MenuItem.objects.filter(category=category_id, visible=True).exclude(vegetarian=False) # Exclude items that aren't vegetarian
 	context = {
 		'menuitems_list': menuitems_list,
 		'categories_list': categories_list,
@@ -127,7 +127,7 @@ def add_to_order(request, menu_item_id):
 			
 	return HttpResponse("You're trying to order %s, but it didn't go through." % menu_item)
 	
-# This view shows the user their order and lets them submit to the kitchen.
+# This view shows the user their order BEFORE sending it to the kitchen and lets them submit to the kitchen.
 # Submitting the order changes the status to "in-progress", which should be handled by the kitchen views.
 def review_order(request):
 
@@ -157,4 +157,22 @@ def review_order(request):
 		return render(request, 'menu/review-order.html', context)
 	
 	return render(request, 'menu/review-order.html')
-    
+	
+# This view shows the user their order AFTER sending it to the kitchen so they can pay for it.
+def order_summary(request):
+
+	# Check to see if an order is ready to be placed for this table.
+	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {}
+	
+	# Build the context for the template if an order is ready to be paid.
+	if order_to_pay.exists():
+		ordered_items = list(order_to_pay.get().menu_items.all()) # Get the menu items already on the order
+		context = {
+			'order': order_to_pay.get(),
+			'ordered_items': ordered_items,
+		}
+		
+	return render(request, 'payment/order-summary.html', context)
+
+	
