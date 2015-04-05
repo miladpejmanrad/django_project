@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Sum
 
 # Create your models here.
 # NOTE: Syncdb will NOT create tables/columns for MODIFIED classes in 1.6.
@@ -22,26 +21,23 @@ class Category(models.Model):
 	class Meta:
 		verbose_name_plural = "categories"
 
+# Allergens class. Surprisingly, there isn't a model field for a multiple choice field.
+# Documentation recommends creating a separate class for choices you need to select multiples of.
+class Allergen(models.Model):
+	ingredient = models.CharField(max_length=64)
+	
+	def __str__(self):
+		return str(self.ingredient)
+		
 # MenuItem class. Defines our menu items and their relationships to other classes.
 class MenuItem(models.Model):
-	# Set up the choices for the allergens field.
-	allergen_choices = (
-		('peanuts', 'Peanuts'),
-		('tree-nuts', 'Tree nuts'),
-		('milk', 'Milk'),
-		('eggs', 'Eggs'),
-		('gluten', 'Gluten'),
-		('soy', 'Soy'),
-		('fish', 'Fish'),
-		('shellfish', 'Shellfish')
-	)
 	vegetarian = models.BooleanField(default=False)
 	category = models.ForeignKey(Category) # This sets up a many-to-one relationship with the Category class
 	name = models.CharField(max_length=200)
 	description = models.TextField()
 	price = models.DecimalField(max_digits=8, decimal_places=2)
 	main_photo = models.ImageField(upload_to = 'menu/items/')
-	allergens = models.CharField(max_length=512, choices=allergen_choices)
+	allergens = models.ManyToManyField(Allergen)
 	
 	# This sets the name as the main identifier for the object.
 	# e.g. "Bacon-wrapped Shrimp" will show up in the admin panel instead of an ID number

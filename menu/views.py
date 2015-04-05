@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, MenuItem, Order
+from menu.models import Category, MenuItem, Order, Allergen
 from menu.modelforms import OrderForm
 from menu import settings
 
@@ -20,7 +20,7 @@ def categories(request, category_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
 	menuitems_list = MenuItem.objects.filter(category=category_id)
-	allergies_list = MenuItem.allergen_choices
+	allergies_list = Allergen.objects.all()
 	context = {
 		'menuitems_list': menuitems_list,
 		'categories_list': categories_list,
@@ -31,18 +31,18 @@ def categories(request, category_id):
 	return render(request, 'menu/menu.html', context)
 
 # This returns and sets up the contexts for allergy filtered menu items within a category
-def filtered_categories(request, category_id, allergy_name):
+def filtered_categories(request, category_id, allergy_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
-	allergies_list = MenuItem.allergen_choices
-	menuitems_list = MenuItem.objects.filter(category=category_id).exclude(allergens__contains=allergy_name)
+	allergies_list = Allergen.objects.all()
+	menuitems_list = MenuItem.objects.filter(category=category_id, allergens=allergy_id)
 	context = {
 		'menuitems_list': menuitems_list,
 		'categories_list': categories_list,
 		'order_exists': existing_order.exists(),
 		'allergies_list': allergies_list,
 		'current_category': category_id,
-		'current_allergen': allergy_name
+		'current_allergen': Allergen.objects.get(id=allergy_id)
 	}
 	return render(request, 'menu/menu.html', context)	
 

@@ -13,8 +13,7 @@
 		&nbsp;&nbsp;&nbsp;Exclude these
 		<ul>
 		{% for allergy in allergies_list %}
-			<!-- allergy.0 pulls the key, allergy.1 pulls the value -->
-			<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.0 }}">{{ allergy.1 }}</a></li>
+			<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.id }}">{{ allergy.ingredient }}</a></li>
 		{% endfor %}
 		</ul>
 	  </ul>
