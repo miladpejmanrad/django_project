@@ -139,6 +139,6 @@ def review_order(request):
 			'form': order_form
 		}
 		return render(request, 'review-order.html', context)
-			
-	return HttpResponse("Order sent! Need the template to handle the success message.")
+	
+	return render(request, 'review-order.html')
     

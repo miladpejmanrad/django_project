@@ -24,6 +24,7 @@
 		<input type="submit" class="btn btn-s btn-danger place-order" style="width:100%;" value="Place order">
 	</form>
 {% else %}
-	<p>No order to review.</p>
+	<div class="alert alert-success"><strong>Success!</strong><p>Your order has been placed.</p></div>
+	<a href="/"><button class="btn btn-s btn-danger" style="width:100%;">Go to Home screen</button></a>
 {% endif %}
 {% endblock %}
