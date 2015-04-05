@@ -23,7 +23,6 @@ def auth_view(request):
 		auth.login(request,user)
 		return HttpResponseRedirect("/loggedin")
 	else:
-		print ("CANCEL SHOD")
 		return HttpResponseRedirect("/invalid")
 	
 
