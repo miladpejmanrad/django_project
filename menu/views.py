@@ -45,6 +45,22 @@ def filtered_categories(request, category_id, allergy_id):
 		'current_allergen': Allergen.objects.get(id=allergy_id)
 	}
 	return render(request, 'menu/menu.html', context)	
+	
+# This returns and sets up the contexts for vegetarian filtered menu items within a category
+def vegetarian(request, category_id):
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
+	categories_list = Category.objects.order_by('name')
+	allergies_list = Allergen.objects.all()
+	menuitems_list = MenuItem.objects.filter(category=category_id).exclude(vegetarian=False) # Exclude items that aren't vegetarian
+	context = {
+		'menuitems_list': menuitems_list,
+		'categories_list': categories_list,
+		'order_exists': existing_order.exists(),
+		'allergies_list': allergies_list,
+		'current_category': category_id,
+		'vegetarian': True
+	}
+	return render(request, 'menu/menu.html', context)	
 
 # This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):

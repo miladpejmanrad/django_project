@@ -3,7 +3,7 @@
 {# This adds extra buttons for the menu view that don't need to be in other views. #}
 {% block extra_buttons %}
 	<div style="float:left; margin-left:36px;">
-		<button class="btn btn-default">Vegetarian</button>
+		<a href="/menu/category/{{ current_category }}/vegetarian/"><button class="btn btn-default">Vegetarian</button></a>
 		{% if allergies_list %}
 		{# Render the allergies dropdown so users can filter items in the category they're currently in. #}
 		<div class="dropdown">
@@ -112,18 +112,26 @@
 
 <div id="menu-items" class="col-md-8">
 {% if menuitems_list %}
+
 	{% if current_allergen %}
 		<div class="alert alert-warning">These items do not contain {{ current_allergen }}.</div>
 	{% endif %}
+	
+	{% if vegetarian %}
+		<div class="alert alert-warning">These items are vegetarian.</div>
+	{% endif %}
+	
 	<ul>
 	{% for menuitem in menuitems_list %}
 		<li><a href="/menu/items/{{ menuitem.id }}/"><span class="menuitem-container" data-content="{{ menuitem.name }}">
 		<img src="{{ menuitem.main_photo.url }}"></span></a></li>
 	{% endfor %}
 	</ul>
+	
 {% else %}
 	<p>Select a category to browse the menu.</p>
 {% endif %}
+
 </div>
 
 {% endblock %}
