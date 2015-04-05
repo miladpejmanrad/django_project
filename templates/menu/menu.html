@@ -2,10 +2,11 @@
 
 {# This adds extra buttons for the menu view that don't need to be in other views. #}
 {% block extra_buttons %}
+
+{# Render the allergies dropdown and vegetarian button so users can filter items in the category they're currently in. #}
+{% if allergies_list %}
 	<div style="float:left; margin-left:36px;">
 		<a href="/menu/category/{{ current_category }}/vegetarian/"><button class="btn btn-default">Vegetarian</button></a>
-		{% if allergies_list %}
-		{# Render the allergies dropdown so users can filter items in the category they're currently in. #}
 		<div class="dropdown">
 		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 			Allergens
@@ -20,8 +21,8 @@
 			</ul>
 		  </ul>
 		</div>
-		{% endif %}
 	</div>
+		{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -114,7 +115,7 @@
 {% if menuitems_list %}
 
 	{% if current_allergen %}
-		<div class="alert alert-warning">These items do not contain {{ current_allergen }}.</div>
+		<div class="alert alert-warning">These items do not contain <span style="text-transform:lowercase;">{{ current_allergen }}</span>.</div>
 	{% endif %}
 	
 	{% if vegetarian %}
