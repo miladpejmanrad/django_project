@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem, Order, Allergen
 from menu.modelforms import OrderForm
 from menu import settings
+from decimal import Decimal
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
@@ -191,7 +192,7 @@ def paying(request):
 	
 	return render(request, 'payment/paying.html', context)
 	
-# This view shows the user various payment-related messages as they're paying for their order
+# This view lets the user sign their name after a successful credit card swipe
 def signing(request):
 
 	# Check to see if an order is ready to be paid for at this table.
@@ -205,5 +206,26 @@ def signing(request):
 		}
 	
 	return render(request, 'payment/signing.html', context)
+	
+	
+# This view shows the tip options.
+def tipping(request):
 
+	# Check to see if an order is ready to be paid for at this table.
+	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {}
+	
+	# Build the context for the template if an order is ready to be paid.
+	if order_to_pay.exists():
+		tip_10 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.10))
+		tip_15 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.15))
+		tip_20 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.20))
+		context = {
+			'order': order_to_pay.get(),
+			'tip_10': tip_10,
+			'tip_15': tip_15,
+			'tip_20': tip_20
+		}
+	
+	return render(request, 'payment/tipping.html', context)
 	

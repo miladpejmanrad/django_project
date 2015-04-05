@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if order %}
+	<style>
+		.btn.tip {
+			margin-right:36px;
+		}
+	</style>
+	<button class="btn btn-s col-xs-3 tip">10%<br>${{ tip_10 }}</button>
+	<button class="btn btn-s col-xs-3 tip">15%<br>${{ tip_15 }}</button>
+	<button class="btn btn-s col-xs-3 tip">20%<br>${{ tip_20 }}</button>
+{% endif %}
+{% endblock %}

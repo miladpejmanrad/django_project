@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 	url(r'^pay/card/$', 'menu.views.paying', name='paying'),
 	url(r'^pay/cash/$', 'menu.views.paying', name='paying'),
 	url(r'^pay/card/sign/$', 'menu.views.signing', name='signing'),
+	url(r'^pay/card/tip/$', 'menu.views.tipping', name='tipping'),
 	
 	# Staff related patterns
     url(r'^login/$', 'django_project.views.login', name='login'),
