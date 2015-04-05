@@ -161,7 +161,7 @@ def review_order(request):
 # This view shows the user their order AFTER sending it to the kitchen so they can pay for it.
 def order_summary(request):
 
-	# Check to see if an order is ready to be placed for this table.
+	# Check to see if an order is ready to be paid for at this table.
 	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
 	context = {}
 	
@@ -172,7 +172,23 @@ def order_summary(request):
 			'order': order_to_pay.get(),
 			'ordered_items': ordered_items,
 		}
-		
+	
 	return render(request, 'payment/order-summary.html', context)
+	
+	
+# This view shows the user various payment-related messages as they're paying for their order
+def paying(request):
+
+	# Check to see if an order is ready to be paid for at this table.
+	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {}
+	
+	# Build the context for the template if an order is ready to be paid.
+	if order_to_pay.exists():
+		context = {
+			'order': order_to_pay.get(),
+		}
+	
+	return render(request, 'payment/paying.html', context)
 
 	

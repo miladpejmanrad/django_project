@@ -66,8 +66,6 @@ class Order(models.Model):
 	# Sets the ID as the identifier for orders.
 	def __str__(self):
 		return str(self.id)
-		
-		
 
 # Class Survey
 class Survey(models.Model):

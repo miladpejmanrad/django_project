@@ -19,9 +19,9 @@
 	</tr>
 	</table>
 	{% block payment_buttons %}
-	<button class="btn btn-s btn-danger col-xs-4">Pay with a card</button>
-	<button class="btn btn-s btn-success col-xs-4">Pay with cash</button>
-	<button class="btn btn-s col-xs-4">Split the bill</button>
+	<a href="/pay/card/"><button class="btn btn-s btn-danger col-xs-4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Pay with a card</button></a>
+	<a href="/pay/cash/"><button class="btn btn-s btn-success col-xs-4"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay with cash</button></a>
+	<a href="/pay/split/"><button class="btn btn-s col-xs-4"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Split the bill</button></a>
 	{% endblock %}
 {% endif %}
 {% endblock %}
