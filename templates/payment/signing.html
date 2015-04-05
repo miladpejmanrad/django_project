@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if order %}
+	<style>
+		.signature {
+			border-bottom:3px solid #aaa;
+			width:75%;
+			margin:0 auto;
+		}
+		
+		.signature-container {
+			margin-bottom:36px;
+		}
+	</style>
+	<div class="signature-container text-center">
+		<div class="signature">
+		<!-- Not complete yet. Looking into some libraries that save simple sketches for saving the signature. -->
+		</div>
+		<h4>Sign here</h4>
+	</div>
+	<div class="text-center">
+		<a href="/pay/"><button class="btn btn-s">CANCEL</button></a>
+		<a href="/pay/tip/"><button class="btn btn-s btn-success">CONTINUE</button></a>
+	</div>
+{% endif %}
+{% endblock %}

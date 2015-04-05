@@ -45,9 +45,17 @@
 		.btn-s {
 			transition: .5s ease;
 			padding: .25em .5em;
+			vertical-align:middle;
 			font-size: 36px;
 			line-height: 1.5;
 			/* border-radius: 6px;*/
+		}
+		
+		.btn-s span {
+			padding-bottom: .20em;
+			display:inline-block;
+			vertical-align:middle;
+			margin-right:.12em;
 		}
 		
 		.helper-buttons {
@@ -67,7 +75,7 @@
  
   <div class="container">
   <div class="helper-buttons">
-  <a href="javascript:history.back()"><button type="button" class="btn btn-s btn-danger" style="float:left;">BACK</button></a>
+  <a href="javascript:history.back()"><button type="button" class="btn btn-s btn-danger" style="float:left;"> <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span> BACK</button></a>
   {% block extra_buttons %}{% endblock %}
   {% if order_exists %}<a href="/menu/review-order"><button type="button" class="btn btn-s btn-success" style="font-size:18px; margin-right:36px;">Review Order</button></a>{% endif %}
   <button type="button" class="btn btn-s btn-danger">REFILL</button>

@@ -190,5 +190,20 @@ def paying(request):
 		}
 	
 	return render(request, 'payment/paying.html', context)
+	
+# This view shows the user various payment-related messages as they're paying for their order
+def signing(request):
+
+	# Check to see if an order is ready to be paid for at this table.
+	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {}
+	
+	# Build the context for the template if an order is ready to be paid.
+	if order_to_pay.exists():
+		context = {
+			'order': order_to_pay.get(),
+		}
+	
+	return render(request, 'payment/signing.html', context)
 
 	
