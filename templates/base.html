@@ -72,7 +72,7 @@
   <div class="helper-buttons">
   <a href="javascript:history.back()"><button type="button" class="btn btn-s btn-danger" style="float:left;">BACK</button></a>
   {% block extra_buttons %}{% endblock %}
-  {% if order_exists %}<button type="button" class="btn btn-s btn-success" style="font-size:18px; margin-right:36px;">Review Order</button>{% endif %}
+  {% if order_exists %}<a href="/menu/review-order"><button type="button" class="btn btn-s btn-success" style="font-size:18px; margin-right:36px;">Review Order</button></a>{% endif %}
   <button type="button" class="btn btn-s btn-danger">REFILL</button>
   <button type="button" class="btn btn-s btn-danger">HELP</button>
   </div>

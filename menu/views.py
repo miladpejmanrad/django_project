@@ -41,7 +41,8 @@ def filtered_categories(request, category_id, allergy_name):
 		'categories_list': categories_list,
 		'order_exists': existing_order.exists(),
 		'allergies_list': allergies_list,
-		'current_category': category_id
+		'current_category': category_id,
+		'current_allergen': allergy_name
 	}
 	return render(request, 'menu.html', context)	
 
@@ -109,4 +110,24 @@ def add_to_order(request, menu_item_id):
 			return HttpResponseRedirect("/menu/")
 			
 	return HttpResponse("You're trying to order %s, but it didn't go through." % menu_item)
+	
+# This view shows the user their order and lets them submit to the kitchen
+def review_order(request):
+
+	# Check to see if an order is already set for this table. If so, modify it. If not, create a new one.
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
+		
+	if request.method == "POST":
+		if existing_order.exists():
+			order_form = OrderForm(request.POST, instance=existing_order.get())
+		else:
+			order_form = OrderForm(request.POST)
+		if order_form.is_valid():
+			order_form.save()
+			return HttpResponseRedirect("/menu/review-order")
+			
+	if existing_order.exists():
+		return HttpResponse("There's an order here ready to send.")
+			
+	return HttpResponse("There isn't an order to review.")
     

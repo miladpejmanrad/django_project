@@ -41,7 +41,7 @@ class MenuItem(models.Model):
 	description = models.TextField()
 	price = models.DecimalField(max_digits=8, decimal_places=2)
 	main_photo = models.ImageField(upload_to = 'menu/items/')
-	allergens = models.CharField(max_length=64, choices=allergen_choices)
+	allergens = models.CharField(max_length=512, choices=allergen_choices)
 	
 	# This sets the name as the main identifier for the object.
 	# e.g. "Bacon-wrapped Shrimp" will show up in the admin panel instead of an ID number
