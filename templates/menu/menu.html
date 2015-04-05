@@ -2,26 +2,23 @@
 
 {# This adds extra buttons for the menu view that don't need to be in other views. #}
 {% block extra_buttons %}
-	<div style="float:left; margin-left:36px;">
-		<button class="btn btn-default">Vegetarian</button>
-		{% if allergies_list %}
-		{# Render the allergies dropdown so users can filter items in the category they're currently in. #}
-		<div class="dropdown">
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-			Allergens
-			<span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-			&nbsp;&nbsp;&nbsp;Exclude these
-			<ul>
-			{% for allergy in allergies_list %}
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.id }}">{{ allergy.ingredient }}</a></li>
-			{% endfor %}
-			</ul>
-		  </ul>
-		</div>
-		{% endif %}
+	{% if allergies_list %}
+	{# Render the allergies dropdown so users can filter items in the category they're currently in. #}
+	<div class="dropdown" style="float:left; margin-left:36px;">
+	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+		Allergens
+		<span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+		&nbsp;&nbsp;&nbsp;Exclude these
+		<ul>
+		{% for allergy in allergies_list %}
+			<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.id }}">{{ allergy.ingredient }}</a></li>
+		{% endfor %}
+		</ul>
+	  </ul>
 	</div>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
