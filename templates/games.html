@@ -1,14 +1,8 @@
 {% extends "base.html" %}
 
-{# This adds extra buttons for the menu view that don't need to be in other views. #}
-{% block extra_buttons %}
-
-{% endblock %}
-
 {% block content %}
   <div class="game-choices">
-        <a href="flappybird/"><button type="button" class="btn btn-lg btn-success col-md-6">Flappy Bird!</button></a>
-        <a href="games/othergame/"><button type="button" class="btn btn-lg btn-primary col-md-6" style="float:right;">Win Free Dessert!</button></a>
+        <a href="/games/flappybird/"><button type="button" class="btn btn-lg btn-success col-md-6">Flappy Bird!</button></a>
+        <a href="/games/othergame/"><button type="button" class="btn btn-lg btn-primary col-md-6" style="float:right;">Win Free Dessert!</button></a>
   </div>
-
 {% endblock %}
