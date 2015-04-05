@@ -2,7 +2,27 @@
 
 {% block content %}
 {% if order %}
-
+	<table class="table table-striped">
+	<tr>
+		<th>Item</th>
+		<th>Price</th>
+	</tr>
+	{% for item in ordered_items %}
+		<tr>
+			<td>{{ item.name }}</td>
+			<td>{{ item.price }}</td>
+		</tr>
+	{% endfor %}
+	<tr class="info">
+	<td><strong>Total</strong></td>
+	<td><strong>{{ order.total_price }}</strong></td>
+	</tr>
+	</table>
+	<form action="/menu/review-order/" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" class="btn btn-s btn-danger place-order" style="width:100%;" value="Place order">
+	</form>
 {% else %}
 	<p>No order to review.</p>
 {% endif %}

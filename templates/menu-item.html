@@ -56,16 +56,6 @@
 		<span class="description">{{ menu_item.description }}</span>
 	</div>
 	<div class="order-input">
-		<!-- This is a placeholder form I set up, commenting it out for now -->
-		<!-- {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-		<form action="/menu/items/{{ menu_item.id }}/order/" method="post">
-		{% csrf_token %}
-		<textarea style="width:100%; height:100px">Need any modifications? Add 'em here</textarea>
-		<br><br>
-		<input type="submit" class="btn btn-s btn-danger add-order" style="width:100%;" value="+ Add to order">
-		</form> -->
-		
 		<form action="/menu/items/{{ menu_item.id }}/order/" method="post">
 		{% csrf_token %}
 		{{ form.as_p }}
