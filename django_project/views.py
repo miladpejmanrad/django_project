@@ -28,15 +28,15 @@ def auth_view(request):
 	
 
 def loggedin(request):
-	template = "staff/login.html"
-	return render(template,
+	template = "staff/loggedin.html"
+	return render(request, template,
 				 {'full_name':request.user.username})
 
 
 def logout(request):
 	auth.logout(request)
 	template = "staff/logout.html"
-	return render(template)
+	return render(request, template)
 
 
 def invalid(request):
