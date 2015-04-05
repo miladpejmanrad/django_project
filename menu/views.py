@@ -13,7 +13,7 @@ def menu(request):
 		'categories_list': categories_list,
 		'order_exists': existing_order.exists(),
 	}
-	return render(request, 'menu.html', context)
+	return render(request, 'menu/menu.html', context)
 
 # This returns and sets up the contexts for the individual categories and their menu items for the menu.html template
 def categories(request, category_id):
@@ -28,7 +28,7 @@ def categories(request, category_id):
 		'allergies_list': allergies_list,
 		'current_category': category_id
 	}
-	return render(request, 'menu.html', context)
+	return render(request, 'menu/menu.html', context)
 
 # This returns and sets up the contexts for allergy filtered menu items within a category
 def filtered_categories(request, category_id, allergy_name):
@@ -44,7 +44,7 @@ def filtered_categories(request, category_id, allergy_name):
 		'current_category': category_id,
 		'current_allergen': allergy_name
 	}
-	return render(request, 'menu.html', context)	
+	return render(request, 'menu/menu.html', context)	
 
 # This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):
@@ -91,7 +91,7 @@ def menu_items(request, menu_item_id):
 		'order_exists': existing_order.exists()
 	}
 			
-	return render(request, 'menu-item.html', context)
+	return render(request, 'menu/menu-item.html', context)
 
 # This view processes the form sent by the menu-item.html template
 def add_to_order(request, menu_item_id):
@@ -138,7 +138,7 @@ def review_order(request):
 			'ordered_items': ordered_items,
 			'form': order_form
 		}
-		return render(request, 'review-order.html', context)
+		return render(request, 'menu/review-order.html', context)
 	
-	return render(request, 'review-order.html')
+	return render(request, 'menu/review-order.html')
     
