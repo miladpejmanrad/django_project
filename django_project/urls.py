@@ -11,6 +11,11 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^menu/', include('menu.urls')),
     url(r'^games/', include('games.urls')),
+    url(r'^login/$', 'django_project.views.login', name='login'),
+    url(r'^auth_view/$', 'django_project.views.auth_view', name='auth_view'),
+    url(r'^logout/$', 'django_project.views.logout', name='logout'),
+    url(r'^loggedin/$', 'django_project.views.loggedin', name='loggedin'),
+    url(r'^invalid/$', 'django_project.views.invalid', name='invalid'),
 )
 
 if settings.DEBUG:
