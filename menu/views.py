@@ -217,6 +217,10 @@ def tipping(request):
 	
 	# Build the context for the template if an order is ready to be paid.
 	if order_to_pay.exists():
+		tip_form = TipOrderForm(
+			initial={
+				'status': 'paid'
+			}, instance=order_to_pay.get())
 		tip_10 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.10))
 		tip_15 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.15))
 		tip_20 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.20))
@@ -224,7 +228,8 @@ def tipping(request):
 			'order': order_to_pay.get(),
 			'tip_10': tip_10,
 			'tip_15': tip_15,
-			'tip_20': tip_20
+			'tip_20': tip_20,
+			'form': tip_form
 		}
 	
 	return render(request, 'payment/tipping.html', context)

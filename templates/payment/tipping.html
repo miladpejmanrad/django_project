@@ -2,13 +2,23 @@
 
 {% block content %}
 {% if order %}
+<script>
+	function changeTipValue(value){
+		document.getElementById("id_tip").value = value.toFixed(2);
+	}
+</script>
 	<style>
 		.btn.tip {
 			margin-right:36px;
 		}
 	</style>
-	<button class="btn btn-s col-xs-3 tip">10%<br>${{ tip_10 }}</button>
-	<button class="btn btn-s col-xs-3 tip">15%<br>${{ tip_15 }}</button>
-	<button class="btn btn-s col-xs-3 tip">20%<br>${{ tip_20 }}</button>
+	<button class="btn btn-s col-xs-3 tip" onclick="changeTipValue({{ tip_10 }})">10%<br>${{ tip_10 }}</button>
+	<button class="btn btn-s col-xs-3 tip" onclick="changeTipValue({{ tip_15 }})">15%<br>${{ tip_15 }}</button>
+	<button class="btn btn-s col-xs-3 tip" onclick="changeTipValue({{ tip_20 }})">20%<br>${{ tip_20 }}</button>
+    <form action="/pay/success/" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" class="btn btn-s btn-danger place-order" style="width:100%;" value="Complete Payment">
+	</form>
 {% endif %}
 {% endblock %}
