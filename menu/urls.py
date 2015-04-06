@@ -15,5 +15,5 @@ urlpatterns = patterns('',
 	# /menu/category/3/vegetarian/
 	url(r'^category/(?P<category_id>\d+)/vegetarian/$', views.vegetarian, name='vegetarian'),
 	# /menu/review-order/
-	url(r'^review-order/$', views.review_order, name='review_order'),
+	url(r'^review-order/$', views.place_order, name='place_order'),
 )

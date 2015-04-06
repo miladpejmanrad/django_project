@@ -66,6 +66,12 @@ def vegetarian(request, category_id):
 # This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):
 	
+	# First, see if they already have an order in the system that's been placed, but not paid for.
+	if not (Order.objects.filter(table_number=settings.TABLE_NUMBER).exists()) or not (Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='ordering').exclude(status='paid')):
+		order_in_progress = True
+	else:
+		order_in_progress = False
+	
 	# Check to see if an order is already set for this table. If so, modify it. If not, create a new one.
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	menu_item = MenuItem.objects.get(id=menu_item_id)
@@ -105,7 +111,8 @@ def menu_items(request, menu_item_id):
 	context = {
 		'menu_item': menu_item,
 		'form': order_form,
-		'order_exists': existing_order.exists()
+		'order_exists': existing_order.exists(),
+		'can_order': order_in_progress
 	}
 			
 	return render(request, 'menu/menu-item.html', context)
@@ -130,7 +137,7 @@ def add_to_order(request, menu_item_id):
 	
 # This view shows the user their order BEFORE sending it to the kitchen and lets them submit to the kitchen.
 # Submitting the order changes the status to "in-progress", which should be handled by the kitchen views.
-def review_order(request):
+def place_order(request):
 
 	# Check to see if an order is ready to be placed for this table.
 	order_to_send = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
@@ -214,6 +221,13 @@ def tipping(request):
 	# Check to see if an order is ready to be paid for at this table.
 	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
 	context = {}
+	
+	# If the order gets submitted, save it and redirect.
+	if request.method == "POST":
+		order_form = TipOrderForm(request.POST, instance=order_to_pay.get())
+		if order_form.is_valid():
+			order_form.save()
+			return HttpResponseRedirect("/pay/card/tip/")
 	
 	# Build the context for the template if an order is ready to be paid.
 	if order_to_pay.exists():

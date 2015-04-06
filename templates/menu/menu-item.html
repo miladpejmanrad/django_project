@@ -55,13 +55,18 @@
 		<h1>{{ menu_item.name }}</h1><span class="price">${{ menu_item.price }}</span>
 		<span class="description">{{ menu_item.description }}</span>
 	</div>
-	<div class="order-input">
+    <div class="order-input">
+    {% if can_order %}
 		<form action="/menu/items/{{ menu_item.id }}/order/" method="post">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" class="btn btn-s btn-danger add-order" style="width:100%;" value="+ Add to order">
 		</form>
-	</div>
+	
+    {% else %}
+    	<div class="alert alert-danger">You have already placed an order. You may create a new order once you have paid for your current order.</div>
+    {% endif %}
+    </div>
 </div>
 
 {% else %}
