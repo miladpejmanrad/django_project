@@ -61,6 +61,7 @@ class Order(models.Model):
 	modifications = models.TextField(blank=True)
 	status = models.CharField(max_length=64, choices=status_choices, default='ordering')
 	total_price = models.DecimalField(max_digits=8, decimal_places=2)
+	tip = models.DecimalField(max_digits=8, decimal_places=2, default='0.00')
 	timestamp_created = models.DateTimeField(auto_now_add=True)
 
 	# Sets the ID as the identifier for orders.

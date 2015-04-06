@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem, Order, Allergen
-from menu.modelforms import OrderForm
+from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from menu import settings
 from decimal import Decimal
 
@@ -72,7 +72,7 @@ def menu_items(request, menu_item_id):
 	
 	# This generates the form that appears on an individual menu item page.
 	if existing_order.exists():
-		order_form = OrderForm(instance=existing_order.get()) # Grab the form data first so we can modify it
+		order_form = AddItemToOrderForm(instance=existing_order.get()) # Grab the form data first so we can modify it
 		ordered_items = list(existing_order.get().menu_items.all()) # Get the menu items already on the order
 		if not menu_item in ordered_items:
 			ordered_items.append(menu_item) # Add the new menu item if it's not already there
@@ -84,7 +84,7 @@ def menu_items(request, menu_item_id):
 			total_price = total_price + item_price.price
 		
 		# Set the form to use the new data
-		order_form = OrderForm(
+		order_form = AddItemToOrderForm(
 			initial={
 				'menu_items': ordered_items,
 				'total_price': total_price
@@ -93,10 +93,10 @@ def menu_items(request, menu_item_id):
 		)
 	
 	else:
-		order_form = OrderForm(
+		order_form = AddItemToOrderForm(
 			initial={
 				'menu_items': [menu_item_id],
-				'table_number': settings.TABLE_NUMBER, # This is a dummy value that needs to be replaced.
+				'table_number': settings.TABLE_NUMBER,
 				'total_price': menu_item.price
 			}
 		)
@@ -119,9 +119,9 @@ def add_to_order(request, menu_item_id):
 
 	if request.method == "POST":
 		if existing_order.exists():
-			order_form = OrderForm(request.POST, instance=existing_order.get())
+			order_form = AddItemToOrderForm(request.POST, instance=existing_order.get())
 		else:
-			order_form = OrderForm(request.POST)
+			order_form = AddItemToOrderForm(request.POST)
 		if order_form.is_valid():
 			order_form.save()
 			return HttpResponseRedirect("/menu/")
@@ -137,7 +137,7 @@ def review_order(request):
 	
 	# If the order gets submitted, save it and redirect.
 	if request.method == "POST":
-		order_form = OrderForm(request.POST, instance=order_to_send.get())
+		order_form = PlaceOrderForm(request.POST, instance=order_to_send.get())
 		if order_form.is_valid():
 			order_form.save()
 			return HttpResponseRedirect("/menu/review-order/")
@@ -145,7 +145,7 @@ def review_order(request):
 	# Build the context and form for the template if an order is ready to be placed.
 	if order_to_send.exists():
 		ordered_items = list(order_to_send.get().menu_items.all()) # Get the menu items already on the order
-		order_form = OrderForm(
+		order_form = PlaceOrderForm(
 			initial={
 				'status': 'in-progress'
 			}, instance=order_to_send.get())
