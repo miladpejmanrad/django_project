@@ -33,10 +33,18 @@
 		controls: false,
 		webStorage: 'local'
 	});
+	
+	function updateImgValue(){
+		document.getElementById('signature-data').value=myBoard.getImg();
+	}
 	</script>
 	<div class="text-center">
-		<a href="/pay/"><button class="btn btn-s">CANCEL</button></a>
-		<a href="/pay/card/tip/"><button class="btn btn-s btn-success">CONTINUE</button></a>
+    	<form action="/pay/card/sign/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="signature_data" id="signature-data" value="placeholder">
+		<a href="/pay/"><button class="btn btn-s" type="button" onclick="myBoard.clearWebStorage()">CANCEL</button></a>
+        <input type="submit" class="btn btn-s btn-success" value="CONTINUE" onclick="updateImgValue(); myBoard.clearWebStorage()">
+        </form>
 	</div>
 {% endif %}
 {% endblock %}

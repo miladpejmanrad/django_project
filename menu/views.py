@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem, Order, Allergen
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
-from menu import settings
 from decimal import Decimal
+from binascii import a2b_base64
+import os
+from django_project import settings
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
@@ -206,6 +208,22 @@ def signing(request):
 	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
 	context = {}
 	
+	# When a signature is submitted, save the signature as an image to /media/signatures/ and move on.
+	if request.method == "POST":
+		# Convert the base64 data from DrawingBoard's getImg method into binary. (We need to skip the "data:image/png;base64," part first though.)
+		binary_data = a2b_base64(request.POST['signature_data'][22:])
+		
+		# Open up a file for storing the image's binary data.
+		signature_image=open(
+			settings.SIGNATURES_DIR + # Where it goes
+			'OrderID_' + str(order_to_pay.get().id) + '.png', # The name of the image file
+			'w+')
+			
+		# Store the image data and then move on to tips.
+		signature_image.write(binary_data)
+		signature_image.close()
+		return HttpResponseRedirect("/pay/card/tip/")
+			
 	# Build the context for the template if an order is ready to be paid.
 	if order_to_pay.exists():
 		context = {

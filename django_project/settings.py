@@ -89,3 +89,8 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'django_project/media')
 MEDIA_URL = '/media/'
 
+# Project-specific settings.
+# This would hypothetically be configured for each table the app is set up at
+TABLE_NUMBER = 1
+SIGNATURES_DIR = os.path.join(BASE_DIR, 'django_project/media/signatures/')
+

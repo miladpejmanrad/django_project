@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
 from menu.models import Order 
-from menu import settings
+from django_project import settings
 
 def home(request):
 	# If an order for this table has been served, show the PAY button on the home screen.
