@@ -217,7 +217,7 @@ def signing(request):
 		signature_image=open(
 			settings.SIGNATURES_DIR + # Where it goes
 			'OrderID_' + str(order_to_pay.get().id) + '.png', # The name of the image file
-			'w+')
+			'wb+')
 			
 		# Store the image data and then move on to tips.
 		signature_image.write(binary_data)
