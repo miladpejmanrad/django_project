@@ -1,11 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from menu.models import Category, MenuItem, Order, Allergen
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64
-import os
 from django_project import settings
 
 # This returns and sets up the contexts for the main menu.html template
@@ -265,4 +264,21 @@ def tipping(request):
 		}
 	
 	return render(request, 'payment/tipping.html', context)
+	
+# This view handles the receipts.
+def receipt(request):
+
+	# Get the latest paid order for this table.
+	last_paid_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='paid')
+	context = {}
+	
+	# Build the context for the template
+	if last_paid_order.exists():
+		ordered_items = list(last_paid_order.latest('id').menu_items.all()) # Get the menu items on the order
+		context = {
+			'order': last_paid_order.latest('id'),
+			'ordered_items': ordered_items,
+		}
+	
+	return render(request, 'payment/receipt.html', context)
 	

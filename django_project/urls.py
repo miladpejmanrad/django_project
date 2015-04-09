@@ -24,6 +24,7 @@ urlpatterns = patterns('',
 	url(r'^pay/cash/$', 'menu.views.paying', name='paying'),
 	url(r'^pay/card/sign/$', 'menu.views.signing', name='signing'),
 	url(r'^pay/card/tip/$', 'menu.views.tipping', name='tipping'),
+	url(r'^pay/receipt/print$', 'menu.views.receipt', name='print_receipt'),
 	
 	# Staff related patterns
     url(r'^login/$', 'django_project.views.login', name='login'),
