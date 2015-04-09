@@ -49,7 +49,7 @@ class MenuItem(models.Model):
 class Order(models.Model):
 	# Sets up the available choices for the status field.
 	status_choices = (
-			('ordering', 'Ordering'),
+		('ordering', 'Ordering'),
 	        ('in-progress', 'In Progress'),
 	        ('cooking', 'Cooking'),
 	        ('ready-to-serve', 'Ready to Serve'),
@@ -67,6 +67,20 @@ class Order(models.Model):
 	# Sets the ID as the identifier for orders.
 	def __str__(self):
 		return str(self.id)
+
+'''		
+# Notifications class. This sets up notification objects that can be displayed to the wait staff.
+class Notification(models.Model):
+	type_choices = (
+		('help', 'Help'),
+		('refill', 'Refill'),
+		('ready', 'Ready to serve'),
+		('cash', 'Pay with cash')
+	)
+	table_number = models.IntegerField()
+	type = models.CharField(max_length=64, choices=type_choices, default='help')
+	drink = models.CharField(max_length=64, blank=True) # This is an optional field
+'''		
 
 # Class Survey
 class Survey(models.Model):
