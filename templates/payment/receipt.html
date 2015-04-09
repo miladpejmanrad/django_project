@@ -28,6 +28,7 @@
 		{% if receipt_type == 'email' or receipt_type == 'both' %}
 			<form action="" method="post">
 			{% csrf_token %}
+			<label>Your email address:</label>
 			<input type="text" name="email_address">
 			<input type="submit" class="btn btn-s btn-danger" style="width:100%;" value="Email your receipt">
 			</form>
