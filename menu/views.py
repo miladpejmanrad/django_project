@@ -6,6 +6,7 @@ from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64
 from django_project import settings
+from django.core.mail import send_mail
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
@@ -272,8 +273,21 @@ def receipt(request, receipt_type):
 	last_paid_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='paid')
 	context = {}
 	
+	# If the user wants to email their receipt, send a copy of it to the entered email.
+	if request.method == "POST":
+		email = request.POST['email_address']
+		receipt_contents = 'Here is a copy of your receipt.\r\n'
+		for items in last_paid_order.latest('id').menu_items.all():
+			receipt_contents += items.name + ': ' + str(items.price) + '\r\n'
+		receipt_contents += '\r\nTip: ' + str(last_paid_order.latest('id').tip) + ' \r\n'
+		receipt_contents += 'Total: ' + str(last_paid_order.latest('id').total_price)
+		send_mail('Your restaurant receipt', receipt_contents, 'from@example.com', [email], fail_silently=False)
+		context = {
+			'received_receipt': True,
+		}
+	
 	# Build the context for the template
-	if last_paid_order.exists():
+	elif last_paid_order.exists():
 		ordered_items = list(last_paid_order.latest('id').menu_items.all()) # Get the menu items on the order
 		context = {
 			'order': last_paid_order.latest('id'),

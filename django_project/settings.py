@@ -93,4 +93,5 @@ MEDIA_URL = '/media/'
 # This would hypothetically be configured for each table the app is set up at
 TABLE_NUMBER = 1
 SIGNATURES_DIR = os.path.join(BASE_DIR, 'django_project/media/signatures/')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
