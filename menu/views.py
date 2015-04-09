@@ -266,7 +266,7 @@ def tipping(request):
 	return render(request, 'payment/tipping.html', context)
 	
 # This view handles the receipts.
-def receipt(request):
+def receipt(request, receipt_type):
 
 	# Get the latest paid order for this table.
 	last_paid_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='paid')
@@ -278,6 +278,7 @@ def receipt(request):
 		context = {
 			'order': last_paid_order.latest('id'),
 			'ordered_items': ordered_items,
+			'receipt_type': receipt_type
 		}
 	
 	return render(request, 'payment/receipt.html', context)

@@ -2,26 +2,32 @@
 
 {% block content %}
 {% if order %}
-	<table class="table table-simple">
-	<tr>
-		<th>Item</th>
-		<th>Price</th>
-	</tr>
-	{% for item in ordered_items %}
+	{% if receipt_type == 'print' or receipt_type == 'both' %}
+		Receipt that would be printed:
+		<table class="table table-simple">
 		<tr>
-			<td>{{ item.name }}</td>
-			<td>${{ item.price }}</td>
+			<th>Item</th>
+			<th>Price</th>
 		</tr>
-	{% endfor %}
-	<tr class="info">
-	<td><strong>Total</strong></td>
-	<td><strong>${{ order.total_price|floatformat:2 }}</strong></td>
-	</tr>
-	<tr class="info">
-	<td><strong>Tip</strong></td>
-	<td><strong>${{ order.tip|floatformat:2 }}</strong></td>
-	</tr>
-	</table>
+		{% for item in ordered_items %}
+			<tr>
+				<td>{{ item.name }}</td>
+				<td>${{ item.price }}</td>
+			</tr>
+		{% endfor %}
+		<tr class="info">
+		<td><strong>Total</strong></td>
+		<td><strong>${{ order.total_price|floatformat:2 }}</strong></td>
+		</tr>
+		<tr class="info">
+		<td><strong>Tip</strong></td>
+		<td><strong>${{ order.tip|floatformat:2 }}</strong></td>
+		</tr>
+		</table>
+	{% endif %}
+	{% if receipt_type == 'email' or receipt_type == 'both' %}
+		Email form here
+	{% endif %}
 	<a href="/survey/"><button type="button" class="btn btn-s btn-danger place-order" style="width:100%;">Take a survey</button></a>
 	<a href="/"><button type="button" class="btn btn-s btn-danger place-order" style="width:100%;">Return to home</button></a>
 {% endif %}
