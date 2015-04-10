@@ -5,5 +5,8 @@ from menu.models import Order
 
 
 class CookStatus(models.Model):
-	cook_name = models.ForeignKey(User)
+	"""
+	 model descripting which order is cooking by wich kitchen
+	"""
+	cook_name = models.ForeignKey(User) 
 	current_order = models.ForeignKey(Order, blank=True, null=True)

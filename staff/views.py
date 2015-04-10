@@ -9,7 +9,11 @@ from django.utils.timezone import utc
 
 
 def cook_order_list(request):
-
+	"""
+	get all orders 
+	and find the time span 
+	if order have been prepared , the ticchen's name will store in the order-data
+	"""
 	all_orders = Order.objects.all().order_by("-id")
 	css = CookStatus.objects.filter(cook_name=request.user)
 	cs = None
@@ -18,8 +22,6 @@ def cook_order_list(request):
 		cs = css[0]
 		if cs.current_order != None :
 			current_order = cs.current_order.menu_items.all()
-
-		
 
 	new_orders = []
 	for order in all_orders:
@@ -31,7 +33,7 @@ def cook_order_list(request):
 		cookofthis = CookStatus.objects.filter(current_order=order)
 		if len(cookofthis) != 0:
 			a['cookname'] = cookofthis[0].cook_name.username
-		else if a.tikchen != None:
+		elif order.tikchen != None:
 			a['cookname'] = order.tikchen
 
 		new_orders.append(a)
@@ -42,7 +44,9 @@ def cook_order_list(request):
 
 
 def cook_order(request):
-
+	"""
+	chang the order's status to be "cooking" which is selected by the id of order 
+	"""
 	order_id = request.GET.get('order_id', 0)
 	cs , status = CookStatus.objects.get_or_create(cook_name=request.user)
 
@@ -57,6 +61,9 @@ def cook_order(request):
 
 
 def order_ready(request):
+	"""
+	chang the order's status to be "ready-to-serve" which is selected by the id of order 
+	"""
 	cs , status = CookStatus.objects.get_or_create(cook_name=request.user)
 	if cs.current_order is not None:
 		cs.current_order.status = 'ready-to-serve'
