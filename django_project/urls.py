@@ -32,6 +32,12 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django_project.views.logout', name='logout'),
     url(r'^loggedin/$', 'django_project.views.loggedin', name='loggedin'),
     url(r'^invalid/$', 'django_project.views.invalid', name='invalid'),
+
+
+    # Kitchen staff 
+    # Waiter staff 
+    url(r'^staff/', include('staff.urls')),
+
 )
 
 if settings.DEBUG:

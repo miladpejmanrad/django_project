@@ -64,6 +64,9 @@ class Order(models.Model):
 	tip = models.DecimalField(max_digits=8, decimal_places=2, default='0.00')
 	timestamp_created = models.DateTimeField(auto_now_add=True)
 
+	# related tikchen name
+	tikchen =  models.CharField(max_length=64, blank=True, null=True)
+
 	# Sets the ID as the identifier for orders.
 	def __str__(self):
 		return str(self.id)
