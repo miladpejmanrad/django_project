@@ -33,7 +33,9 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django_project.views.login', name='login'),
     url(r'^auth_view/$', 'django_project.views.auth_view', name='auth_view'),
     url(r'^logout/$', 'django_project.views.logout', name='logout'),
-    url(r'^loggedin/$', 'django_project.views.loggedin', name='loggedin'),
+    url(r'^managers/$', 'django_project.views.managers', name='managers'),
+    url(r'^kitchenStaff/$', 'django_project.views.kitchenStaff', name='kitchenStaff'),
+    url(r'^waitStaff/$', 'django_project.views.waitStaff', name='waitStaff'),
     url(r'^invalid/$', 'django_project.views.invalid', name='invalid'),
 
 

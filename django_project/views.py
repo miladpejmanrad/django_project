@@ -30,21 +30,35 @@ def auth_view(request):
 	WaitStaff = Group.objects.get(name="WaitStaff").user_set.all()
 	if user in Managers:
 		auth.login(request,user)
-		return HttpResponseRedirect("/loggedin")
+		return HttpResponseRedirect("/managers")
 	elif user in KitchenStaff:
 		auth.login(request,user)
-		return HttpResponseRedirect("/loggedin")
+		return HttpResponseRedirect("/kitchenStaff")
 	elif user in WaitStaff:
 		auth.login(request,user)
-		return HttpResponseRedirect("/loggedin")
+		return HttpResponseRedirect("/waitStaff")
 	else:
 		return HttpResponseRedirect("/invalid")
 	
 
-def loggedin(request):
+def managers(request):
 
 	options = AdminMenu.objects.all()
-	template = "staff/loggedin.html"
+	template = "staff/managers.html"
+	context = {'options': options,'full_name':request.user.username}
+	return render(request, template, context)
+
+def kitchenStaff(request):
+
+	options = AdminMenu.objects.all()
+	template = "staff/kitchenStaff.html"
+	context = {'options': options,'full_name':request.user.username}
+	return render(request, template, context)
+
+def waitStaff(request):
+
+	options = AdminMenu.objects.all()
+	template = "staff/waitStaff.html"
 	context = {'options': options,'full_name':request.user.username}
 	return render(request, template, context)
 
