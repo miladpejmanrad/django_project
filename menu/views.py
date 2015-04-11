@@ -297,3 +297,19 @@ def receipt(request, receipt_type):
 	
 	return render(request, 'payment/receipt.html', context)
 	
+# This view handles the notifications sent by the customer.
+def send_notification(request):
+	if request.method == "POST":
+		notification_type = request.POST['type']
+		drink_name = request.POST['drink']
+		new_notification = Notification(
+			table_number = settings.TABLE_NUMBER,
+			type = notification_type,
+			drink = drink_name
+		)
+		new_notification.save()
+		context = {
+			'notification_type' = notification_type,
+		}
+		
+	return render(request, 'menu/notification.html', context)
