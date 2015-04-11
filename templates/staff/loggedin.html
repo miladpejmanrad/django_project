@@ -18,12 +18,11 @@ Hi {{ full_name }} you are now logged in!
 			<span class="caret"></span>
 		  </button>
 		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-			&nbsp;&nbsp;&nbsp;
-<!-- 			<ul>
-			{% for allergy in allergies_list %}
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.id }}">{{ allergy.ingredient }}</a></li>
+			<ul>
+			{% for option in options %}
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="/">{{ option.options }}</a></li>
 			{% endfor %}
-			</ul> -->
+			</ul>
 		  </ul>
 		</div>
 	</div>
