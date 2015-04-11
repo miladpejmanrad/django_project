@@ -80,9 +80,9 @@
   {% if order_exists %}<a href="/menu/review-order"><button type="button" class="btn btn-s btn-success" style="font-size:18px; margin-right:36px;">Review Order</button></a>{% endif %}
   <button type="button" class="btn btn-s btn-danger">REFILL</button>
   <form action="/notify/" method="post" style="display:inline-block">
-  {% csrf_token %}
-  <input type="hidden" value="help" name="type">
-  <button class="btn btn-s btn-danger">HELP</button>
+	  {% csrf_token %}
+	  <input type="hidden" value="help" name="type">
+	  <button class="btn btn-s btn-danger">HELP</button>
   </form>
   </div>
 
