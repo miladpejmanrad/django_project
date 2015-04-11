@@ -20,7 +20,11 @@
 	</table>
 	{% block payment_buttons %}
 	<a href="/pay/card/"><button class="btn btn-s btn-danger col-xs-4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Pay with a card</button></a>
-	<a href="/pay/cash/"><button class="btn btn-s btn-success col-xs-4"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay with cash</button></a>
+	<form action="/notify/" method="post">
+	  {% csrf_token %}
+	  <input type="hidden" value="cash" name="type">
+	  <button class="btn btn-s btn-success col-xs-4"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay with cash</button>
+	</form>
 	<a href="/pay/split/"><button class="btn btn-s col-xs-4"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Split the bill</button></a>
 	{% endblock %}
 {% endif %}

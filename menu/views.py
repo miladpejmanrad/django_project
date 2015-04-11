@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, MenuItem, Order, Allergen, AdminMenu
+from menu.models import Category, MenuItem, Order, Allergen, AdminMenu, Notification
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64
@@ -297,3 +297,22 @@ def receipt(request, receipt_type):
 	
 	return render(request, 'payment/receipt.html', context)
 	
+# This view handles the notifications sent by the customer.
+def send_notification(request):
+	context = {}
+	if request.method == "POST":
+		notification_type = request.POST['type']
+		drink_name = ''
+		if notification_type == 'refill':
+			drink_name = request.POST['drink']
+		new_notification = Notification(
+			table_number = settings.TABLE_NUMBER,
+			type = notification_type,
+			drink = drink_name
+		)
+		new_notification.save()
+		context = {
+			'notification_type': notification_type,
+		}
+		
+	return render(request, 'notification.html', context)

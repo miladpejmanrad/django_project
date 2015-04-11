@@ -71,7 +71,7 @@ class Order(models.Model):
 	def __str__(self):
 		return str(self.id)
 
-'''		
+	
 # Notifications class. This sets up notification objects that can be displayed to the wait staff.
 class Notification(models.Model):
 	type_choices = (
@@ -87,7 +87,7 @@ class Notification(models.Model):
 	# Sets the ID as the identifier for notifications
 	def __str__(self):
 		return str(self.id)
-'''		
+	
 
 # Class Survey
 class Survey(models.Model):

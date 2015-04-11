@@ -26,6 +26,9 @@ urlpatterns = patterns('',
 	url(r'^pay/card/tip/$', 'menu.views.tipping', name='tipping'),
 	url(r'^pay/receipt/(?P<receipt_type>\w+)/$', 'menu.views.receipt', name='receipt'),
 	
+	# Notification related patterns
+	url(r'^notify/$', 'menu.views.send_notification', name='send_notification'),
+	
 	# Staff related patterns
     url(r'^login/$', 'django_project.views.login', name='login'),
     url(r'^auth_view/$', 'django_project.views.auth_view', name='auth_view'),

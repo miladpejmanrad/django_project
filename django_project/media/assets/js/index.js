@@ -25,6 +25,10 @@ $(function(){
       gameState = 1;
       deleteInterval();
     }
+    if(gameState == 0){
+      gameState = 1 
+      setInterval(); 
+    }
 	});
   
 	$(window).keydown(function(e){
@@ -116,9 +120,11 @@ $(function(){
   }
   
   function gameEnd(){
-  	clearInterval(birdPosInterval);
+    clearInterval(birdPosInterval);
+    setInterval();
   	$('.pipe').stop();
     gravity();
   	gameState = 0;
+
   }
 })

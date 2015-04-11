@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if notification_type == 'help' %}
+	Help is on the way!
+{% elif notification_type == 'refill' %}
+	Your refill is on the way!
+{% elif notification_type == 'cash' %}
+	Your server will be by to take your payment!
+{% else %}
+	Not a valid notification type.
+{% endif %}
+
+{% endblock %}
