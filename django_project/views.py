@@ -4,6 +4,7 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from menu.models import Order, AdminMenu
 from django_project import settings
+from django.contrib.auth.models import Group
 
 def home(request):
 	# If an order for this table has been served, show the PAY button on the home screen.
@@ -24,8 +25,16 @@ def auth_view(request):
 	username = request.POST.get('username', '')
 	password = request.POST.get('password', '')
 	user = auth.authenticate(username=username, password=password)
-
-	if user is not None:
+	Managers = Group.objects.get(name="Managers").user_set.all()
+	KitchenStaff = Group.objects.get(name="KitchenStaff").user_set.all()
+	WaitStaff = Group.objects.get(name="WaitStaff").user_set.all()
+	if user in Managers:
+		auth.login(request,user)
+		return HttpResponseRedirect("/loggedin")
+	elif user in KitchenStaff:
+		auth.login(request,user)
+		return HttpResponseRedirect("/loggedin")
+	elif user in WaitStaff:
 		auth.login(request,user)
 		return HttpResponseRedirect("/loggedin")
 	else:
@@ -33,6 +42,7 @@ def auth_view(request):
 	
 
 def loggedin(request):
+
 	options = AdminMenu.objects.all()
 	template = "staff/loggedin.html"
 	context = {'options': options,'full_name':request.user.username}
