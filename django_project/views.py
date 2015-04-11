@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
-from menu.models import Order 
+from menu.models import Order, AdminMenu
 from django_project import settings
 
 def home(request):
@@ -33,9 +33,10 @@ def auth_view(request):
 	
 
 def loggedin(request):
+	options = AdminMenu.objects.all()
 	template = "staff/loggedin.html"
-	return render(request, template,
-				 {'full_name':request.user.username})
+	context = {'options': options,'full_name':request.user.username}
+	return render(request, template, context)
 
 
 def logout(request):

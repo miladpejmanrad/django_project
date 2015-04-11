@@ -1,3 +1,32 @@
 <h2>
 Hi {{ full_name }} you are now logged in!
 </h2>
+
+{% if options %}
+	<div style="float:left; margin-left:36px;">
+		
+
+<!-- 	<ul>
+	{% for option in options %}
+		<li><a href="">{{ option }}</a></li>
+	{% endfor %}
+	</ul> -->
+
+		<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+			Admin
+			<span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			&nbsp;&nbsp;&nbsp;
+<!-- 			<ul>
+			{% for allergy in allergies_list %}
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="/menu/category/{{ current_category }}/exclude/{{ allergy.id }}">{{ allergy.ingredient }}</a></li>
+			{% endfor %}
+			</ul> -->
+		  </ul>
+		</div>
+	</div>
+{% endif %}
+
+
