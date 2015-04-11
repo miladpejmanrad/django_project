@@ -1,31 +1,7 @@
+{% extends "staff_base.html" %}
+{% block content %}
 <h2>
 Hi {{ full_name }} you are now logged in!
 </h2>
 
-{% if options %}
-	<div style="float:left; margin-left:36px;">
-		
-
-<!-- 	<ul>
-	{% for option in options %}
-		<li><a href="">{{ option }}</a></li>
-	{% endfor %}
-	</ul> -->
-
-		<div class="dropdown">
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-			Admin
-			<span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-			<ul>
-			{% for option in options %}
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="/">{{ option.options }}</a></li>
-			{% endfor %}
-			</ul>
-		  </ul>
-		</div>
-	</div>
-{% endif %}
-
-
+{% endblock %}
