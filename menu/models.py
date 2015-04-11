@@ -108,3 +108,9 @@ class Survey(models.Model):
 
 	def __unicode__(self):
 		return self.id
+
+class AdminMenu(models.Model):
+	options = models.CharField(max_length=64)
+	
+	def __str__(self):
+		return str(self.options)
