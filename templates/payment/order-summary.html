@@ -20,7 +20,7 @@
 	</table>
 	{% block payment_buttons %}
 	<a href="/pay/card/"><button class="btn btn-s btn-danger col-xs-4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Pay with a card</button></a>
-	<form action="/notify/" method="post" style="">
+	<form action="/notify/" method="post">
 	  {% csrf_token %}
 	  <input type="hidden" value="cash" name="type">
 	  <button class="btn btn-s btn-success col-xs-4"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay with cash</button>
