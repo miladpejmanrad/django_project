@@ -91,11 +91,11 @@ def invalid(request):
 	return render(request, template, context)
 
 def cookOrdersList(request):
-	all_orders = Order.objects.all().order_by("-id")
+	all_orders = Order.objects.all().order_by("id")
 	al = []
-	for o in all_orders:
-		if o.status=="cooking" or o.status=="in-progress":
-			al.append(o)
+	for orders in all_orders:
+		if orders.status=="cooking" or orders.status=="in-progress":
+			al.append(orders)
 	all_orders = al # Trying to show only the orders which are either being cooked or in progress
 	if request.user.is_authenticated():
 		"""
@@ -114,11 +114,12 @@ def cookOrdersList(request):
 
 		new_orders = []
 		for order in all_orders:
+			#print order.table_number
 			a = {}
 			a['id'] = order.id
 			a['status'] = order.status
 
-			a['timespan'] = (datetime.datetime.utcnow().replace(tzinfo=utc) - order.timestamp_created).seconds
+			a['timespan'] = (datetime.datetime.utcnow().replace(tzinfo=utc) - order.timestamp_created).seconds//60
 			cookofthis = CookStatus.objects.filter(current_order=order)
 			if len(cookofthis) != 0:
 				a['cookname'] = cookofthis[0].cook_name.username
@@ -126,19 +127,25 @@ def cookOrdersList(request):
 				a['cookname'] = order.chef
 
 			new_orders.append(a)
+			#print current_order
+			for x in all_orders:
+				if x.chef==request.user.username:
+					current_order=x
 
-
-		return render(request,'staff/cookOrders.html', 
-			{'all_orders':new_orders, 'user':request.user, 'current_order':current_order, 'full_name':request.user.username})
+		try:
+			context = {'all_orders':new_orders, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
+		except:
+			context = {'all_orders':new_orders, 'full_name':request.user.username}
+		return render(request,'staff/cookOrders.html', context)
 	else:
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def cookTheOrder(request):
+def cookTheOrder(request, order_id):
 	"""
 	chang the order's status to be "cooking" which is selected by the id of order 
 	"""
-	order_id = request.GET.get('order_id', 0)
+	# order_id = request.GET.get('order_id', 0)
 	cs , status = CookStatus.objects.get_or_create(cook_name=request.user)
 
 	if cs.current_order is None:
@@ -153,7 +160,7 @@ def cookTheOrder(request):
 
 def orderIsReady(request):
 	"""
-	chang the order's status to be "ready-to-serve" which is selected by the id of order 
+	change the order's status to be "ready-to-serve" which is selected by the id of order 
 	"""
 	cs , status = CookStatus.objects.get_or_create(cook_name=request.user)
 	if cs.current_order is not None:
@@ -242,3 +249,38 @@ def DeleteNotification(request):
 		return HttpResponseRedirect("/ViewNotifications/")
 	except :
 		return HttpResponseRedirect("/ViewNotifications/")
+
+
+def modifyMenu(request):
+	MenuItems = MenuItem.objects.all()
+
+	if request.user.is_authenticated():
+		"""
+		
+		"""
+		
+		context = {'MenuItems':MenuItems}
+		return render(request,'staff/ModifyMenu.html', context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
+
+def showItem(request, item_id):
+	menu_item = MenuItem.objects.get(id=item_id)
+	if request.user.is_authenticated():
+		menu_item.visible = True
+		menu_item.save()
+		return HttpResponseRedirect("/modifyMenu")
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
+
+def hideItem(request, item_id):
+	menu_item = MenuItem.objects.get(id=item_id)
+	if request.user.is_authenticated():
+		menu_item.visible = False
+		menu_item.save()
+		return HttpResponseRedirect("/modifyMenu")
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)

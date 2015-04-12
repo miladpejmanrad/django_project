@@ -97,6 +97,14 @@
 		background:rgba(0,0,0,0.6);
 	}
 	
+	#drinks a {
+		font-size:36px;
+	}
+	
+	#drinks button {
+		padding:1em 0;
+	}
+	
 </style>
 
 <div id="categories" class="col-md-4">
@@ -105,14 +113,16 @@
 	{% for category in categories_list %}
 		<li><a href="/menu/category/{{ category.id }}/">{{ category.name }}</a></li>
 	{% endfor %}
+		<li><div class="text-center"><a href="{{ MEDIA_URL}}NutritionalInformation.pdf"><button type="button" class="btn btn btn-danger">Nutritional Information</button></a></div></li>
 	</ul>
 {% else %}
 	<p>No categories are available.</p>
 {% endif %}
 </div>
 
-<div id="menu-items" class="col-md-8">
+
 {% if menuitems_list %}
+<div id="menu-items" class="col-md-8">
 
 	{% if current_allergen %}
 		<div class="alert alert-warning">These items do not contain <span style="text-transform:lowercase;">{{ current_allergen }}</span>.</div>
@@ -128,16 +138,16 @@
 		<img src="{{ menuitem.main_photo.url }}"></span></a></li>
 	{% endfor %}
 	</ul>
-
+</div>
 {% elif drinks_list %}
+<div id="drinks" class="col-md-8">
 	{% for drink in drinks_list %}
-		<div>{{ drink.name }}</div>
+		<a href="/menu/drinks/{{ drink.id }}/"><button class="col-xs-4">{{ drink.name }}</button></a>
 	{% endfor %}
-	
 {% else %}
+<div class="col-md-8">
 	<p>Nothing found. Select a category to browse the menu.</p>
 {% endif %}
-
 </div>
 
 {% endblock %}

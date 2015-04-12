@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+	#flavors button {
+		padding:1em 0;
+		font-size:24px;
+	}
+</style>
+{% if flavors_list %}
+<div id="flavors" class="col-md-12">
+	{% if can_order %}
+		<h2>Select a flavor for your {{ selected_drink }}:</h2>
+		<form action="" method="post">
+		{% csrf_token %}
+		<button type="submit" name="flavor" value="None" class="col-xs-2">None</button>
+		{% for flavor in flavors_list %}
+			<button type="submit" name="flavor" value="{{ flavor.flavor }}" class="col-xs-2">{{ flavor.flavor }}</button>
+		{% endfor %}
+		</form>
+	{% else %}
+    	<div class="alert alert-danger">You have already placed an order. You may create a new order once you have paid for your current order.</div>
+	{% endif %}
+</div>
+
+{% else %}
+	<p>There are no flavors to display.</p>
+{% endif %}
+
+{% endblock %}

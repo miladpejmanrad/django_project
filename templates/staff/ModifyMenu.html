@@ -10,15 +10,28 @@
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/cookOrdersList">Cook Orders</a></h4></li>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/modifyMenu">Modify Menu</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">Modify Menu</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">Logout</a></h4></li>
       </ul>
       </ul>
     </div>
     </div>
   </div>
-<h2>
-Hi {{ full_name }} you are now logged in!
-</h2>
+  <div class="home-menu">
+    <div class="container  col-md-6">
+      <br/>
+      <table class="table"> 
+      {% for item in MenuItems %}
+      <tr class="{{order.status}}"> <td>{{item}}</td>
+        <td>
+        {%if item.visible %} <a type="button" href="/hideItem/{{ item.id }}" class="btn  btn-danger" > HIDE </a> 
+        {%else%} <a type="button" href="/showItem/{{ item.id }}" class="btn  btn-success" > SHOW </a> 
+        {%endif%}
+        </td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+  </div>
 
 {% endblock %}
