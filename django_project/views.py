@@ -114,6 +114,7 @@ def cookOrdersList(request):
 
 		new_orders = []
 		for order in all_orders:
+			#print order.table_number
 			a = {}
 			a['id'] = order.id
 			a['status'] = order.status
@@ -129,6 +130,10 @@ def cookOrdersList(request):
 			for x in all_orders:
 				if x.chef==request.user.username:
 					current_order=x
+			
+			#print current_order.table_number
+			
+
 
 
 		context = {'all_orders':new_orders, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
