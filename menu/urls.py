@@ -8,6 +8,8 @@ urlpatterns = patterns('',
 	url(r'^category/(?P<category_id>\d+)/$', views.categories, name='category'),
 	# /menu/items/3/
 	url(r'^items/(?P<menu_item_id>\d+)/$', views.menu_items, name='menu_item'),
+	# /menu/drinks/3/
+	url(r'^drinks/(?P<drink_id>\d+)/$', views.drinks, name='drink'),
 	# /menu/items/3/order/
 	url(r'^items/(?P<menu_item_id>\d+)/order/$', views.add_to_order, name='add_to_order'),
 	# /menu/category/3/exclude/1/

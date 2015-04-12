@@ -124,6 +124,55 @@ def menu_items(request, menu_item_id):
 	}
 			
 	return render(request, 'menu/menu-item.html', context)
+	
+# This returns and sets up the contexts for vegetarian filtered menu items within a category
+def drinks(request, drink_id):
+
+	# First, see if they already have an order in the system that's been placed, but not paid for.
+	if not (Order.objects.filter(table_number=settings.TABLE_NUMBER).exists()) or not (Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='ordering').exclude(status='paid')):
+		order_in_progress = True
+	else:
+		order_in_progress = False
+		
+	# Check to see if an order is already set for this table. If so, modify it. If not, create a new one.
+	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
+	drink = Drink.objects.get(id=drink_id)
+
+	flavors_list = DrinkFlavor.objects.all()
+	context = {
+		'flavors_list': flavors_list,
+		'order_exists': existing_order.exists(),
+		'selected_drink': Drink.objects.get(id=drink_id),
+		'can_order': order_in_progress
+	}
+	
+	if request.method == 'POST':
+		# Create the new drink order
+		new_drink = DrinkOrder(
+			drink = drink,
+			flavor = DrinkFlavor.objects.get(flavor=request.POST['flavor'])
+		)
+		new_drink.save()
+		
+		if existing_order.exists():
+			# Calculate the new total price
+			total_price = existing_order.get().total_price + new_drink.drink.price
+			existing_order.update(total_price=total_price)
+			existing_order.get().drinks.add(new_drink)
+			existing_order.get().save()
+		
+		else:
+			new_order = Order(
+				table_number = settings.TABLE_NUMBER,
+				status = 'ordering',
+				total_price = new_drink.drink.price,
+				drinks = new_drink
+			)
+			new_order.save()
+			
+		return HttpResponseRedirect("/menu/")
+	
+	return render(request, 'menu/drink.html', context)
 
 # This view processes the form sent by the menu-item.html template
 def add_to_order(request, menu_item_id):
