@@ -141,11 +141,11 @@ def cookOrdersList(request):
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def cookTheOrder(request):
+def cookTheOrder(request, order_id):
 	"""
 	chang the order's status to be "cooking" which is selected by the id of order 
 	"""
-	order_id = request.GET.get('order_id', 0)
+	# order_id = request.GET.get('order_id', 0)
 	cs , status = CookStatus.objects.get_or_create(cook_name=request.user)
 
 	if cs.current_order is None:
