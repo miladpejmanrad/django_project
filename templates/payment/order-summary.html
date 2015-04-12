@@ -10,12 +10,18 @@
 	{% for item in ordered_items %}
 		<tr>
 			<td>{{ item.name }}</td>
-			<td>{{ item.price }}</td>
+			<td>${{ item.price }}</td>
+		</tr>
+	{% endfor %}
+	{% for drink in ordered_drinks %}
+		<tr>
+			<td>{{ drink.drink }} (Flavor: {{ drink.flavor }})</td>
+			<td>${{ drink.drink.price }}</td>
 		</tr>
 	{% endfor %}
 	<tr class="info">
 	<td><strong>Total</strong></td>
-	<td><strong>{{ order.total_price }}</strong></td>
+	<td><strong>${{ order.total_price }}</strong></td>
 	</tr>
 	</table>
 	{% block payment_buttons %}

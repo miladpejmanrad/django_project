@@ -13,7 +13,9 @@ class AddItemToOrderForm(ModelForm):
 			'status': forms.HiddenInput(),
 			'table_number': forms.HiddenInput(),
 			'tip': forms.HiddenInput(),
-			'modifications': forms.HiddenInput()
+			'modifications': forms.HiddenInput(),
+			'drinks': forms.MultipleHiddenInput(),
+			'tikchen': forms.HiddenInput()
 		}
 
 # This constructs a form for placing an order.
@@ -26,7 +28,9 @@ class PlaceOrderForm(ModelForm):
 			'menu_items': forms.MultipleHiddenInput(),
 			'status': forms.HiddenInput(),
 			'table_number': forms.HiddenInput(),
-			'tip': forms.HiddenInput()
+			'tip': forms.HiddenInput(),
+			'drinks': forms.MultipleHiddenInput(),
+			'tikchen': forms.HiddenInput()
 		}
 
 # This constructs a form for adding a tip.
@@ -39,5 +43,7 @@ class TipOrderForm(ModelForm):
 			'menu_items': forms.MultipleHiddenInput(),
 			'status': forms.HiddenInput(),
 			'table_number': forms.HiddenInput(),
-			'modifications': forms.HiddenInput()
+			'modifications': forms.HiddenInput(),
+			'drinks': forms.MultipleHiddenInput(),
+			'tikchen': forms.HiddenInput()
 		}
