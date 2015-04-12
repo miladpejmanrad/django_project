@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
-from menu.models import Order, AdminMenu
+from menu.models import Category, MenuItem, Order, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder
 from django_project import settings
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
@@ -41,6 +41,7 @@ def auth_view(request):
 	else:
 		return HttpResponseRedirect("/invalid")
 	
+
 
 def managers(request):
 	if request.user.is_authenticated():
@@ -87,6 +88,7 @@ def invalid(request):
 	return render(request, template, context)
 
 def cookOrders(request):
+	all_orders = Order.objects.all().order_by("-id")
 	if request.user.is_authenticated():
 		options = AdminMenu.objects.all()
 		template = "staff/cookOrders.html"

@@ -37,12 +37,12 @@ urlpatterns = patterns('',
     url(r'^kitchenStaff/$', 'django_project.views.kitchenStaff', name='kitchenStaff'),
     url(r'^waitStaff/$', 'django_project.views.waitStaff', name='waitStaff'),
     url(r'^invalid/$', 'django_project.views.invalid', name='invalid'),
+    # url(r'^viewNotifications/$', 'django_project.views.viewNotifications', name='viewNotifications'),
+    # url(r'^modifyOrders/$', 'django_project.views.modifyOrders', name='modifyOrders'),
+    # url(r'^viewSurveys/$', 'django_project.views.viewSurveys', name='viewSurveys'),
+    # url(r'^viewOrderReports/$', 'django_project.views.viewOrderReports', name='viewOrderReports'),
     url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
-    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
-    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
-    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
-    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
-    url(r'^modifyMenu/$', 'django_project.views.cookOrders', name='cookOrders'),
+    # url(r'^modifyMenu/$', 'django_project.views.modifyMenu', name='modifyMenu'),
 
 
     # Kitchen staff 
