@@ -92,13 +92,18 @@ def invalid(request):
 
 def cookOrdersList(request):
 	all_orders = Order.objects.all().order_by("-id")
+	al = []
+	for o in all_orders:
+		if o.status=="cooking" or o.status=="in-progress":
+			al.append(o)
+	all_orders = al # Trying to show only the orders which are either being cooked or in progress
 	if request.user.is_authenticated():
 		"""
 		get all orders 
 		and find the time span 
 		if order have been prepared , the chef's name will store in the order-data
 		"""
-		all_orders = Order.objects.all().order_by("-id")
+		# all_orders = Order.objects.all().order_by("-id")
 		css = CookStatus.objects.filter(cook_name=request.user)
 		cs = None
 		current_order = None
