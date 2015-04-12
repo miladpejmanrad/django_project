@@ -25,7 +25,7 @@
       <tr class="{{order.status}}"> <td>#{{order.id}}</td><td> {{order.timespan}} min ago</td>
         <td>
         {%if order.cookname %} {{order.cookname}} 
-        {%else%} <a type="button" href="/cookTheOrder" class="btn  btn-success" > Cook </a> 
+        {%else%} <a type="button" href="/cookTheOrder/{{ order.id }}" class="btn  btn-success" > Cook </a> 
         {%endif%}
         </td>
       </tr>
