@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, MenuItem, Order, Allergen, AdminMenu, Notification
+from menu.models import Category, MenuItem, Order, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64
@@ -82,6 +82,7 @@ def menu_items(request, menu_item_id):
 	if existing_order.exists():
 		order_form = AddItemToOrderForm(instance=existing_order.get()) # Grab the form data first so we can modify it
 		ordered_items = list(existing_order.get().menu_items.all()) # Get the menu items already on the order
+		ordered_drinks = list(existing_order.get().drinks.all()) # Get the drinks already on the order
 		if not menu_item in ordered_items:
 			ordered_items.append(menu_item) # Add the new menu item if it's not already there
 		
@@ -90,6 +91,9 @@ def menu_items(request, menu_item_id):
 		for item in ordered_items:
 			item_price = MenuItem.objects.get(id=item.id)
 			total_price = total_price + item_price.price
+		for drink in ordered_drinks:
+			drink_price = Drink.objects.get(id=drink.id)
+			total_price = total_price + drink_price.price
 		
 		# Set the form to use the new data
 		order_form = AddItemToOrderForm(
@@ -154,6 +158,7 @@ def place_order(request):
 	# Build the context and form for the template if an order is ready to be placed.
 	if order_to_send.exists():
 		ordered_items = list(order_to_send.get().menu_items.all()) # Get the menu items already on the order
+		ordered_drinks = list(order_to_send.get().drinks.all()) # Get the ordered drinks
 		order_form = PlaceOrderForm(
 			initial={
 				'status': 'in-progress'
@@ -162,6 +167,7 @@ def place_order(request):
 		context = {
 			'order': order_to_send.get(),
 			'ordered_items': ordered_items,
+			'ordered_drinks': ordered_drinks,
 			'form': order_form
 		}
 		return render(request, 'menu/review-order.html', context)
@@ -178,9 +184,11 @@ def order_summary(request):
 	# Build the context for the template if an order is ready to be paid.
 	if order_to_pay.exists():
 		ordered_items = list(order_to_pay.get().menu_items.all()) # Get the menu items already on the order
+		ordered_drinks = list(order_to_pay.get().drinks.all()) # Get the ordered drinks
 		context = {
 			'order': order_to_pay.get(),
 			'ordered_items': ordered_items,
+			'ordered_drinks': ordered_drinks
 		}
 	
 	return render(request, 'payment/order-summary.html', context)
@@ -279,6 +287,8 @@ def receipt(request, receipt_type):
 		receipt_contents = 'Here is a copy of your receipt.\r\n'
 		for items in last_paid_order.latest('id').menu_items.all():
 			receipt_contents += items.name + ': ' + str(items.price) + '\r\n'
+		for drinks in last_paid_order.latest('id').drinks.all():
+			receipt_contents += drinks.drink.name + ': ' + str(drinks.drink.price) + '\r\n'
 		receipt_contents += '\r\nTip: ' + str(last_paid_order.latest('id').tip) + ' \r\n'
 		receipt_contents += 'Total: ' + str(last_paid_order.latest('id').total_price)
 		send_mail('Your restaurant receipt', receipt_contents, 'from@example.com', [email], fail_silently=False)
@@ -289,9 +299,11 @@ def receipt(request, receipt_type):
 	# Build the context for the template
 	elif last_paid_order.exists():
 		ordered_items = list(last_paid_order.latest('id').menu_items.all()) # Get the menu items on the order
+		ordered_drinks = list(last_paid_order.latest('id').drinks.all()) # Get the menu items on the order
 		context = {
 			'order': last_paid_order.latest('id'),
 			'ordered_items': ordered_items,
+			'ordered_drinks': ordered_drinks,
 			'receipt_type': receipt_type
 		}
 	

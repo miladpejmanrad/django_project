@@ -15,6 +15,12 @@
 					<td>${{ item.price }}</td>
 				</tr>
 			{% endfor %}
+			{% for drink in ordered_drinks %}
+				<tr>
+					<td>{{ drink.drink }} (Flavor: {{ drink.flavor }})</td>
+					<td>${{ drink.drink.price }}</td>
+				</tr>
+			{% endfor %}
 			<tr class="info">
 			<td><strong>Total</strong></td>
 			<td><strong>${{ order.total_price|floatformat:2 }}</strong></td>
