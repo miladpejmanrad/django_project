@@ -23,9 +23,11 @@ def categories(request, category_id):
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	categories_list = Category.objects.order_by('name')
 	menuitems_list = MenuItem.objects.filter(category=category_id, visible=True)
+	drinks_list = Drink.objects.filter(category=category_id)
 	allergies_list = Allergen.objects.all()
 	context = {
 		'menuitems_list': menuitems_list,
+		'drinks_list': drinks_list,
 		'categories_list': categories_list,
 		'order_exists': existing_order.exists(),
 		'allergies_list': allergies_list,

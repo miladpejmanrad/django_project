@@ -38,6 +38,11 @@ urlpatterns = patterns('',
     url(r'^waitStaff/$', 'django_project.views.waitStaff', name='waitStaff'),
     url(r'^invalid/$', 'django_project.views.invalid', name='invalid'),
     url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
+    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
+    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
+    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
+    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
+    url(r'^modifyMenu/$', 'django_project.views.cookOrders', name='cookOrders'),
 
 
     # Kitchen staff 
