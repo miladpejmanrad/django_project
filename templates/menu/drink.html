@@ -13,7 +13,7 @@
 		<h2>Select a flavor for your {{ selected_drink }}:</h2>
 		<form action="" method="post">
 		{% csrf_token %}
-		<button type="submit" value="None" class="col-xs-2">None</button>
+		<button type="submit" name="flavor" value="None" class="col-xs-2">None</button>
 		{% for flavor in flavors_list %}
 			<button type="submit" name="flavor" value="{{ flavor.flavor }}" class="col-xs-2">{{ flavor.flavor }}</button>
 		{% endfor %}

@@ -94,7 +94,7 @@ def menu_items(request, menu_item_id):
 			item_price = MenuItem.objects.get(id=item.id)
 			total_price = total_price + item_price.price
 		for drink in ordered_drinks:
-			drink_price = Drink.objects.get(id=drink.id)
+			drink_price = Drink.objects.get(id=drink.drink.id)
 			total_price = total_price + drink_price.price
 		
 		# Set the form to use the new data
@@ -149,10 +149,12 @@ def drinks(request, drink_id):
 	if request.method == 'POST':
 		# Create the new drink order
 		new_drink = DrinkOrder(
-			drink = drink,
-			flavor = DrinkFlavor.objects.get(flavor=request.POST['flavor'])
+			drink = drink
 		)
 		new_drink.save()
+		if request.POST['flavor'] != 'None':
+			new_drink.update(flavor = DrinkFlavor.objects.get(flavor=request.POST['flavor']))
+			new_drink.save()
 		
 		if existing_order.exists():
 			# Calculate the new total price
@@ -166,8 +168,9 @@ def drinks(request, drink_id):
 				table_number = settings.TABLE_NUMBER,
 				status = 'ordering',
 				total_price = new_drink.drink.price,
-				drinks = new_drink
 			)
+			new_order.save()
+			new_order.drinks.add(new_drink)
 			new_order.save()
 			
 		return HttpResponseRedirect("/menu/")
