@@ -44,6 +44,30 @@ class MenuItem(models.Model):
 	# e.g. "Bacon-wrapped Shrimp" will show up in the admin panel instead of an ID number
 	def __str__(self):
 		return str(self.name)
+		
+# DrinkFlavors class. This provides the flavor options for the drinks.
+class DrinkFlavor(models.Model):
+	flavor = models.CharField(max_length=200)
+	def __str__(self):
+		return str(self.flavor)
+
+# Drink class. Similar to a MenuItem, but simpler.
+class Drink(models.Model):
+	name = models.CharField(max_length=200)
+	price = models.DecimalField(max_digits=8, decimal_places=2)
+	category = models.ForeignKey(Category)
+	def __str__(self):
+		return str(self.name)
+
+# DrinkOrder class. This collects the information for an ordered drink into one object to be added to an Order.
+class DrinkOrder(models.Model):
+	drink = models.ForeignKey(Drink)
+	flavor = models.ForeignKey(DrinkFlavor, blank=True, null=True)
+	def __str__(self):
+		if str(self.flavor) != 'None':
+			return str(self.flavor) + ' ' + str(self.drink.name)
+		else:
+			return str(self.drink.name)
 
 # Order class. Defines our orders and their relationships to other classes.
 class Order(models.Model):
@@ -56,7 +80,8 @@ class Order(models.Model):
 	        ('served', 'Served'),
 	        ('paid', 'Paid')
     	)
-	menu_items = models.ManyToManyField(MenuItem) # Defines a many-to-many relationship with the MenuItems class
+	menu_items = models.ManyToManyField(MenuItem, blank=True) # Defines a many-to-many relationship with the MenuItems class
+	drinks = models.ManyToManyField(DrinkOrder, blank=True) # Defines a many-to-many relationship with the DrinkOrder class
 	table_number = models.IntegerField()
 	modifications = models.TextField(blank=True)
 	status = models.CharField(max_length=64, choices=status_choices, default='ordering')
