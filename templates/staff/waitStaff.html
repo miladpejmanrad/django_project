@@ -1,6 +1,6 @@
 {% extends "staff/staff_base.html" %}
 {% block content %}
-  <div style="float:right; margin-right:150px;">
+  <div style="float:right;">
     <div class="text-right">
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownAdminMenu" data-toggle="dropdown" aria-expanded="true">
@@ -10,7 +10,7 @@
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
       {% for option in options %}
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/">{{ option.options }}</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">{{ option.options }}</a></h4></li>
       {% endfor %}
       </ul>
       </ul>

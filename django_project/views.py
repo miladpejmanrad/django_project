@@ -5,6 +5,7 @@ from django.core.context_processors import csrf
 from menu.models import Order, AdminMenu
 from django_project import settings
 from django.contrib.auth.models import Group
+from django.contrib.auth import authenticate, login, logout
 
 def home(request):
 	# If an order for this table has been served, show the PAY button on the home screen.
@@ -25,16 +26,16 @@ def auth_view(request):
 	username = request.POST.get('username', '')
 	password = request.POST.get('password', '')
 	user = auth.authenticate(username=username, password=password)
-	Managers = Group.objects.get(name="Managers").user_set.all()
-	KitchenStaff = Group.objects.get(name="KitchenStaff").user_set.all()
-	WaitStaff = Group.objects.get(name="WaitStaff").user_set.all()
-	if user in Managers:
+	managers = Group.objects.get(name="managers").user_set.all()
+	kitchenStaff = Group.objects.get(name="kitchenStaff").user_set.all()
+	waitStaff = Group.objects.get(name="waitStaff").user_set.all()
+	if user in managers:
 		auth.login(request,user)
 		return HttpResponseRedirect("/managers")
-	elif user in KitchenStaff:
+	elif user in kitchenStaff:
 		auth.login(request,user)
 		return HttpResponseRedirect("/kitchenStaff")
-	elif user in WaitStaff:
+	elif user in waitStaff:
 		auth.login(request,user)
 		return HttpResponseRedirect("/waitStaff")
 	else:
@@ -42,30 +43,41 @@ def auth_view(request):
 	
 
 def managers(request):
+	if request.user.is_authenticated():
+		options = AdminMenu.objects.all()
+		template = "staff/managers.html"
+		context = {'options': options,'full_name':request.user.username}
+		return render(request, template, context)
 
-	options = AdminMenu.objects.all()
-	template = "staff/managers.html"
-	context = {'options': options,'full_name':request.user.username}
-	return render(request, template, context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
+
 
 def kitchenStaff(request):
-
-	options = AdminMenu.objects.all()
-	template = "staff/kitchenStaff.html"
-	context = {'options': options,'full_name':request.user.username}
-	return render(request, template, context)
+	if request.user.is_authenticated():
+		options = AdminMenu.objects.all()
+		template = "staff/kitchenStaff.html"
+		context = {'options': options,'full_name':request.user.username}
+		return render(request, template, context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
 
 def waitStaff(request):
-
-	options = AdminMenu.objects.all()
-	template = "staff/waitStaff.html"
-	context = {'options': options,'full_name':request.user.username}
-	return render(request, template, context)
+	if request.user.is_authenticated():
+		options = AdminMenu.objects.all()
+		template = "staff/waitStaff.html"
+		context = {'options': options,'full_name':request.user.username}
+		return render(request, template, context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
 
 
 def logout(request):
 	auth.logout(request)
-	template = "staff/logout.html"
+	template = "staff/login.html"
 	return render(request, template)
 
 
