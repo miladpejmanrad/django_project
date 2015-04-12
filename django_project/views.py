@@ -4,7 +4,7 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from menu.models import Order, AdminMenu
 from django_project import settings
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 
 def home(request):
@@ -85,3 +85,13 @@ def invalid(request):
 	context = {}
 	template = "staff/invalid.html"
 	return render(request, template, context)
+
+def cookOrders(request):
+	if request.user.is_authenticated():
+		options = AdminMenu.objects.all()
+		template = "staff/cookOrders.html"
+		context = {'options': options,'full_name':request.user.username}
+		return render(request, template, context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)

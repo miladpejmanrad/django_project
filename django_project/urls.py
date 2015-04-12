@@ -37,6 +37,7 @@ urlpatterns = patterns('',
     url(r'^kitchenStaff/$', 'django_project.views.kitchenStaff', name='kitchenStaff'),
     url(r'^waitStaff/$', 'django_project.views.waitStaff', name='waitStaff'),
     url(r'^invalid/$', 'django_project.views.invalid', name='invalid'),
+    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
 
 
     # Kitchen staff 
