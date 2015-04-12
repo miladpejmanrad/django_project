@@ -127,16 +127,15 @@ def cookOrdersList(request):
 				a['cookname'] = order.chef
 
 			new_orders.append(a)
+			#print current_order
 			for x in all_orders:
 				if x.chef==request.user.username:
 					current_order=x
-			
-			#print current_order.table_number
-			
 
-
-
-		context = {'all_orders':new_orders, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
+		try:
+			context = {'all_orders':new_orders, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
+		except:
+			context = {'all_orders':new_orders, 'full_name':request.user.username}
 		return render(request,'staff/cookOrders.html', context)
 	else:
 		template = "staff/accessDenied.html"
