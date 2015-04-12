@@ -41,13 +41,15 @@ urlpatterns = patterns('',
     # url(r'^modifyOrders/$', 'django_project.views.modifyOrders', name='modifyOrders'),
     # url(r'^viewSurveys/$', 'django_project.views.viewSurveys', name='viewSurveys'),
     # url(r'^viewOrderReports/$', 'django_project.views.viewOrderReports', name='viewOrderReports'),
-    url(r'^cookOrders/$', 'django_project.views.cookOrders', name='cookOrders'),
+    url(r'^cookOrdersList/$', 'django_project.views.cookOrdersList', name='cookOrdersList'),
     # url(r'^modifyMenu/$', 'django_project.views.modifyMenu', name='modifyMenu'),
+    url(r'^orderIsReady/$', 'django_project.views.orderIsReady', name='orderIsReady'),
+    url(r'^cookTheOrder/$', 'django_project.views.cookTheOrder', name='cookTheOrder'),
 
 
     # Kitchen staff 
     # Waiter staff 
-    url(r'^staff/', include('staff.urls')),
+    # url(r'^staff/', include('staff.urls')),
 
 )
 

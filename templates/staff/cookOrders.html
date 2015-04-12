@@ -9,7 +9,7 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/cookOrders">Cook Orders</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/cookOrdersList">Cook Orders</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">Modify Menu</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">Logout</a></h4></li>
       </ul>
@@ -19,45 +19,38 @@
   </div>
 
 
-<!DOCTYPE html>
-<html lang="en">
+  <div class="home-menu">
+
+    <div class="container  col-md-6">
+      <br/>
+      <table class="table"> 
+      {% for order in all_orders %}
+      <tr class="{{order.status}}"> <td>#{{order.id}}</td><td> {{order.timespan}} min ago</td>
+
+        <td>
+        {%if order.chef %} {{order.chef}} {%else%} <a type="button" href="/cookTheOrder" class="btn  btn-success" > Cook </a> {%endif%}
+        </td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+  
+  <div class="col-md-6">
+
+        <h4  class="col-md-6" id="h4cook">{{full_name}} Cook </h4>
+  
+          <ul class="content">
+          {% for item in current_order%}
+              <li>{{item}}</li>
+           {% endfor %}
+           </ul>
 
 
-  <body>
+      <p><a class="btn btn-s btn-danger content" href="/orderIsReady" >Ready</a></p>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
+    </div>
 
-
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Orders</h2>
-
-
-          {% for order in all_orders %}
-            {{order.table_number}}
-          {% endfor %}
-          
-        </div>
-        <div class="col-md-4">
-          <h2>{{full_name}} Cooking</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">Ready &raquo;</a></p>
-        </div>
-
-    <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+  </div>
 
 
 

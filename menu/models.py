@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User, Group
+
+
 
 # Create your models here.
 # NOTE: Syncdb will NOT create tables/columns for MODIFIED classes in 1.6.
@@ -89,8 +92,8 @@ class Order(models.Model):
 	tip = models.DecimalField(max_digits=8, decimal_places=2, default='0.00')
 	timestamp_created = models.DateTimeField(auto_now_add=True)
 
-	# related tikchen name
-	tikchen =  models.CharField(max_length=64, blank=True, null=True)
+	# related chef name
+	chef =  models.CharField(max_length=64, blank=True, null=True)
 
 	# Sets the ID as the identifier for orders.
 	def __str__(self):
@@ -139,3 +142,11 @@ class AdminMenu(models.Model):
 	
 	def __str__(self):
 		return str(self.options)
+
+
+class CookStatus(models.Model):
+	"""
+	 model descripting which order is cooking by wich kitchen
+	"""
+	cook_name = models.ForeignKey(User) 
+	current_order = models.ForeignKey(Order, blank=True, null=True)
