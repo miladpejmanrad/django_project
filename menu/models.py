@@ -111,10 +111,11 @@ class Notification(models.Model):
 	table_number = models.IntegerField()
 	type = models.CharField(max_length=64, choices=type_choices, default='help')
 	drink = models.CharField(max_length=64, blank=True) # This is an optional field
-	
+	order = models.ForeignKey(Order, blank=True, null=True)
 	# Sets the ID as the identifier for notifications
 	def __str__(self):
 		return str(self.id)
+
 	
 
 # Class Survey

@@ -17,8 +17,28 @@
     </div>
     </div>
   </div>
+
+<div class="container" >
 <h2>
-Hi {{ full_name }} you are now logged in!
+Notifications 
 </h2>
 
+
+
+
+ <div class="container  col-md-8">
+    <br/>
+
+    <table class="table"> 
+      {% for item in notifications %}
+      <tr> 
+        <td>{{ item.info }}</td> 
+      <td> <a type="button" class="btn btn-danger" href="/DeleteNotification/?nid={{item.id}}" > Del </a>  
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+</div>
 {% endblock %}

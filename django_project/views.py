@@ -159,7 +159,86 @@ def orderIsReady(request):
 	if cs.current_order is not None:
 		cs.current_order.status = 'ready-to-serve'
 		cs.current_order.save()
+
+		n = Notification(type='ready', table_number=cs.current_order.table_number, order=cs.current_order)
+		n.save()
+
 		cs.current_order = None
 		cs.save()
 
 	return HttpResponseRedirect("/cookOrdersList/")
+
+
+
+def waitStaffModifyOrderList(request):
+	"""
+	 list all orders 
+	"""
+	all_orders = Order.objects.filter(status='ready-to-serve').order_by('-id')
+	print all_orders
+	return render(request,'staff/staffOrderList.html', 
+		{'all_orders':all_orders, 'user':request.user })
+
+
+def waitStaffModifyOrderEdit(request):
+	"""
+	 show datails and change the status from ready-to-serve to served 
+	 served = 0 : get details of certain order by id 
+	 served = 1 : make the order to be rerved 
+	"""
+	try :
+		served = request.GET.get('served', 0)
+		order_id = request.GET.get('order_id', 0)
+		order = Order.objects.get(id=order_id)
+		if served == 0 :
+			return render(request,'staff/staffOrderDtail.html', 
+				{'order':order, 'user':request.user, 'items':order.menu_items.all()})
+		else :
+			order.status = 'served'
+			order.save()
+			return HttpResponseRedirect("/waitStaffModifyOrderList/")
+
+	except:
+		return HttpResponseRedirect("/waitStaffModifyOrderList/")
+
+
+def ViewNotifications(request):
+	"""
+		type_choices = (
+		('help', 'Help'),
+		('refill', 'Refill'),
+		('ready', 'Ready to serve'),
+		('cash', 'Pay with cash')
+	)
+
+
+	"""
+	notifications = Notification.objects.all().order_by('-id')
+	all_n = []
+	for notification in notifications :
+		n = {}
+		n['id'] = notification.id
+		if notification.type == 'help':
+			n['info'] = 'Table ' + str(notification.table_number) + ' Need assistance'
+		elif notification.type == 'refill':
+			n['info'] = 'Table ' + str(notification.table_number) + ' refill ' + notification.drink
+		elif notification.type == 'ready':
+			n['info'] = 'Table ' + str(notification.table_number) + ' order #' + str(notification.order) + ' Ready'
+		elif notification.type == 'cash':
+			n['info'] = 'Table ' + str(notification.table_number) + ' Pay with cash'
+		all_n.append(n)
+
+	return render(request,'staff/Notificaiton.html', 
+		{'notifications':all_n, 'user':request.user })
+
+
+def DeleteNotification(request):
+	"""
+	"""
+	try:
+		nid = request.GET.get('nid', 0)
+		n = Notification.objects.get(id=nid)
+		n.delete()
+		return HttpResponseRedirect("/ViewNotifications/")
+	except :
+		return HttpResponseRedirect("/ViewNotifications/")
