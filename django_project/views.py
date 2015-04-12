@@ -93,9 +93,9 @@ def invalid(request):
 def cookOrdersList(request):
 	all_orders = Order.objects.all().order_by("-id")
 	al = []
-	for o in all_orders:
-		if o.status=="cooking" or o.status=="in-progress":
-			al.append(o)
+	for orders in all_orders:
+		if orders.status=="cooking" or orders.status=="in-progress":
+			al.append(orders)
 	all_orders = al # Trying to show only the orders which are either being cooked or in progress
 	if request.user.is_authenticated():
 		"""
@@ -118,7 +118,7 @@ def cookOrdersList(request):
 			a['id'] = order.id
 			a['status'] = order.status
 
-			a['timespan'] = (datetime.datetime.utcnow().replace(tzinfo=utc) - order.timestamp_created).seconds
+			a['timespan'] = (datetime.datetime.utcnow().replace(tzinfo=utc) - order.timestamp_created).seconds//60
 			cookofthis = CookStatus.objects.filter(current_order=order)
 			if len(cookofthis) != 0:
 				a['cookname'] = cookofthis[0].cook_name.username
@@ -126,10 +126,13 @@ def cookOrdersList(request):
 				a['cookname'] = order.chef
 
 			new_orders.append(a)
+			for x in all_orders:
+				if x.chef==request.user.username:
+					current_order=x
 
 
-		return render(request,'staff/cookOrders.html', 
-			{'all_orders':new_orders, 'user':request.user, 'current_order':current_order, 'full_name':request.user.username})
+		context = {'all_orders':new_orders, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
+		return render(request,'staff/cookOrders.html', context)
 	else:
 		template = "staff/accessDenied.html"
 		return render(request, template)
