@@ -113,6 +113,7 @@
 	{% for category in categories_list %}
 		<li><a href="/menu/category/{{ category.id }}/">{{ category.name }}</a></li>
 	{% endfor %}
+		<li><div class="text-center"><a href="{{ MEDIA_URL}}NutritionalInformation.pdf"><button type="button" class="btn btn btn-danger">Nutritional Information</button></a></div></li>
 	</ul>
 {% else %}
 	<p>No categories are available.</p>
@@ -148,7 +149,5 @@
 	<p>Nothing found. Select a category to browse the menu.</p>
 {% endif %}
 </div>
-
-<a href="{{ MEDIA_URL}}NutritionalInformation.pdf"><button type="button" class="btn btn btn-danger">Nutritional Information</button></a>
 
 {% endblock %}
