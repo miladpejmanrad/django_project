@@ -20,4 +20,6 @@ urlpatterns = patterns('',
 	url(r'^review-order/$', views.place_order, name='place_order'),
 	# /menu/refill/
 	url(r'^refill/$', views.refill, name='refill'),
+	# /menu/AskIfsurvey/
+	url(r'^askIfSurvey/$', views.askIfSurvey, name='askIfSurvey'),
 )
