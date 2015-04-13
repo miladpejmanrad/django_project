@@ -160,7 +160,7 @@ def cookTheOrder(request, order_id):
 
 def orderIsReady(request):
 	"""
-	chang the order's status to be "ready-to-serve" which is selected by the id of order 
+	change the order's status to be "ready-to-serve" which is selected by the id of order 
 	"""
 	cs , status = CookStatus.objects.get_or_create(cook_name=request.user)
 	if cs.current_order is not None:
@@ -178,14 +178,39 @@ def modifyMenu(request):
 
 	if request.user.is_authenticated():
 		"""
-		get all orders 
-		and find the time span 
-		if order have been prepared , the chef's name will store in the order-data
+		
 		"""
 		
-
 		context = {'MenuItems':MenuItems}
 		return render(request,'staff/ModifyMenu.html', context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
+
+def showItem(request, item_name):
+	if request.user.is_authenticated():
+		"""
+
+		"""
+		for item in MenuItem:
+			if item.name == 'item_name':
+				item.visible = 'True'
+				item.save()
+		return HttpResponseRedirect("staff/ModifyMenu.html")
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)
+
+def hideItem(request, item_name):
+	if request.user.is_authenticated():
+		"""
+
+		"""
+		for item in MenuItem:
+			if item.name == 'item_name':
+				item.visible = 'False'
+				item.save()
+		return HttpResponseRedirect("staff/ModifyMenu.html")
 	else:
 		template = "staff/accessDenied.html"
 		return render(request, template)
