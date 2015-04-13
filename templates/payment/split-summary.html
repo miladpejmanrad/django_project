@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if order %}
+	<table class="table table-striped">
+	<tr>
+		<th>Pay</th>
+		<th>Item</th>
+		<th>Price</th>
+	</tr>
+	{% for item in ordered_items %}
+		<tr>
+			<td><input type="checkbox"></td>
+			<td>{{ item.name }}</td>
+			<td>${{ item.price }}</td>
+		</tr>
+	{% endfor %}
+	{% for drink in ordered_drinks %}
+		<tr>
+			<td><input type="checkbox"></td>
+			<td>{{ drink.drink }} (Flavor: {{ drink.flavor }})</td>
+			<td>${{ drink.drink.price }}</td>
+		</tr>
+	{% endfor %}
+	</table>
+	{% block payment_buttons %}
+	<a href="/pay/card/"><button class="btn btn-s btn-danger col-xs-4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Pay with a card</button></a>
+	<form action="/notify/" method="post">
+	  {% csrf_token %}
+	  <input type="hidden" value="cash" name="type">
+	  <button class="btn btn-s btn-success col-xs-4"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay with cash</button>
+	</form>
+	<a href="/pay/split/"><button class="btn btn-s col-xs-4"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Split the bill</button></a>
+	{% endblock %}
+{% endif %}
+{% endblock %}
