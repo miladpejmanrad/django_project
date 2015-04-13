@@ -131,9 +131,10 @@ def cookOrdersList(request):
 			for x in all_orders:
 				if x.chef==request.user.username:
 					current_order=x
+					
 
 		try:
-			context = {'all_orders':new_orders, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
+			context = {'all_orders':new_orders,'modifications':current_order.modifications, 'current_order':current_order.menu_items.all(), 'full_name':request.user.username}
 		except:
 			context = {'all_orders':new_orders, 'full_name':request.user.username}
 		return render(request,'staff/cookOrders.html', context)
