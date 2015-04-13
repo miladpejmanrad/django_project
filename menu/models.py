@@ -36,6 +36,7 @@ class Allergen(models.Model):
 class MenuItem(models.Model):
 	visible = models.BooleanField(default=True) # This controls whether or not the menu item shows up on the customer-facing menu
 	vegetarian = models.BooleanField(default=False)
+	low_calorie = models.BooleanField(default=False)
 	name = models.CharField(max_length=200)
 	price = models.DecimalField(max_digits=8, decimal_places=2)
 	main_photo = models.ImageField(upload_to = 'menu/items/')
