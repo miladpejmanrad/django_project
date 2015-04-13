@@ -410,4 +410,4 @@ def send_notification(request):
 
 def askIfSurvey(request):
 	context = {}
-	return render(request, context, "payment/askIfSurvey.html/")
+	return render(request, 'payment/askIfSurvey.html', context)
