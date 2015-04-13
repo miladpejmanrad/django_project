@@ -122,21 +122,19 @@ class Notification(models.Model):
 
 # Class Survey
 class Survey(models.Model):
-	customerComments = models.TextField(blank=True)
-
-#Setting up the survey class, initialize setups some default variables such as the variables below,
-#since they will always be used when a survey is created. 
-
-#TJ
 	
-	# def __init__(self, serviceRating, foodRating, orderRating, customerComments):
-	# 	self.serviceRating = serviceRating
-	# 	self.foodRating = foodRating
-	# 	self.orderRating = orderRating
-	# 	self.customerComments = customerComments
 
-	# def printRating(self):
-	# 	print("Service Rating: ")
+	rating = (
+		('very bad', 'Very Bad'),
+	        ('bad', 'Bad'),
+	        ('not so bad', 'Not So Bad'),
+	        ('good', 'Good'),
+	        ('very good', 'Very Good')
+    	)
+	server = models.CharField(max_length=64, choices=rating, default='good')
+	food = models.CharField(max_length=64, choices=rating, default='good')
+	ordering = models.CharField(max_length=64, choices=rating, default='good')
+	Comments = models.TextField(blank=True)
 
 	def __unicode__(self):
 		return str(self.id)
