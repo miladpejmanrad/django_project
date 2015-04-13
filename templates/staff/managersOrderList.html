@@ -9,8 +9,8 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
-          <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/WaitStaffViewNotifications/" >View Notifications</a></h4></li>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/waitStaffModifyOrderList/" >Modify Orders</a></h4></li>
+          <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersViewNotifications/" >View Notifications</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersModifyOrderList/" >Modify Orders</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">View Surveys</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">View Order Reports</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout" >Logout</a></h4></li>
@@ -29,7 +29,7 @@
       <table class="table"> 
       {% for order in all_orders %}
       <tr class="{{order.status}}"> <td>Table #{{order.table_number}}</td> <td>Order #{{order.id}}</td>
-      <td> <a type="button" href="/waitStaffModifyOrderEdit/?order_id={{order.id}}" class="btn  btn-info" > Edit </a> 
+      <td> <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}" class="btn  btn-info" > Edit </a> 
         </td>
       </tr>
       {% endfor %}

@@ -9,8 +9,10 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/WaitStaffViewNotifications/" >View Notifications</a></h4></li>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/waitStaffModifyOrderList/" >Modify Orders</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersViewNotifications/" >View Notifications</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersModifyOrderList/" >Modify Orders</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">View Surveys</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">View Order Reports</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout" >Logout</a></h4></li>
       </ul>
       </ul>
@@ -22,7 +24,7 @@
 
  <div>
   <h3>
-  <a class="button" href="/waitStaffModifyOrderList/" > View all orders</a>
+  <a class="button" href="/managersModifyOrderList/" > View all orders</a>
   </h3>
  </div>
 
@@ -33,7 +35,7 @@
       <table class="table"> 
       {% for item in items %}
       <tr class="{{order.status}}"> <td>{{item}}</td> 
-      <td> <a type="button" href="/waitStaffModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  
+      <td> <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  
         </td>
       </tr>
       {% endfor %}

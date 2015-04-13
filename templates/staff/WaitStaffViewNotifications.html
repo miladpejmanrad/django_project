@@ -9,7 +9,7 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/ViewNotifications/" >View Notifications</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/WaitStaffViewNotifications/" >View Notifications</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/waitStaffModifyOrderList/" >Modify Orders</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout" >Logout</a></h4></li>
       </ul>
@@ -33,7 +33,7 @@ Notifications
       {% for item in notifications %}
       <tr> 
         <td>{{ item.info }}</td> 
-      <td> <a type="button" class="btn btn-danger" href="/DeleteNotification/?nid={{item.id}}" > Del </a>  
+      <td> <a type="button" class="btn btn-danger" href="/WaitStaffDeleteNotification/?nid={{item.id}}" > OK </a>  
         </td>
       </tr>
       {% endfor %}

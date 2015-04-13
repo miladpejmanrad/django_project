@@ -9,8 +9,8 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
       <ul>
-          <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/WaitStaffViewNotifications/" >View Notifications</a></h4></li>
-        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/waitStaffModifyOrderList/" >Modify Orders</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersViewNotifications/" >View Notifications</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersModifyOrderList/" >Modify Orders</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">View Surveys</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout">View Order Reports</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout" >Logout</a></h4></li>
@@ -20,24 +20,27 @@
     </div>
   </div>
 
-<div class="container">
-<h4>Modify Orders </h4>
+<div class="container" >
+<h2>
+Notifications 
+</h2>
 
-    <div class="container  col-md-8">
-      <br/>
 
-      <table class="table"> 
-      {% for order in all_orders %}
-      <tr class="{{order.status}}"> <td>Table #{{order.table_number}}</td> <td>Order #{{order.id}}</td>
-      <td> <a type="button" href="/waitStaffModifyOrderEdit/?order_id={{order.id}}" class="btn  btn-info" > Edit </a> 
+
+
+ <div class="container  col-md-8">
+    <br/>
+
+    <table class="table"> 
+      {% for item in notifications %}
+      <tr> 
+        <td>{{ item.info }}</td> 
+      <td> <a type="button" class="btn btn-danger" href="/managersDeleteNotification/?nid={{item.id}}" > OK </a>  
         </td>
       </tr>
       {% endfor %}
-      </table>
-
-
-    </div>
+    </table>
+  </div>
 
 </div>
-
 {% endblock %}
