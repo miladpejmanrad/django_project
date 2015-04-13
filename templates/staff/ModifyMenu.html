@@ -24,7 +24,7 @@
       {% for item in MenuItems %}
       <tr class="{{order.status}}"> <td>{{item}}</td>
         <td>
-        {%if item.visible %} <a type="button" href="/hideItem/{{ item.id }}" class="btn  btn-success" > HIDE </a> 
+        {%if item.visible %} <a type="button" href="/hideItem/{{ item.id }}" class="btn  btn-danger" > HIDE </a> 
         {%else%} <a type="button" href="/showItem/{{ item.id }}" class="btn  btn-success" > SHOW </a> 
         {%endif%}
         </td>
