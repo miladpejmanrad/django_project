@@ -11,5 +11,19 @@
 	{% if ready_to_pay %}
 		<a href="/pay/"><button class="btn btn-s btn-danger" style="width:100%;">PAY</button></a>
 	{% endif %}
+
 	
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=709734412468350";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="https://www.facebook.com/pages/Fuzzys-Taco-Shop-Denton-TX/122989284452569?fref=ts" data-width="500" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+
+<a href="https://twitter.com/intent/tweet?screen_name=YankBrovich&text=This%20Restaurant%20is%20awesome!" class="twitter-mention-button" data-size="large">Tweet to @YankBrovich</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 {% endblock %}
