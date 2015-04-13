@@ -93,6 +93,7 @@ class Order(models.Model):
 	total_price = models.DecimalField(max_digits=8, decimal_places=2)
 	tip = models.DecimalField(max_digits=8, decimal_places=2, default='0.00')
 	timestamp_created = models.DateTimeField(auto_now_add=True)
+	freebie_eligible = models.BooleanField(default=True) # If this order is eligible for a free dessert.
 
 	# related chef name
 	chef =  models.CharField(max_length=64, blank=True, null=True)
@@ -152,4 +153,8 @@ class CookStatus(models.Model):
 	"""
 	cook_name = models.ForeignKey(User) 
 	current_order = models.ForeignKey(Order, blank=True, null=True)
+	
+	# This sets the plural name, so it's not "Statuss"
+	class Meta:
+		verbose_name_plural = "cook statuses"
 
