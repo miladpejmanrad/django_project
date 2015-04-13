@@ -171,3 +171,21 @@ def orderIsReady(request):
 		#cs.save()
 
 	return HttpResponseRedirect("/cookOrdersList/")
+
+
+def modifyMenu(request):
+	MenuItems = MenuItem.objects.all()
+
+	if request.user.is_authenticated():
+		"""
+		get all orders 
+		and find the time span 
+		if order have been prepared , the chef's name will store in the order-data
+		"""
+		
+
+		context = {'MenuItems':MenuItems}
+		return render(request,'staff/ModifyMenu.html', context)
+	else:
+		template = "staff/accessDenied.html"
+		return render(request, template)

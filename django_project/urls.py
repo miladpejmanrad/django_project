@@ -42,7 +42,7 @@ urlpatterns = patterns('',
     # url(r'^viewSurveys/$', 'django_project.views.viewSurveys', name='viewSurveys'),
     # url(r'^viewOrderReports/$', 'django_project.views.viewOrderReports', name='viewOrderReports'),
     url(r'^cookOrdersList/$', 'django_project.views.cookOrdersList', name='cookOrdersList'),
-    # url(r'^modifyMenu/$', 'django_project.views.modifyMenu', name='modifyMenu'),
+    url(r'^modifyMenu/$', 'django_project.views.modifyMenu', name='modifyMenu'),
     url(r'^orderIsReady/$', 'django_project.views.orderIsReady', name='orderIsReady'),
     url(r'^cookTheOrder/(?P<order_id>\d+)/$', 'django_project.views.cookTheOrder', name='cookTheOrder'),
 
