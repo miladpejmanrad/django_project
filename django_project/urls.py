@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     url(r'^orderIsReady/$', 'django_project.views.orderIsReady', name='orderIsReady'),
     url(r'^cookTheOrder/(?P<order_id>\d+)/$', 'django_project.views.cookTheOrder', name='cookTheOrder'),
     url(r'^showItem/(?P<item_name>\w+)/$', 'django_project.views.showItem', name='showItem'),
-    url(r'^hideItem/(?P<item_name>\w+)/$', 'django_project.views.hideItem', name='hideItem'),
+    url(r'^hideItem/(?P<item_id>\w+)/$', 'django_project.views.hideItem', name='hideItem'),
 
 
     # Kitchen staff 

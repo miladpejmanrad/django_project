@@ -188,6 +188,7 @@ def modifyMenu(request):
 		return render(request, template)
 
 def showItem(request, item_name):
+
 	if request.user.is_authenticated():
 		"""
 
@@ -201,13 +202,14 @@ def showItem(request, item_name):
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def hideItem(request, item_name):
+def hideItem(request, item_id):
+	MenuItems = MenuItem.objects.all()
 	if request.user.is_authenticated():
 		"""
 
 		"""
-		for item in MenuItem:
-			if item.name == 'item_name':
+		for item in MenuItems:
+			if item.id == item_id:
 				item.visible = 'False'
 				item.save()
 		return HttpResponseRedirect("staff/ModifyMenu.html")
