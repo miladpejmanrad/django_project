@@ -91,7 +91,7 @@ def invalid(request):
 	return render(request, template, context)
 
 def cookOrdersList(request):
-	all_orders = Order.objects.all().order_by("-id")
+	all_orders = Order.objects.all().order_by("id")
 	al = []
 	for orders in all_orders:
 		if orders.status=="cooking" or orders.status=="in-progress":
@@ -166,7 +166,8 @@ def orderIsReady(request):
 	if cs.current_order is not None:
 		cs.current_order.status = 'ready-to-serve'
 		cs.current_order.save()
-		cs.current_order = None
-		cs.save()
+		cs.delete()
+		#cs.current_order = None
+		#cs.save()
 
 	return HttpResponseRedirect("/cookOrdersList/")
