@@ -42,6 +42,7 @@ class MenuItem(models.Model):
 	main_photo = models.ImageField(upload_to = 'menu/items/')
 	category = models.ForeignKey(Category) # This sets up a many-to-one relationship with the Category class
 	description = models.TextField()
+	ingredients = models.TextField(blank=True)
 	allergens = models.ManyToManyField(Allergen)
 	
 	# This sets the name as the main identifier for the object.
