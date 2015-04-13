@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if drinks_list %}
+<div id="drinks" class="col-md-8">
+	<form action="/notify/" method="post" style="display:inline-block">
+	{% csrf_token %}
+	<input type="hidden" value="refill" name="type">
+	{% for drink in drinks_list %}
+		<button name="drink" value="{{ drink.drink.name }}">- {{ drink.drink.name }}</button>
+	{% endfor %}
+	</form>
+{% else %}
+<div class="col-md-8">
+	<p>No drinks are available to be refilled.</p>
+{% endif %}
+</div>
+
+{% endblock %}

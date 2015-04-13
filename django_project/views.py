@@ -183,7 +183,7 @@ def waitStaffModifyOrderList(request):
 	 list all orders 
 	"""
 	all_orders = Order.objects.filter(status='ready-to-serve').order_by('-id')
-	print all_orders
+	#print all_orders
 	return render(request,'staff/staffOrderList.html', 
 		{'all_orders':all_orders, 'user':request.user })
 
@@ -332,7 +332,7 @@ def managersModifyOrderList(request):
 	 list all orders 
 	"""
 	all_orders = Order.objects.filter(status='ready-to-serve').order_by('-id')
-	print all_orders
+	# print all_orders
 	return render(request,'staff/managersOrderList.html', 
 		{'all_orders':all_orders, 'user':request.user })
 

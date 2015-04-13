@@ -18,4 +18,6 @@ urlpatterns = patterns('',
 	url(r'^category/(?P<category_id>\d+)/vegetarian/$', views.vegetarian, name='vegetarian'),
 	# /menu/review-order/
 	url(r'^review-order/$', views.place_order, name='place_order'),
+	# /menu/refill/
+	url(r'^refill/$', views.refill, name='refill'),
 )
