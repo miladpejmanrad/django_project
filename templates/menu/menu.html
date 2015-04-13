@@ -7,7 +7,8 @@
 {% if allergies_list %}
 	<div style="float:left; margin-left:36px;">
 		<a href="/menu/category/{{ current_category }}/vegetarian/"><button class="btn btn-default">Vegetarian</button></a>
-		<div class="dropdown">
+		<a href="/menu/category/{{ current_category }}/low-calorie/"><button class="btn btn-default">Low calorie</button></a>
+		<div class="dropdown" style="display:inline;">
 		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 			Allergens
 			<span class="caret"></span>
@@ -130,6 +131,10 @@
 	
 	{% if vegetarian %}
 		<div class="alert alert-warning">These items are vegetarian.</div>
+	{% endif %}
+	
+	{% if low_calorie %}
+		<div class="alert alert-warning">These items are low calorie.</div>
 	{% endif %}
 	
 	<ul>

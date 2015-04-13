@@ -16,6 +16,8 @@ urlpatterns = patterns('',
 	url(r'^category/(?P<category_id>\d+)/exclude/(?P<allergy_id>\d+)/$', views.filtered_categories, name='filtered_category'),
 	# /menu/category/3/vegetarian/
 	url(r'^category/(?P<category_id>\d+)/vegetarian/$', views.vegetarian, name='vegetarian'),
+	# /menu/category/3/low-calorie/
+	url(r'^category/(?P<category_id>\d+)/low-calorie/$', views.low_calorie, name='low_calorie'),
 	# /menu/review-order/
 	url(r'^review-order/$', views.place_order, name='place_order'),
 	# /menu/refill/
