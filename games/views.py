@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from menu.models import MenuItem, Order
+from django_project import settings
 
 # This returns and sets up the contexts for the main menu.html template
 def games(request):
@@ -9,4 +11,28 @@ def flappybird(request):
 	return render(request, 'flappybird.html')
 
 def chancegame(request):
-	return render(request, 'chancegame.html')
+	context = {}
+	if not Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='paid').exists():
+		current_order = Order(
+			table_number = settings.TABLE_NUMBER,
+			status = 'ordering',
+			total_price = '0.00'
+		)
+		eligibility = True
+		current_order.save()
+	else:
+		current_order = Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='paid').latest("id")
+		eligibility = current_order.freebie_eligible
+		
+	if request.method == 'POST':
+		if request.POST['winner'] == 'yes':
+			current_order.menu_items.add(name="Free Dessert")
+		current_order.freebie_eligible = False
+		eligibility = False
+		current_order.save()
+		
+	context = {
+		'eligible': eligibility
+	}
+		
+	return render(request, 'chancegame.html', context)

@@ -206,7 +206,7 @@ input[type="button"] {
 				<form action="" method="post">
 					{% csrf_token %}
 					<button name="winner" value="no" id="refresh" style="display:block" class="hidden btn btn btn-danger"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Play again</button>
-					<div id="add-dessert">
+					<div id="add-dessert" class="hidden">
 						{% if eligible %}
 							<button name="winner" value="yes">Get your dessert!</button>
 						{% else %}
