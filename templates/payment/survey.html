@@ -3,35 +3,39 @@
 {% block content %}
 	
 	<div class="text-center">
-	<form action="/" method="post">
+	<form action="" method="post">
 		{% csrf_token %}
-		{{ form.as_p }}
 	<div class="alert alert-success"><h2>How satisfied are you with your ...</h2></div>
 	
 			<div class="myradio"> <h3>SERVER</h3>   
-		    <label>very bad <input type="radio" name="beatles" value="john" /> </label>
-		    <label>bad <input type="radio" name="beatles" value="paul" /> </label>
-		    <label>not so bad <input type="radio" name="beatles" value="george" /> </label>
-		    <label>good <input type="radio" name="beatles" value="ringo" /> </label>
-		    <label>very good <input type="radio" name="beatles" value="ringo" /> </label>
+		    <label>very bad <input type="radio" name="server" value="very bad" /> </label>
+		    <label>bad <input type="radio" name="server" value="bad" /> </label>
+		    <label>not so bad <input type="radio" name="server" value="not so bad" /> </label>
+		    <label>good <input type="radio" name="server" value="good" /> </label>
+		    <label>very good <input type="radio" name="server" value="very good" /> </label>
 			</div>
 
 			<div class="myradio"> <h3>FOOD</h3>   
-		    <label>very bad <input type="radio" name="beatles" value="john" /> </label>
-		    <label>bad <input type="radio" name="beatles" value="paul" /> </label>
-		    <label>not so bad <input type="radio" name="beatles" value="george" /> </label>
-		    <label>good <input type="radio" name="beatles" value="ringo" /> </label>
-		    <label>very good <input type="radio" name="beatles" value="ringo" /> </label>
+		    <label>very bad <input type="radio" name="food" value="very bad" /> </label>
+		    <label>bad <input type="radio" name="food" value="bad" /> </label>
+		    <label>not so bad <input type="radio" name="food" value="not so bad" /> </label>
+		    <label>good <input type="radio" name="food" value="good" /> </label>
+		    <label>very good <input type="radio" name="food" value="very good" /> </label>
 			</div>
 
 			<div class="myradio"> <h3>ORDERING</h3>   
-		    <label> very bad <input type="radio" name="beatles" value="john" /> </label>
-		    <label> bad <input type="radio" name="beatles" value="paul" /> </label>
-		    <label> not so bad <input type="radio" name="beatles" value="george" /> </label>
-		    <label> good <input type="radio" name="beatles" value="ringo" /> </label>
-		    <label> very good <input type="radio" name="beatles" value="ringo" /> </label>
+		    <label>very bad <input type="radio" name="ordering" value="very bad" /> </label>
+		    <label>bad <input type="radio" name="ordering" value="bad" /> </label>
+		    <label>not so bad <input type="radio" name="ordering" value="not so bad" /> </label>
+		    <label>good <input type="radio" name="ordering" value="good" /> </label>
+		    <label>very good <input type="radio" name="ordering" value="very good" /> </label>
 			</div>
-	<input type="submit" class="btn btn-s btn-danger survey" style="width:25%;" value="Submit">
+		</div>
+			
+			<label>Comments</label>
+			<textarea name="Comments" class="col-xs-12" style="height:120px; clear:both; margin-bottom:24px;"></textarea>
+			
+	<div class="text-center"><input type="submit" class="btn btn-s btn-danger survey" style="width:25%;" value="Submit"></div>
 	</form>
 	</div>
 	

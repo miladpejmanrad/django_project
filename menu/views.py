@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, MenuItem, Order, SplitOrder, SplitOrderContainer, Survey, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder
+from menu.models import Category, MenuItem, Order, SplitOrder, SplitOrderContainer, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder, Survey
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64
@@ -447,13 +447,15 @@ def askIfSurvey(request):
 	return render(request, 'payment/askIfSurvey.html', context)
 
 def survey(request):
-	surveys = Survey.objects.all()
-	
-	# If the order gets submitted, save it and redirect.
-	if request.method == "POST":
-		survey_form = SurveyForm(request.POST, instance=surveys.get())
-		if survey_form.is_valid():
-			survey_form.save()
-			return HttpResponseRedirect("/")
 	context = {}
+	if request.method == 'POST':
+		new_survey = Survey(
+			server = request.POST['server'],
+			food = request.POST['food'],
+			ordering = request.POST['ordering'],
+			Comments = request.POST['Comments']
+		)
+		new_survey.save()
+		return HttpResponseRedirect("/")
+		
 	return render(request, 'payment/survey.html', context)

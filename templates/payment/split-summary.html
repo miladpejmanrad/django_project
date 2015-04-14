@@ -2,6 +2,8 @@
 
 {% block content %}
 {% if order %}
+	<form action="/pay/split/continue/" method="post">
+	{% csrf_token %}
 	<table class="table table-striped">
 	<tr>
 		<th>Pay</th>
@@ -10,27 +12,26 @@
 	</tr>
 	{% for item in ordered_items %}
 		<tr>
-			<td><input type="checkbox"></td>
+			<td><input type="checkbox" name="pay_these_items[]" value="{{ item.id }}"></td>
 			<td>{{ item.name }}</td>
 			<td>${{ item.price }}</td>
 		</tr>
 	{% endfor %}
 	{% for drink in ordered_drinks %}
 		<tr>
-			<td><input type="checkbox"></td>
+			<td><input type="checkbox" name="pay_these_drinks[]" value="{{ drink.id }}"></td>
 			<td>{{ drink.drink }} (Flavor: {{ drink.flavor }})</td>
 			<td>${{ drink.drink.price }}</td>
 		</tr>
 	{% endfor %}
 	</table>
 	{% block payment_buttons %}
-	<a href="/pay/card/"><button class="btn btn-s btn-danger col-xs-4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Pay with a card</button></a>
+	<a href="/pay/split/card/"><button class="btn btn-s btn-danger col-xs-6"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Pay these items with card</button></a>
 	<form action="/notify/" method="post">
 	  {% csrf_token %}
 	  <input type="hidden" value="cash" name="type">
-	  <button class="btn btn-s btn-success col-xs-4"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay with cash</button>
+	  <button class="btn btn-s btn-success col-xs-6"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay these items with cash</button>
 	</form>
-	<a href="/pay/split/"><button class="btn btn-s col-xs-4"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Split the bill</button></a>
 	{% endblock %}
 {% endif %}
 {% endblock %}
