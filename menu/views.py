@@ -411,3 +411,7 @@ def send_notification(request):
 def askIfSurvey(request):
 	context = {}
 	return render(request, 'payment/askIfSurvey.html', context)
+
+def survey(request):
+	context = {}
+	return render(request, 'payment/survey.html', context)

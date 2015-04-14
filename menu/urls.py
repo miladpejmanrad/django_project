@@ -24,4 +24,6 @@ urlpatterns = patterns('',
 	url(r'^refill/$', views.refill, name='refill'),
 	# /menu/AskIfsurvey/
 	url(r'^askIfSurvey/$', views.askIfSurvey, name='askIfSurvey'),
+	# /menu/survey/
+	url(r'^survey/$', views.survey, name='survey'),
 )
