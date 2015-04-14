@@ -2,8 +2,9 @@
 
 {% block content %}
 {% if order %}
-	<form action="/pay/split/continue/" method="post">
+	<form action="/pay/split/" method="post">
 	{% csrf_token %}
+	<input type="hidden" value="{{ parent_id }}" name="order_id">
 	<table class="table table-striped">
 	<tr>
 		<th>Pay</th>
