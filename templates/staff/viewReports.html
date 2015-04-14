@@ -29,8 +29,8 @@
       <h1> Order History</h1>
 
       <table class="table"> 
-      {% for survey in surveyResults %}
-      <h5><tr class="{{surveys}}"> <td>Server: {{survey.server}}</td><td>Food: {{survey.food}}</td><td>Ordering: {{survey.ordering}}</td><td>Comments: {{survey.Comments}}</td>
+      {% for survey in paid_orders %}
+      <h5><tr class="{{surveys}}"> <td>Server: {{survey.menu_items}}</td>
       <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
         </td>
       </tr></h5>
