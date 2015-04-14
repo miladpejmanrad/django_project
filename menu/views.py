@@ -266,6 +266,30 @@ def order_summary(request):
 # This view shows the user their order to split.
 def split_summary(request):
 
+	if request.method == 'POST':
+		container = SplitOrderContainer.objects.get(parent_order=Order.objects.get(id=request.POST['order_id']))
+		items_to_pay = request.POST.getlist('pay_these_items[]')
+		drinks_to_pay = request.POST.getlist('pay_these_drinks[]')
+		new_split = SplitOrder(
+			container = container,
+			parent_order = Order.objects.get(id=request.POST['order_id']),
+			total_price = '0.00'
+		)
+		new_split.save()
+		total_price = 0
+		for item_id in items_to_pay:
+			added_item = MenuItem.objects.get(id=item_id)
+			new_split.menu_items.add(added_item)
+			total_price = total_price + added_item.price
+			container.menu_items.remove(added_item)
+		for drink_id in drinks_to_pay:
+			added_drink = DrinkOrder.objects.get(id=drink_id)
+			new_split.drinks.add(added_drink)
+			total_price = total_price + added_drink.drink.price
+			container.drinks.remove(added_drink)
+		new_split.total_price = total_price
+		new_split.save()
+			
 	# Check to see if an order is ready to be paid for at this table.
 	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
 	context = {}
@@ -292,7 +316,8 @@ def split_summary(request):
 		context = {
 			'order': split_container,
 			'ordered_items': ordered_items,
-			'ordered_drinks': ordered_drinks
+			'ordered_drinks': ordered_drinks,
+			'parent_id': order_to_pay.get().id
 		}
 	
 	return render(request, 'payment/split-summary.html', context)
