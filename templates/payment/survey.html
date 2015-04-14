@@ -3,6 +3,9 @@
 {% block content %}
 	
 	<div class="text-center">
+	<form action="/" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
 	<div class="alert alert-success"><h2>How satisfied are you with your ...</h2></div>
 	
 			<div class="myradio"> <h3>SERVER</h3>   
@@ -28,6 +31,8 @@
 		    <label> good <input type="radio" name="beatles" value="ringo" /> </label>
 		    <label> very good <input type="radio" name="beatles" value="ringo" /> </label>
 			</div>
+	<input type="submit" class="btn btn-s btn-danger survey" style="width:25%;" value="Submit">
+	</form>
 	</div>
 	
 
