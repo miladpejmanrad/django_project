@@ -364,3 +364,10 @@ def viewSurvey(request):
 	context = {'surveyResults':surveyResults}
 	template = 'staff/viewSurvey.html'
 	return render(request, template, context)
+
+def viewReports(request):
+	surveyResults = Survey.objects.all()
+
+	context = {'surveyResults':surveyResults}
+	template = 'staff/viewReports.html'
+	return render(request, template, context)
