@@ -366,8 +366,15 @@ def viewSurvey(request):
 	return render(request, template, context)
 
 def viewReports(request):
-	surveyResults = Survey.objects.all()
+	paid_orders = Order.objects.filter(status='paid')
+	Dic = {}
+	# for order in paid_orders:
+	# 	print order.menu_items
+		# if Dic.has_key(order.menu_items)==False:
+		# 	Dic[order.menu_items] = 1   
+  #       else:
+  #       	Dic[order.menu_items] += 1
 
-	context = {'surveyResults':surveyResults}
+	context = {'paid_orders':paid_orders}
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
