@@ -34,5 +34,8 @@
 	  <button class="btn btn-s btn-success col-xs-6"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pay these items with cash</button>
 	</form>
 	{% endblock %}
+{% else %}
+You're all paid, thanks!
+<a href="/"><button type="button" class="btn btn-s btn-danger col-xs-12">Go home</button></a>
 {% endif %}
 {% endblock %}

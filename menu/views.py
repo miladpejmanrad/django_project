@@ -266,6 +266,11 @@ def order_summary(request):
 # This view shows the user their order to split.
 def split_summary(request):
 
+	# Check to see if an order is ready to be paid for at this table.
+	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {}
+	paid = False
+
 	if request.method == 'POST':
 		container = SplitOrderContainer.objects.get(parent_order=Order.objects.get(id=request.POST['order_id']))
 		items_to_pay = request.POST.getlist('pay_these_items[]')
@@ -289,11 +294,7 @@ def split_summary(request):
 			container.drinks.remove(added_drink)
 		new_split.total_price = total_price
 		new_split.save()
-			
-	# Check to see if an order is ready to be paid for at this table.
-	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
-	context = {}
-	
+		
 	# See if a split container has been created. If not, create one and populate it.
 	existing_container = SplitOrderContainer.objects.filter(parent_order=order_to_pay.get())
 	if not existing_container.exists():
@@ -308,9 +309,20 @@ def split_summary(request):
 		split_container.save()
 	else:
 		split_container = existing_container.get()
+		
+	# If the container's empty, get rid of it.
+	if split_container.menu_items.count() == 0 and split_container.drinks.count() == 0:
+		splits = SplitOrder.objects.filter(container=split_container)
+		for split in splits:
+			split.container = None
+			split.save()
+		split_container.delete()
+		paid = True
+		order_to_pay.get().status = 'paid'
+		order_to_pay.get().save()
 	
 	# Build the context for the template
-	if order_to_pay.exists():
+	if order_to_pay.exists() and paid is not True:
 		ordered_items = split_container.menu_items.all() # Get the menu items already on the order
 		ordered_drinks = split_container.drinks.all() # Get the ordered drinks
 		context = {

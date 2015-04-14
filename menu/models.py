@@ -110,7 +110,7 @@ class SplitOrderContainer(models.Model):
 	
 # Class that essentially creates little "mini" orders that customers can pay for.
 class SplitOrder(models.Model):
-	container = models.ForeignKey(SplitOrderContainer, blank=True, null=True)
+	container = models.ForeignKey(SplitOrderContainer, blank=True, null=True, default=None)
 	parent_order = models.ForeignKey(Order)
 	menu_items = models.ManyToManyField(MenuItem, blank=True) # Defines a many-to-many relationship with the MenuItems class
 	drinks = models.ManyToManyField(DrinkOrder, blank=True) # Defines a many-to-many relationship with the DrinkOrder class
