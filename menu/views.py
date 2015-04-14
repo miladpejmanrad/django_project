@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, MenuItem, Order, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder
+from menu.models import Category, MenuItem, Order, SplitOrder, SplitOrderContainer, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64
@@ -262,6 +262,40 @@ def order_summary(request):
 		}
 	
 	return render(request, 'payment/order-summary.html', context)
+	
+# This view shows the user their order to split.
+def split_summary(request):
+
+	# Check to see if an order is ready to be paid for at this table.
+	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
+	context = {}
+	
+	# See if a split container has been created. If not, create one and populate it.
+	existing_container = SplitOrderContainer.objects.filter(parent_order=order_to_pay.get())
+	if not existing_container.exists():
+		split_container = SplitOrderContainer(
+			parent_order = order_to_pay.get(),
+		)
+		split_container.save()
+		for item in list(order_to_pay.get().menu_items.all()):
+			split_container.menu_items.add(item)
+		for drink in list(order_to_pay.get().drinks.all()):
+			split_container.drinks.add(drink)
+		split_container.save()
+	else:
+		split_container = existing_container.get()
+	
+	# Build the context for the template
+	if order_to_pay.exists():
+		ordered_items = split_container.menu_items.all() # Get the menu items already on the order
+		ordered_drinks = split_container.drinks.all() # Get the ordered drinks
+		context = {
+			'order': split_container,
+			'ordered_items': ordered_items,
+			'ordered_drinks': ordered_drinks
+		}
+	
+	return render(request, 'payment/split-summary.html', context)
 	
 	
 # This view shows the user various payment-related messages as they're paying for their order
