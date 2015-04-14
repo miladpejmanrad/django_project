@@ -113,6 +113,7 @@ $(function(){
         $('.score').text(curPipe.attr('pipe-id'));
       }
     }
+  
   }
   
   function gameEnd(){
