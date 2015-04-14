@@ -102,7 +102,22 @@ class Order(models.Model):
 	def __str__(self):
 		return str(self.id)
 
+# Hold the items that still need to be paid for in a split order. It's a temporary object that should be deleted after all items are removed.
+class SplitOrderContainer(models.Model):		
+	parent_order = models.ForeignKey(Order)
+	menu_items = models.ManyToManyField(MenuItem, blank=True) # Defines a many-to-many relationship with the MenuItems class
+	drinks = models.ManyToManyField(DrinkOrder, blank=True) # Defines a many-to-many relationship with the DrinkOrder class
 	
+# Class that essentially creates little "mini" orders that customers can pay for.
+class SplitOrder(models.Model):
+	container = models.ForeignKey(SplitOrderContainer)
+	parent_order = models.ForeignKey(Order)
+	menu_items = models.ManyToManyField(MenuItem, blank=True) # Defines a many-to-many relationship with the MenuItems class
+	drinks = models.ManyToManyField(DrinkOrder, blank=True) # Defines a many-to-many relationship with the DrinkOrder class
+	total_price = models.DecimalField(max_digits=8, decimal_places=2)
+	tip = models.DecimalField(max_digits=8, decimal_places=2, default='0.00')
+	paid = models.BooleanField(default=False)
+
 # Notifications class. This sets up notification objects that can be displayed to the wait staff.
 class Notification(models.Model):
 	type_choices = (
@@ -119,12 +134,8 @@ class Notification(models.Model):
 	def __str__(self):
 		return str(self.id)
 
-	
-
 # Class Survey
 class Survey(models.Model):
-	
-
 	rating = (
 		('very bad', 'Very Bad'),
 	        ('bad', 'Bad'),
