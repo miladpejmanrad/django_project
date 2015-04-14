@@ -459,3 +459,4 @@ def survey(request):
 		return HttpResponseRedirect("/")
 		
 	return render(request, 'payment/survey.html', context)
+

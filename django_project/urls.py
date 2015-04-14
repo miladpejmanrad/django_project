@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     url(r'^managersDeleteNotification/$', 'django_project.views.managersDeleteNotification', name='managersDeleteNotification'),
     url(r'^managersModifyOrderList/$', 'django_project.views.managersModifyOrderList', name='managersModifyOrderList'),
     url(r'^managersModifyOrderEdit/$', 'django_project.views.managersModifyOrderEdit', name='managersModifyOrderEdit'),
+    url(r'^viewSurvey/$', 'django_project.views.viewSurvey', name='viewSurvey'),
 
     # Kitchen staff 
     # Waiter staff 

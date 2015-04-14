@@ -357,3 +357,10 @@ def managersModifyOrderEdit(request):
 
 	except:
 		return HttpResponseRedirect("/managersModifyOrderList/")
+
+def viewSurvey(request):
+	surveyResults = Survey.objects.all()
+
+	context = {'surveyResults':surveyResults}
+	template = 'staff/viewSurvey.html'
+	return render(request, template, context)

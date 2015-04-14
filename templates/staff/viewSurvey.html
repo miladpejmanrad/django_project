@@ -22,22 +22,18 @@
 <h2>
  <div class="container">
 
- <div>
-  <h3>
-  <a class="button" href="/managersModifyOrderList/" > View all orders</a>
-  </h3>
- </div>
+
 
      <div class="container  col-md-8">
       <br/>
-      <h3> TABLE{{order.table_number}} #{{order.id}} COOK: {{order.chef}}</h3>
+      <h1> Survey Results</h1>
 
       <table class="table"> 
-      {% for item in items %}
-      <tr class="{{order.status}}"> <td>{{item}}</td> 
-      <td> <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  
+      {% for survey in surveyResults %}
+      <h5><tr class="{{surveys}}"> <td>Server: {{survey.server}}</td><td>Food: {{survey.food}}</td><td>Ordering: {{survey.ordering}}</td><td>Comments: {{survey.Comments}}</td>
+      <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
         </td>
-      </tr>
+      </tr></h5>
       {% endfor %}
       </table>
     </div>
