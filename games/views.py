@@ -12,6 +12,8 @@ def flappybird(request):
 
 def chancegame(request):
 	context = {}
+	
+	# First, check to see if an order already exists. If not, create one.
 	if not Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='paid').exists():
 		current_order = Order(
 			table_number = settings.TABLE_NUMBER,
@@ -24,6 +26,7 @@ def chancegame(request):
 		current_order = Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='paid').latest("id")
 		eligibility = current_order.freebie_eligible
 		
+	# Next, once they play the game, grab the POST data to see if they won on the first try. Update data accordingly.
 	if request.method == 'POST':
 		if request.POST['winner'] == 'yes':
 			current_order.menu_items.add(name="Free Dessert")
