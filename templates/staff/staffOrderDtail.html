@@ -33,7 +33,7 @@
       <table class="table"> 
       {% for item in items %}
       <tr class="{{order.status}}"> <td>{{item}}</td> 
-      <td> <a type="button" href="/waitStaffModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  
+      <td> <a type="button" href="/waitStaffModifyOrderEdit/?order_id={{order.id}}&item_id={{item.id}}&comp=1" class="btn  btn-danger" > COMP </a>  
         </td>
       </tr>
       {% endfor %}

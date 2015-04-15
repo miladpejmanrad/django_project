@@ -190,20 +190,22 @@ def waitStaffModifyOrderList(request):
 
 def waitStaffModifyOrderEdit(request):
 	"""
-	 show datails and change the status from ready-to-serve to served 
-	 served = 0 : get details of certain order by id 
-	 served = 1 : make the order to be rerved 
+	 show datails and comp
+	 comp = 0 : get details of certain order by id 
+	 comp = 1 : make the order to be rerved 
 	"""
 	try :
-		served = request.GET.get('served', 0)
+		comp = request.GET.get('comp', 0)
 		order_id = request.GET.get('order_id', 0)
 		order = Order.objects.get(id=order_id)
-		if served == 0 :
+		if comp == 0 :
 			return render(request,'staff/staffOrderDtail.html', 
 				{'order':order, 'user':request.user, 'items':order.menu_items.all()})
 		else :
-			order.status = 'served'
-			order.save()
+ 			item_id = request.GET.get('item_id', 0)
+ 			order.menu_items.remove(item_id)
+ 			order.menu_items.save()
+ 			order.save()
 			return HttpResponseRedirect("/waitStaffModifyOrderList/")
 
 	except:
@@ -246,6 +248,9 @@ def WaitStaffDeleteNotification(request):
 	try:
 		nid = request.GET.get('nid', 0)
 		n = Notification.objects.get(id=nid)
+		o = n.order 
+		o.status = 'served'
+		o.save()
 		n.delete()
 		return HttpResponseRedirect("/WaitStaffViewNotifications/")
 	except :
@@ -322,6 +327,9 @@ def managersDeleteNotification(request):
 	try:
 		nid = request.GET.get('nid', 0)
 		n = Notification.objects.get(id=nid)
+		o = n.order 
+		o.status = 'served'
+		o.save()
 		n.delete()
 		return HttpResponseRedirect("/managersViewNotifications/")
 	except :
@@ -339,22 +347,23 @@ def managersModifyOrderList(request):
 
 def managersModifyOrderEdit(request):
 	"""
-	 show datails and change the status from ready-to-serve to served 
-	 served = 0 : get details of certain order by id 
-	 served = 1 : make the order to be rerved 
+	 show datails and comp 
+	 comp = 0 : get details of certain order by id 
+	 comp = 1 : make the order to be rerved 
 	"""
 	try :
-		served = request.GET.get('served', 0)
+		comp = request.GET.get('comp', 0)
 		order_id = request.GET.get('order_id', 0)
 		order = Order.objects.get(id=order_id)
-		if served == 0 :
+		if comp == 0 :
 			return render(request,'staff/managersOrderDtail.html', 
 				{'order':order, 'user':request.user, 'items':order.menu_items.all()})
 		else :
-			order.status = 'served'
-			order.save()
-			return HttpResponseRedirect("/managersModifyOrderList/")
-
+ 			item_id = request.GET.get('item_id', 0)
+ 			order.menu_items.remove(item_id)
+ 			order.menu_items.save()
+ 			order.save()
+ 		return HttpResponseRedirect("/managersModifyOrderList/")
 	except:
 		return HttpResponseRedirect("/managersModifyOrderList/")
 
