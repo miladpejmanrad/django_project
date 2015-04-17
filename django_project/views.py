@@ -206,7 +206,7 @@ def waitStaffModifyOrderEdit(request):
  			order.menu_items.remove(item_id)
  			order.menu_items.save()
  			order.save()
-			return HttpResponseRedirect("/waitStaffModifyOrderList/")
+		return HttpResponseRedirect("/waitStaffModifyOrderList/")
 
 	except:
 		return HttpResponseRedirect("/waitStaffModifyOrderList/")
@@ -347,23 +347,24 @@ def managersModifyOrderList(request):
 
 def managersModifyOrderEdit(request):
 	"""
-	 show datails and comp 
+	 show details and comp 
 	 comp = 0 : get details of certain order by id 
-	 comp = 1 : make the order to be rerved 
+	 comp = 1 : make the order to be served 
 	"""
-	try :
+	try:
 		comp = request.GET.get('comp', 0)
 		order_id = request.GET.get('order_id', 0)
 		order = Order.objects.get(id=order_id)
-		if comp == 0 :
+		if comp == 0:
 			return render(request,'staff/managersOrderDtail.html', 
 				{'order':order, 'user':request.user, 'items':order.menu_items.all()})
-		else :
+		else:
  			item_id = request.GET.get('item_id', 0)
  			order.menu_items.remove(item_id)
  			order.menu_items.save()
  			order.save()
- 		return HttpResponseRedirect("/managersModifyOrderList/")
+ 			return HttpResponseRedirect("/managersModifyOrderList/")
+	
 	except:
 		return HttpResponseRedirect("/managersModifyOrderList/")
 
