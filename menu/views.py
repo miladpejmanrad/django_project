@@ -402,11 +402,13 @@ def tipping(request):
 			initial={
 				'status': 'paid'
 			}, instance=order_to_pay.get())
+		tip_05 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.05))
 		tip_10 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.10))
 		tip_15 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.15))
 		tip_20 = "{0:.2f}".format(order_to_pay.get().total_price * Decimal(.20))
 		context = {
 			'order': order_to_pay.get(),
+			'tip_05': tip_05,
 			'tip_10': tip_10,
 			'tip_15': tip_15,
 			'tip_20': tip_20,
