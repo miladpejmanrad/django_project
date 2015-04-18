@@ -13,9 +13,14 @@ from django.utils.timezone import utc
 def home(request):
 	# If an order for this table has been served, show the PAY button on the home screen.
 	payable_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
-	context = {
-		'ready_to_pay': payable_order.exists(),
-	}
+	# Showing the ad
+	advertisement = Advertisement.objects.all()
+	for x in advertisement:
+		b = x
+	try:
+		context = {'ready_to_pay': payable_order.exists(), 'Advertisement' : b.ad }
+	except:
+		context = {'ready_to_pay': payable_order.exists() }
 	
 	template = "home.html"
 	return render(request, template, context)
@@ -390,7 +395,12 @@ def viewReports(request):
 	return render(request, template, context)
 
 def managersAd(request):
-	text = Advertisement.objects.all()
-	context = {'text':text}
-	template = 'staff/managersAd.html'
-	return render(request, template, context)
+	context = {}
+	if request.method == 'POST':
+		new_ad = Advertisement(
+			ad = request.POST['ad']
+		)
+		new_ad.save()
+		return HttpResponseRedirect("/managersAd")
+		
+	return render(request, 'staff/managersAd.html', context)
