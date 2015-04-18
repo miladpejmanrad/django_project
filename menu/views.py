@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from menu.models import Category, Ad, MenuItem, Order, SplitOrder, SplitOrderContainer, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder, Survey
+from menu.models import Category, Advertisement, MenuItem, Order, SplitOrder, SplitOrderContainer, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder, Survey
 from menu.modelforms import AddItemToOrderForm, PlaceOrderForm, TipOrderForm
 from decimal import Decimal
 from binascii import a2b_base64

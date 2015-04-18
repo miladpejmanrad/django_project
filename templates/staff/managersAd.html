@@ -13,6 +13,7 @@
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersModifyOrderList/" >Modify Orders</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/viewSurvey">View Surveys</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/viewReports">View Order Reports</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersAd">Advertisement</a></h4></li>
         <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout" >Logout</a></h4></li>
       </ul>
       </ul>
@@ -20,26 +21,14 @@
     </div>
   </div>
 <h2>
- <div class="container">
-
-
-
-     <div class="container  col-md-8">
-      <br/>
-      <h1> Please write the advertisement here</h1>
-
-      <table class="table"> 
-      
-      <h5><tr class="{{surveys}}"> <td>Server: </td>
-      <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
-        </td>
-      </tr></h5>
-      
-      </table>
-    </div>
-
-
- </div>
+      <form action="" method="post">
+        {% csrf_token %}
+        <label>Please write the advertisement here:</label>
+      <textarea name="ad" class="col-xs-12" style="height:120px; clear:both; margin-bottom:24px;"></textarea>
+      <div class="text-center">
+      <input type="submit" class="btn btn-s btn-danger place-order" style="width:20%;" value="Submit"> 
+      </div>
+    </form>
 </h2>
 
 {% endblock %}

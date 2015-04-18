@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
-from menu.models import Category, MenuItem, Order, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder, CookStatus, Survey
+from menu.models import Category, MenuItem, Advertisement, Order, Allergen, AdminMenu, Notification, Drink, DrinkFlavor, DrinkOrder, CookStatus, Survey
 from django_project import settings
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
@@ -390,7 +390,7 @@ def viewReports(request):
 	return render(request, template, context)
 
 def managersAd(request):
-	text = Ad.objects.all()
+	text = Advertisement.objects.all()
 	context = {'text':text}
 	template = 'staff/managersAd.html'
 	return render(request, template, context)

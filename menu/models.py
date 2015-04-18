@@ -169,9 +169,7 @@ class CookStatus(models.Model):
 	class Meta:
 		verbose_name_plural = "cook statuses"
 
-class Ad(models.Model):
-	advertisement = models.TextField(blank=True)
-
-	# Sets the ID as the identifier for orders.
-	def __str__(self):
+class Advertisement(models.Model):
+	ad = models.TextField(blank=True)
+	def __unicode__(self):
 		return str(self.id)
