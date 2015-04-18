@@ -28,14 +28,16 @@
      <div class="container  col-md-8">
       <br/>
       <h1> Order History</h1>
-
+      <h1> </h1>
       <table class="table"> 
-      {% for survey in paid_orders %}
-      <h5><tr class="{{surveys}}"> <td>Server: {{survey.menu_items}}</td>
+      <label> Top dishes
+      {% for item in items %}
+      <tr class="{{items}}"> <td>{{item}} </td>
       <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
         </td>
-      </tr></h5>
+      </tr>
       {% endfor %}
+      </label>
       </table>
     </div>
 
