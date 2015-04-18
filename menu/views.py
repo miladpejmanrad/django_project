@@ -454,12 +454,15 @@ def receipt(request, receipt_type):
 
 # This view handles the options available when selecting the refill button.
 def refill(request):
-	current_order = Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='paid').exclude(status='ordering')
-	ordered_drinks = list(current_order.latest('id').drinks.all()) # Get the drinks on the order
-	context = {
-		'drinks_list': ordered_drinks,
-	}
-	return render(request, 'menu/refill.html', context)
+	try:
+		current_order = Order.objects.filter(table_number=settings.TABLE_NUMBER).exclude(status='paid').exclude(status='ordering')
+		ordered_drinks = list(current_order.latest('id').drinks.all()) # Get the drinks on the order
+		context = {
+			'drinks_list': ordered_drinks,
+		}
+		return render(request, 'menu/refill.html', context)
+	except:
+		return render(request, 'menu/refill.html', {})
 	
 # This view handles the notifications sent by the customer.
 def send_notification(request):
