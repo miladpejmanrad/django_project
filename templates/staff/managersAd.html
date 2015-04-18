@@ -1,0 +1,45 @@
+{% extends "staff/staff_base.html" %}
+{% block content %}
+  <div style="float:right;">
+    <div class="text-right">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownAdminMenu" data-toggle="dropdown" aria-expanded="true">
+      Admin
+      <span class="caret" ></span> 
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAdminMenu">
+      <ul>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersViewNotifications/" >View Notifications</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/managersModifyOrderList/" >Modify Orders</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/viewSurvey">View Surveys</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/viewReports">View Order Reports</a></h4></li>
+        <li role="presentation"><h4><a role="menuitem" tabindex="-1" href="/logout" >Logout</a></h4></li>
+      </ul>
+      </ul>
+    </div>
+    </div>
+  </div>
+<h2>
+ <div class="container">
+
+
+
+     <div class="container  col-md-8">
+      <br/>
+      <h1> Please write the advertisement here</h1>
+
+      <table class="table"> 
+      
+      <h5><tr class="{{surveys}}"> <td>Server: </td>
+      <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
+        </td>
+      </tr></h5>
+      
+      </table>
+    </div>
+
+
+ </div>
+</h2>
+
+{% endblock %}

@@ -388,3 +388,9 @@ def viewReports(request):
 	context = {'paid_orders':paid_orders}
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
+
+def managersAd(request):
+	text = Ad.objects.all()
+	context = {'text':text}
+	template = 'staff/managersAd.html'
+	return render(request, template, context)
