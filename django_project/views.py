@@ -387,10 +387,10 @@ def viewReports(request):
 		for item in order.menu_items.all():
 			if items.has_key(item)==False:
 		  		items[item] = 1
-		  	else:
+			else:
 		  		items[item] += 1
 	highest = sorted(items.values(), reverse=True)
-	print highest
+	# print highest
 	top_dishes = []
 	for item in items:
 		if items[item] == highest[0]:
@@ -408,7 +408,7 @@ def viewReports(request):
 			items.pop(item, None)
 			break
 
-	print top_dishes
+	# print top_dishes
 	context = {'items':top_dishes}
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
