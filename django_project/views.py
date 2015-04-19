@@ -381,7 +381,7 @@ def viewSurvey(request):
 	return render(request, template, context)
 
 def viewReports(request):
-	items = {}
+	items = {} #The menu items sold with their rate
 	paid_orders = Order.objects.filter(status='paid')
 	for order in paid_orders:
 		for item in order.menu_items.all():
@@ -390,19 +390,26 @@ def viewReports(request):
 		  	else:
 		  		items[item] += 1
 	highest = sorted(items.values(), reverse=True)
-	top_dishes = {}
+	print highest
+	top_dishes = []
+	for item in items:
+		if items[item] == highest[0]:
+			top_dishes.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[1]:
+			top_dishes.append(item)
+			items.pop(item, None)
+			break
 	for item in items:
 		if items[item] == highest[2]:
-			top_dishes[item] = highest[2]
-		if items[item] == highest[1]:
-			top_dishes[item] = highest[1]
-		if items[item] == highest[0]:
-			top_dishes[item] = highest[0]
-		if len(top_dishes) == 3:
+			top_dishes.append(item)
+			items.pop(item, None)
 			break
-	for x in top_dishes:
-		print x,top_dishes[x]
-	context = {'items':top_dishes.keys()}
+
+	print top_dishes
+	context = {'items':top_dishes}
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
 
