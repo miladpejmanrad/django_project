@@ -101,6 +101,13 @@ def menu_items(request, menu_item_id):
 		order_in_progress = True
 	else:
 		order_in_progress = False
+		
+	# Check if it's Monday. We'll use this to help calculate the price of the order based on the Monday deal.
+	today = datetime.date.today()
+	if today.today().weekday() is 0:
+		is_monday = True
+	else:
+		is_monday = False
 	
 	# Check to see if an order is already set for this table. If so, modify it. If not, create a new one.
 	existing_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
@@ -117,8 +124,15 @@ def menu_items(request, menu_item_id):
 		# Calculate the new total price
 		total_price = 0
 		for item in ordered_items:
-			item_price = MenuItem.objects.get(id=item.id)
-			total_price = total_price + item_price.price
+			if is_monday:
+				# Take off the price of a kid's meal if there's an entree.
+				if MenuItem.objects.filter(id=item.id, category__name__contains="Entrees").count() > 0:
+					if not MenuItem.objects.get(id=item.id).category.name is "Kids Meals":
+						item_price = MenuItem.objects.get(id=item.id)
+						total_price = total_price + item_price.price
+			else:
+				item_price = MenuItem.objects.get(id=item.id)
+				total_price = total_price + item_price.price
 		for drink in ordered_drinks:
 			drink_price = Drink.objects.get(id=drink.drink.id)
 			total_price = total_price + drink_price.price
