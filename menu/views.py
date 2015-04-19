@@ -168,9 +168,12 @@ def drinks(request, drink_id):
 			drink = drink
 		)
 		new_drink.save()
+		this_drink_id = new_drink.id
 		if request.POST['flavor'] != 'None':
-			new_drink.update(flavor = DrinkFlavor.objects.get(flavor=request.POST['flavor']))
-			new_drink.save()
+			this_drink = DrinkOrder.objects.filter(id=this_drink_id) # Get the query set so we can perform an update to add the flavor
+			this_drink.update(flavor = DrinkFlavor.objects.get(flavor=request.POST['flavor']))
+			this_drink = this_drink.get() # Get the actual instance of this drink order so we can save it
+			this_drink.save()
 		
 		if existing_order.exists():
 			# Calculate the new total price
