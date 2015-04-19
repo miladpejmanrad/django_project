@@ -392,7 +392,6 @@ def viewReports(request):
 			  		items[item] += 1
 	highest = []
 	highest = sorted(items.values(), reverse=True)
-	print ((datetime.datetime.utcnow()).day)
 	top_dishes_month = []
 	for item in items:
 		if items[item] == highest[0]:
@@ -437,7 +436,62 @@ def viewReports(request):
 			items.pop(item, None)
 			break
 
-	context = {'month':top_dishes_month, 'week':top_dishes_week}
+	items = {} #The menu items sold with their rate
+	for order in paid_orders:
+		item = order.timestamp_created.hour
+		if order.timestamp_created.day - (datetime.datetime.utcnow()).day < 7:
+			if items.has_key(item)==False:
+			  	items[item] = 1
+			else:
+			  	items[item] += 1
+	highest = []
+	highest = sorted(items.values(), reverse=True)
+	busiest_times_week = []
+	for item in items:
+		if items[item] == highest[0]:
+			busiest_times_week.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[1]:
+			busiest_times_week.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[2]:
+			busiest_times_week.append(item)
+			items.pop(item, None)
+			break
+
+	items = {} #The menu items sold with their rate
+	for order in paid_orders:
+		item = order.timestamp_created.hour
+		if order.timestamp_created.month == (datetime.datetime.utcnow()).month:
+			if items.has_key(item)==False:
+			  	items[item] = 1
+			else:
+			  	items[item] += 1
+	highest = []
+	highest = sorted(items.values(), reverse=True)
+	busiest_times_month = []
+	for item in items:
+		if items[item] == highest[0]:
+			busiest_times_month.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[1]:
+			busiest_times_month.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[2]:
+			busiest_times_month.append(item)
+			items.pop(item, None)
+			break
+
+	context = {'top_dishes_month':top_dishes_month, 'top_dishes_week':top_dishes_week, 
+	'busiest_times_week':busiest_times_week, 'busiest_times_month':busiest_times_month}
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
 
