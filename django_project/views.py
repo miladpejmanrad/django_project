@@ -209,6 +209,8 @@ def waitStaffModifyOrderEdit(request):
 		else:
  			item_id = request.GET.get('item_id', 0)
  			order.menu_items.remove(item_id)
+ 			order.total_price = order.total_price - MenuItem.objects.get(id=item_id).price
+ 			order.total_price.save()
  			order.menu_items.save()
  			order.save()
 		return HttpResponseRedirect("/waitStaffModifyOrderList/")
