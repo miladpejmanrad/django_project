@@ -31,7 +31,18 @@
       <h1> </h1>
       <table class="table"> 
       <label> Top dishes this month
-      {% for item in items %}
+      {% for item in month %}
+      <tr class="{{items}}"> <td>{{item}} </td>
+      <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
+        </td>
+      </tr>
+      {% endfor %}
+      </label>
+      </table>
+      <h1> </h1>
+      <table class="table"> 
+      <label> Top dishes this week
+      {% for item in week %}
       <tr class="{{items}}"> <td>{{item}} </td>
       <td> <!-- <a type="button" href="/managersModifyOrderEdit/?order_id={{order.id}}&served=1" class="btn  btn-danger" > COMP </a>  --> 
         </td>

@@ -381,35 +381,63 @@ def viewSurvey(request):
 	return render(request, template, context)
 
 def viewReports(request):
-	items = {} #The menu items sold with their rate
 	paid_orders = Order.objects.filter(status='paid')
+	items = {} #The menu items sold with their rate
 	for order in paid_orders:
-		for item in order.menu_items.all():
-			if items.has_key(item)==False:
-		  		items[item] = 1
-			else:
-		  		items[item] += 1
+		if order.timestamp_created.month == (datetime.datetime.utcnow()).month:
+			for item in order.menu_items.all():
+				if items.has_key(item)==False:
+			  		items[item] = 1
+				else:
+			  		items[item] += 1
+	highest = []
 	highest = sorted(items.values(), reverse=True)
-	# print highest
-	top_dishes = []
+	print ((datetime.datetime.utcnow()).day)
+	top_dishes_month = []
 	for item in items:
 		if items[item] == highest[0]:
-			top_dishes.append(item)
+			top_dishes_month.append(item)
 			items.pop(item, None)
 			break
 	for item in items:
 		if items[item] == highest[1]:
-			top_dishes.append(item)
+			top_dishes_month.append(item)
 			items.pop(item, None)
 			break
 	for item in items:
 		if items[item] == highest[2]:
-			top_dishes.append(item)
+			top_dishes_month.append(item)
 			items.pop(item, None)
 			break
 
-	# print top_dishes
-	context = {'items':top_dishes}
+	items = {} #The menu items sold with their rate
+	for order in paid_orders:
+		if order.timestamp_created.day - (datetime.datetime.utcnow()).day < 7:
+			for item in order.menu_items.all():
+				if items.has_key(item)==False:
+			  		items[item] = 1
+				else:
+			  		items[item] += 1
+	highest = []
+	highest = sorted(items.values(), reverse=True)
+	top_dishes_week = []
+	for item in items:
+		if items[item] == highest[0]:
+			top_dishes_week.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[1]:
+			top_dishes_week.append(item)
+			items.pop(item, None)
+			break
+	for item in items:
+		if items[item] == highest[2]:
+			top_dishes_week.append(item)
+			items.pop(item, None)
+			break
+
+	context = {'month':top_dishes_month, 'week':top_dishes_week}
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
 
