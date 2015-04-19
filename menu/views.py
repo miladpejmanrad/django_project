@@ -7,6 +7,7 @@ from decimal import Decimal
 from binascii import a2b_base64
 from django_project import settings
 from django.core.mail import send_mail
+import datetime
 
 # This returns and sets up the contexts for the main menu.html template
 def menu(request):
@@ -25,13 +26,22 @@ def categories(request, category_id):
 	menuitems_list = MenuItem.objects.filter(category=category_id, visible=True)
 	drinks_list = Drink.objects.filter(category=category_id)
 	allergies_list = Allergen.objects.all()
+	
+	# Check if it's Monday. We'll use this to print a notification on the menu about the Monday deal.
+	today = datetime.date.today()
+	if today.today().weekday() is 0:
+		is_monday = True
+	else:
+		is_monday = False
+	
 	context = {
 		'menuitems_list': menuitems_list,
 		'drinks_list': drinks_list,
 		'categories_list': categories_list,
 		'order_exists': existing_order.exists(),
 		'allergies_list': allergies_list,
-		'current_category': category_id
+		'current_category': category_id,
+		'is_monday': is_monday
 	}
 	return render(request, 'menu/menu.html', context)
 

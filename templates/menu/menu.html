@@ -125,6 +125,10 @@
 {% if menuitems_list %}
 <div id="menu-items" class="col-md-8">
 
+	{% if is_monday %}
+		<div class="alert alert-info">Hey! It's Monday! Buy one entree, get one kids meal free!</div>
+	{% endif %}
+
 	{% if current_allergen %}
 		<div class="alert alert-warning">These items do not contain <span style="text-transform:lowercase;">{{ current_allergen }}</span>.</div>
 	{% endif %}
