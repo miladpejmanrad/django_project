@@ -207,12 +207,10 @@ def waitStaffModifyOrderEdit(request):
 			return render(request,'staff/staffOrderDtail.html', 
 				{'order':order, 'user':request.user, 'items':order.menu_items.all()})
 		else:
- 			item_id = request.GET.get('item_id', 0)
- 			order.menu_items.remove(item_id)
- 			order.total_price = order.total_price - MenuItem.objects.get(id=item_id).price
- 			order.total_price.save()
- 			order.menu_items.save()
- 			order.save()
+			item_id = request.GET.get('item_id', 0)
+			order.total_price = order.total_price - MenuItem.objects.get(id=item_id).price
+			order.menu_items.remove(MenuItem.objects.get(id=item_id))
+			order.save()
 		return HttpResponseRedirect("/waitStaffModifyOrderList/")
 
 	except:
