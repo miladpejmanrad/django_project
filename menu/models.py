@@ -94,7 +94,6 @@ class Order(models.Model):
 	tip = models.DecimalField(max_digits=8, decimal_places=2, default='0.00')
 	timestamp_created = models.DateTimeField(auto_now_add=True)
 	freebie_eligible = models.BooleanField(default=True) # If this order is eligible for a free dessert.
-	# free_kidsmeals = models.IntegerField(default=0) # This stores how many free kids meals this order has available
 
 	# related chef name
 	chef =  models.CharField(max_length=64, blank=True, null=True)
