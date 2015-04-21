@@ -511,11 +511,11 @@ def send_notification(request):
 		
 	return render(request, 'notification.html', context)
 
-def askIfSurvey(request):
+def askIfSurvey(request): # To show the page asking the customers if they are willing to do a quick survey
 	context = {}
 	return render(request, 'payment/askIfSurvey.html', context)
 
-def survey(request):
+def survey(request): # Stores the survey instance 
 	context = {}
 	if request.method == 'POST':
 		new_survey = Survey(

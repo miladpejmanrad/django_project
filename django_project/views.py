@@ -30,7 +30,7 @@ def login(request):
 	template = "staff/login.html"
 	return render(request, template, context)
 
-def auth_view(request):
+def auth_view(request): # Enables the staff to login based on their permissions
 	username = request.POST.get('username', '')
 	password = request.POST.get('password', '')
 	user = auth.authenticate(username=username, password=password)
@@ -50,8 +50,8 @@ def auth_view(request):
 		return HttpResponseRedirect("/invalid")
 	
 
-
-def managers(request):
+# There is three types of staff users listed below: manager(s), kitchenstaff and waitstaff
+def managers(request): 
 	if request.user.is_authenticated():
 		options = AdminMenu.objects.all()
 		template = "staff/managers.html"
@@ -90,12 +90,12 @@ def logout(request):
 	return render(request, template)
 
 
-def invalid(request):
+def invalid(request): # If the users put incorrect username and/or password this view will operate
 	context = {}
 	template = "staff/invalid.html"
 	return render(request, template, context)
 
-def cookOrdersList(request):
+def cookOrdersList(request): # This view belongs to the kitchenstaff to view the orders that are either ready too cook or being cooked
 	all_orders = Order.objects.all().order_by("id")
 	al = []
 	for orders in all_orders:
@@ -147,7 +147,7 @@ def cookOrdersList(request):
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def cookTheOrder(request, order_id):
+def cookTheOrder(request, order_id): # This will change the order status to cooking and showing the name of the chef cooking it
 	"""
 	chang the order's status to be "cooking" which is selected by the id of order 
 	"""
@@ -164,7 +164,7 @@ def cookTheOrder(request, order_id):
 	return HttpResponseRedirect("/cookOrdersList")
 
 
-def orderIsReady(request):
+def orderIsReady(request): # When the order is ready, the chef uses this def to change the status of the order to ready-to-serve
 	"""
 	change the order's status to be "ready-to-serve" which is selected by the id of order 
 	"""
@@ -183,7 +183,7 @@ def orderIsReady(request):
 
 
 
-def waitStaffModifyOrderList(request):
+def waitStaffModifyOrderList(request): # The waitstaff will view the menu items of the orders that are ready to serve
 	"""
 	 list all orders 
 	"""
@@ -193,7 +193,7 @@ def waitStaffModifyOrderList(request):
 		{'all_orders':all_orders, 'user':request.user })
 
 
-def waitStaffModifyOrderEdit(request):
+def waitStaffModifyOrderEdit(request): # The waitstaff will be able to modify the menu items of the orders that are ready to serve
 	"""
 	 show details and comp
 	 comp = 0 : get details of certain order by id 
@@ -217,7 +217,7 @@ def waitStaffModifyOrderEdit(request):
 		return HttpResponseRedirect("/waitStaffModifyOrderList/")
 
 
-def WaitStaffViewNotifications(request):
+def WaitStaffViewNotifications(request): # The waitstaff wcan view the notofications through this def
 	"""
 		type_choices = (
 		('help', 'Help'),
@@ -247,7 +247,7 @@ def WaitStaffViewNotifications(request):
 		{'notifications':all_n, 'user':request.user })
 
 
-def WaitStaffDeleteNotification(request):
+def WaitStaffDeleteNotification(request): # This works for deleting the notofications that are shown to the waitstaff 
 	"""
 	"""
 	try:
@@ -262,7 +262,7 @@ def WaitStaffDeleteNotification(request):
 		return HttpResponseRedirect("/WaitStaffViewNotifications/")
 
 
-def modifyMenu(request):
+def modifyMenu(request): # For viewing the ModifyMenu page
 	MenuItems = MenuItem.objects.all()
 
 	if request.user.is_authenticated():
@@ -276,7 +276,7 @@ def modifyMenu(request):
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def showItem(request, item_id):
+def showItem(request, item_id): # To show an item if it is in stock
 	menu_item = MenuItem.objects.get(id=item_id)
 	if request.user.is_authenticated():
 		menu_item.visible = True
@@ -286,7 +286,7 @@ def showItem(request, item_id):
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def hideItem(request, item_id):
+def hideItem(request, item_id): # To hide an item if it is not in stock
 	menu_item = MenuItem.objects.get(id=item_id)
 	if request.user.is_authenticated():
 		menu_item.visible = False
@@ -296,7 +296,7 @@ def hideItem(request, item_id):
 		template = "staff/accessDenied.html"
 		return render(request, template)
 
-def managersViewNotifications(request):
+def managersViewNotifications(request): # The manager(s) wcan view the notofications through this def
 	"""
 		type_choices = (
 		('help', 'Help'),
@@ -326,7 +326,7 @@ def managersViewNotifications(request):
 		{'notifications':all_n, 'user':request.user })
 
 
-def managersDeleteNotification(request):
+def managersDeleteNotification(request): # The manager also will be able to delete the notifications like refill and ...
 	"""
 	"""
 	try:
@@ -340,7 +340,7 @@ def managersDeleteNotification(request):
 	except :
 		return HttpResponseRedirect("/managersViewNotifications/")
 
-def managersModifyOrderList(request):
+def managersModifyOrderList(request): # The waitstaff will view the menu items of the orders that are ready to serve
 	"""
 	 list all orders 
 	"""
@@ -350,7 +350,7 @@ def managersModifyOrderList(request):
 		{'all_orders':all_orders, 'user':request.user })
 
 
-def managersModifyOrderEdit(request):
+def managersModifyOrderEdit(request): # The waitstaff will be able to modify the menu items of the orders that are ready to serve
 	"""
 	 show details and comp 
 	 comp = 0 : get details of certain order by id 
@@ -373,14 +373,14 @@ def managersModifyOrderEdit(request):
 	except:
 		return HttpResponseRedirect("/managersModifyOrderList/")
 
-def viewSurvey(request):
+def viewSurvey(request): # The manager(s) will have the option the view the surveys
 	surveyResults = Survey.objects.all()
 
 	context = {'surveyResults':surveyResults}
 	template = 'staff/viewSurvey.html'
 	return render(request, template, context)
 
-def viewReports(request):
+def viewReports(request): # The manager(s) will have the option the view the reports. 
 	paid_orders = Order.objects.filter(status='paid')
 	items = {} #The menu items sold with their rate
 	for order in paid_orders:
@@ -495,7 +495,7 @@ def viewReports(request):
 	template = 'staff/viewReports.html'
 	return render(request, template, context)
 
-def managersAd(request):
+def managersAd(request): # The manager will be able to add advertisement to the home page
 	context = {}
 	if request.method == 'POST':
 		new_ad = Advertisement(
