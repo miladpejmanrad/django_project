@@ -123,16 +123,22 @@ def menu_items(request, menu_item_id):
 		
 		# Calculate the new total price
 		total_price = 0
+		kids_meals = MenuItem.objects.filter(category__name__contains="Kids Meal").count()
+		entrees = MenuItem.objects.filter(category__name__contains="Entrees").count()
+		free_kidsmeals = entrees - kids_meals
+		
 		for item in ordered_items:
-			if is_monday:
-				# Take off the price of a kid's meal if there's an entree.
-				if MenuItem.objects.filter(id=item.id, category__name__contains="Entrees").count() > 0:
-					if not MenuItem.objects.get(id=item.id).category.name is "Kids Meals":
-						item_price = MenuItem.objects.get(id=item.id)
-						total_price = total_price + item_price.price
+			if is_monday and free_kidsmeals > 0:
+				# Take off the price of a kid's meal for each entree if applicable.
+				if MenuItem.objects.get(id=item.id).category.name is not "Kids Meals":
+					item_price = MenuItem.objects.get(id=item.id)
+					total_price = total_price + item_price.price
+				else:
+					free_kidsmeals -= 1
 			else:
 				item_price = MenuItem.objects.get(id=item.id)
 				total_price = total_price + item_price.price
+				
 		for drink in ordered_drinks:
 			drink_price = Drink.objects.get(id=drink.drink.id)
 			total_price = total_price + drink_price.price
@@ -165,7 +171,7 @@ def menu_items(request, menu_item_id):
 			
 	return render(request, 'menu/menu-item.html', context)
 	
-# This returns and sets up the contexts for vegetarian filtered menu items within a category
+# This returns and sets up the contexts for drinks
 def drinks(request, drink_id):
 
 	# First, see if they already have an order in the system that's been placed, but not paid for.
