@@ -123,21 +123,18 @@ def menu_items(request, menu_item_id):
 		
 		# Calculate the new total price
 		total_price = 0
+		kids_meals = MenuItem.objects.filter(category__name__contains="Kids Meal").count()
+		entrees = MenuItem.objects.filter(category__name__contains="Entrees").count()
+		free_kidsmeals = entrees - kids_meals
+		
 		for item in ordered_items:
-			if is_monday:
-				kids_meals = MenuItem.objects.filter(category__name__contains="Kids Meal").count()
-				entrees = MenuItem.objects.filter(category__name__contains="Entrees").count()
-				
-				if menu_item.category.name is "Kids Meal":
-					kids_meals += 1
-				if menu_item.category.name is "Entrees":
-					entrees += 1
-				
+			if is_monday and free_kidsmeals > 0:
 				# Take off the price of a kid's meal for each entree if applicable.
-				if entrees > kids_meals:
-					if not MenuItem.objects.get(id=item.id).category.name is "Kids Meals":
-						item_price = MenuItem.objects.get(id=item.id)
-						total_price = total_price + item_price.price
+				if MenuItem.objects.get(id=item.id).category.name is not "Kids Meals":
+					item_price = MenuItem.objects.get(id=item.id)
+					total_price = total_price + item_price.price
+				else:
+					free_kidsmeals -= 1
 			else:
 				item_price = MenuItem.objects.get(id=item.id)
 				total_price = total_price + item_price.price
