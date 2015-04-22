@@ -170,7 +170,16 @@ def menu_items(request, menu_item_id):
 	}
 			
 	return render(request, 'menu/menu-item.html', context)
-	
+def is_happy_hour(t = datetime.datetime.now()) :
+    try:
+        tnow = int(t.strftime('%H'))
+        if tnow >= 16 and tnow < 19:
+            return True
+        else:
+            return False
+    except Exception, e :
+        print e
+
 # This returns and sets up the contexts for drinks
 def drinks(request, drink_id):
 
@@ -205,18 +214,23 @@ def drinks(request, drink_id):
 			this_drink = this_drink.get() # Get the actual instance of this drink order so we can save it
 			this_drink.save()
 		
+                discount = 1
 		if existing_order.exists():
 			# Calculate the new total price
-			total_price = existing_order.get().total_price + new_drink.drink.price
+                        if is_happy_hour(existing_order.timestamp_created) == True:
+                            discount = 0.5
+			total_price = existing_order.get().total_price + new_drink.drink.price * discount
 			existing_order.update(total_price=total_price)
 			existing_order.get().drinks.add(new_drink)
 			existing_order.get().save()
 		
 		else:
+                        if is_happy_hour() == True:
+                            discount = 0.5
 			new_order = Order(
 				table_number = settings.TABLE_NUMBER,
 				status = 'ordering',
-				total_price = new_drink.drink.price,
+				total_price = new_drink.drink.price * discount,
 			)
 			new_order.save()
 			new_order.drinks.add(new_drink)
@@ -320,10 +334,13 @@ def split_summary(request):
 			new_split.menu_items.add(added_item)
 			total_price = total_price + added_item.price
 			container.menu_items.remove(added_item)
+                discount = 1
+                if is_happy_hour() == True:
+                    discount = 0.5
 		for drink_id in drinks_to_pay:
 			added_drink = DrinkOrder.objects.get(id=drink_id)
 			new_split.drinks.add(added_drink)
-			total_price = total_price + added_drink.drink.price
+			total_price = total_price + added_drink.drink.price * discount
 			container.drinks.remove(added_drink)
 		new_split.total_price = total_price
 		new_split.save()
@@ -457,14 +474,17 @@ def receipt(request, receipt_type):
 	last_paid_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='paid')
 	context = {}
 	
+        discount = 1
 	# If the user wants to email their receipt, send a copy of it to the entered email.
 	if request.method == "POST":
+                if is_happy_hour() == True:
+                    discount = 0.5
 		email = request.POST['email_address']
 		receipt_contents = 'Here is a copy of your receipt.\r\n'
 		for items in last_paid_order.latest('id').menu_items.all():
 			receipt_contents += items.name + ': ' + str(items.price) + '\r\n'
 		for drinks in last_paid_order.latest('id').drinks.all():
-			receipt_contents += drinks.drink.name + ': ' + str(drinks.drink.price) + '\r\n'
+			receipt_contents += drinks.drink.name + ': ' + str(drinks.drink.price * discount) + '\r\n'
 		receipt_contents += '\r\nTip: ' + str(last_paid_order.latest('id').tip) + ' \r\n'
 		receipt_contents += 'Total: ' + str(last_paid_order.latest('id').total_price)
 		send_mail('Your restaurant receipt', receipt_contents, 'from@example.com', [email], fail_silently=False)
@@ -474,6 +494,8 @@ def receipt(request, receipt_type):
 	
 	# Build the context for the template
 	elif last_paid_order.exists():
+                if is_happy_hour(last_paid_order.timestamp_created) == True:
+                    discount = 0.5
 		ordered_items = list(last_paid_order.latest('id').menu_items.all()) # Get the menu items on the order
 		ordered_drinks = list(last_paid_order.latest('id').drinks.all()) # Get the drinks on the order
 		context = {
