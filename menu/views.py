@@ -294,7 +294,7 @@ def place_order(request):
 		if is_happy_hour():
 			discount = Decimal('0.5')
 			for drink in ordered_drinks:
-				drink.price = drink.price * discount
+				drink.drink.price = drink.drink.price * discount
 			
 		kids_meals = order_to_send.get().menu_items.filter(category__id=8).count()
 		entrees = order_to_send.get().menu_items.filter(category__id=5).count()
