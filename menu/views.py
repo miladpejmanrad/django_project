@@ -217,8 +217,8 @@ def drinks(request, drink_id):
 		discount = 1
 		if existing_order.exists():
 			# Calculate the new total price
-				if is_happy_hour(existing_order.timestamp_created) == True:
-					discount = 0.5
+			if is_happy_hour(existing_order.timestamp_created) == True:
+				discount = 0.5
 			total_price = existing_order.get().total_price + new_drink.drink.price * discount
 			existing_order.update(total_price=total_price)
 			existing_order.get().drinks.add(new_drink)
@@ -474,7 +474,7 @@ def receipt(request, receipt_type):
 	last_paid_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='paid')
 	context = {}
 	
-		discount = 1
+	discount = 1
 	# If the user wants to email their receipt, send a copy of it to the entered email.
 	if request.method == "POST":
 		if is_happy_hour() == True:
