@@ -232,7 +232,7 @@ def drinks(request, drink_id):
 		discount = Decimal('1.0')
 		if existing_order.exists():
 			# Calculate the new total price
-			if is_happy_hour(existing_order.get().timestamp_created) == True:
+			if is_happy_hour():
 				discount = Decimal('0.5')
 			total_price = existing_order.get().total_price + new_drink.drink.price * discount
 			existing_order.update(total_price=total_price)
@@ -240,7 +240,7 @@ def drinks(request, drink_id):
 			existing_order.get().save()
 		
 		else:
-			if is_happy_hour() == True:
+			if is_happy_hour():
 				discount = Decimal('0.5')
 			new_order = Order(
 				table_number = settings.TABLE_NUMBER,
@@ -527,8 +527,8 @@ def receipt(request, receipt_type):
 	
 	# Build the context for the template
 	elif last_paid_order.exists():
-		if is_happy_hour(last_paid_order.timestamp_created) == True:
-			discount = 0.5
+		if is_happy_hour():
+			discount = Decimal('0.5')
 		ordered_items = list(last_paid_order.latest('id').menu_items.all()) # Get the menu items on the order
 		ordered_drinks = list(last_paid_order.latest('id').drinks.all()) # Get the drinks on the order
 		context = {
