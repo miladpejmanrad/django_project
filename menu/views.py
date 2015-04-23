@@ -175,6 +175,7 @@ def menu_items(request, menu_item_id):
 	}
 			
 	return render(request, 'menu/menu-item.html', context)
+'''	
 def is_happy_hour(t = datetime.datetime.now()) :
 	#try:
 		tnow = int(t.strftime('%H'))
@@ -185,6 +186,14 @@ def is_happy_hour(t = datetime.datetime.now()) :
 			return False
 	#except Exception, e :
 		#print e
+'''
+
+def is_happy_hour() :
+	currentHour = datetime.now().hour
+	if currentHour >= 13 and currentHour <= 19:
+		return True
+	else:
+		return False
 
 # This returns and sets up the contexts for drinks
 def drinks(request, drink_id):
@@ -220,7 +229,7 @@ def drinks(request, drink_id):
 			this_drink = this_drink.get() # Get the actual instance of this drink order so we can save it
 			this_drink.save()
 		
-		discount = 1
+		discount = Decimal('1.0')
 		if existing_order.exists():
 			# Calculate the new total price
 			if is_happy_hour(existing_order.get().timestamp_created) == True:
