@@ -291,7 +291,7 @@ def place_order(request):
 				'status': 'in-progress'
 			}, instance=order_to_send.get())
 			
-		if is_happy():
+		if is_happy_hour():
 			discount = Decimal('0.5')
 			for drink in ordered_drinks:
 				drink.price = drink.price * discount
