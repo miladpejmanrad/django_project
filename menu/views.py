@@ -29,7 +29,7 @@ def categories(request, category_id):
 	
 	# Check if it's Monday. We'll use this to print a notification on the menu about the Monday deal.
 	today = datetime.date.today()
-	if today.today().weekday() is 0:
+	if today.today().weekday() is 3:
 		is_monday = True
 	else:
 		is_monday = False
@@ -104,7 +104,7 @@ def menu_items(request, menu_item_id):
 		
 	# Check if it's Monday. We'll use this to help calculate the price of the order based on the Monday deal.
 	today = datetime.date.today()
-	if today.today().weekday() is 0:
+	if today.today().weekday() is 3:
 		is_monday = True
 	else:
 		is_monday = False
@@ -123,18 +123,23 @@ def menu_items(request, menu_item_id):
 		
 		# Calculate the new total price
 		total_price = 0
-		kids_meals = MenuItem.objects.filter(category__name__contains="Kids Meal").count()
-		entrees = MenuItem.objects.filter(category__name__contains="Entrees").count()
+		kids_meals = existing_order.get().menu_items.filter(category__id=8).count()
+		entrees = existing_order.get().menu_items.filter(category__id=5).count()
+		if menu_item.category.id is 8:
+			kids_meals += 1
+		if menu_item.category.id is 5:
+			entrees += 1
 		free_kidsmeals = entrees - kids_meals
 		
 		for item in ordered_items:
-			if is_monday and free_kidsmeals > 0:
+			if is_monday and free_kidsmeals >= 0:
 				# Take off the price of a kid's meal for each entree if applicable.
-				if MenuItem.objects.get(id=item.id).category.name is not "Kids Meals":
+				if not MenuItem.objects.get(id=item.id).category.id is 8:
 					item_price = MenuItem.objects.get(id=item.id)
 					total_price = total_price + item_price.price
 				else:
-					free_kidsmeals -= 1
+					free_kidsmeals = free_kidsmeals - 1
+					total_price = total_price + 0
 			else:
 				item_price = MenuItem.objects.get(id=item.id)
 				total_price = total_price + item_price.price
@@ -171,14 +176,14 @@ def menu_items(request, menu_item_id):
 			
 	return render(request, 'menu/menu-item.html', context)
 def is_happy_hour(t = datetime.datetime.now()) :
-	try:
+	#try:
 		tnow = int(t.strftime('%H'))
 		if tnow >= 16 and tnow < 19:
 			return True
 		else:
 			return False
-	except Exception, e :
-		print e
+	#except Exception, e :
+		#print e
 
 # This returns and sets up the contexts for drinks
 def drinks(request, drink_id):
@@ -217,7 +222,7 @@ def drinks(request, drink_id):
 		discount = 1
 		if existing_order.exists():
 			# Calculate the new total price
-			if is_happy_hour(existing_order.timestamp_created) == True:
+			if is_happy_hour(existing_order.get().timestamp_created) == True:
 				discount = 0.5
 			total_price = existing_order.get().total_price + new_drink.drink.price * discount
 			existing_order.update(total_price=total_price)
@@ -265,6 +270,13 @@ def place_order(request):
 	# Check to see if an order is ready to be placed for this table.
 	order_to_send = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='ordering')
 	
+	# Check to see if it's Monday.
+	today = datetime.date.today()
+	if today.today().weekday() is 3:
+		is_monday = True
+	else:
+		is_monday = False
+	
 	# If the order gets submitted, save it and redirect.
 	if request.method == "POST":
 		order_form = PlaceOrderForm(request.POST, instance=order_to_send.get())
@@ -280,12 +292,23 @@ def place_order(request):
 			initial={
 				'status': 'in-progress'
 			}, instance=order_to_send.get())
+			
+		kids_meals = order_to_send.get().menu_items.filter(category__id=8).count()
+		entrees = order_to_send.get().menu_items.filter(category__id=5).count()
+		if kids_meals >= entrees:
+			free_kidsmeals = entrees
+		elif entrees > kids_meals:
+			free_kidsmeals = kids_meals
+		else:
+			free_kidsmeals = 0
 		
 		context = {
 			'order': order_to_send.get(),
 			'ordered_items': ordered_items,
 			'ordered_drinks': ordered_drinks,
-			'form': order_form
+			'form': order_form,
+			'free_kidsmeals': free_kidsmeals,
+			'is_monday': is_monday
 		}
 		return render(request, 'menu/review-order.html', context)
 	
