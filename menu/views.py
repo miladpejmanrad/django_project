@@ -222,7 +222,7 @@ def drinks(request, drink_id):
 			# Calculate the new total price
 			if is_happy_hour():
 				discount = Decimal('0.5')
-			total_price = existing_order.get().total_price + (new_drink.drink.price * discount)
+			total_price = "{0:.2f}".format(existing_order.get().total_price + (new_drink.drink.price * discount))
 			existing_order.update(total_price=total_price)
 			existing_order.get().drinks.add(new_drink)
 			existing_order.get().save()
@@ -294,7 +294,7 @@ def place_order(request):
 		if is_happy_hour():
 			discount = Decimal('0.5')
 			for drink in ordered_drinks:
-				drink.drink.price = drink.drink.price * discount
+				drink.drink.price = round(drink.drink.price * discount, 2)
 			
 		kids_meals = order_to_send.get().menu_items.filter(category__id=8).count()
 		entrees = order_to_send.get().menu_items.filter(category__id=5).count()
