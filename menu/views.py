@@ -175,18 +175,6 @@ def menu_items(request, menu_item_id):
 	}
 			
 	return render(request, 'menu/menu-item.html', context)
-'''	
-def is_happy_hour(t = datetime.datetime.now()) :
-	#try:
-		tnow = int(t.strftime('%H'))
-		#if tnow >= 16 and tnow < 19:
-		if tnow >= 13 and tnow < 19:
-			return True
-		else:
-			return False
-	#except Exception, e :
-		#print e
-'''
 
 def is_happy_hour() :
 	currentHour = datetime.datetime.now().hour
@@ -234,7 +222,7 @@ def drinks(request, drink_id):
 			# Calculate the new total price
 			if is_happy_hour():
 				discount = Decimal('0.5')
-			total_price = existing_order.get().total_price + new_drink.drink.price * discount
+			total_price = existing_order.get().total_price + (new_drink.drink.price * discount)
 			existing_order.update(total_price=total_price)
 			existing_order.get().drinks.add(new_drink)
 			existing_order.get().save()
@@ -303,6 +291,11 @@ def place_order(request):
 				'status': 'in-progress'
 			}, instance=order_to_send.get())
 			
+		if is_happy():
+			discount = Decimal('0.5')
+			for drink in ordered_drinks:
+				drink.price = drink.price * discount
+			
 		kids_meals = order_to_send.get().menu_items.filter(category__id=8).count()
 		entrees = order_to_send.get().menu_items.filter(category__id=5).count()
 		if kids_meals >= entrees:
@@ -367,13 +360,13 @@ def split_summary(request):
 			new_split.menu_items.add(added_item)
 			total_price = total_price + added_item.price
 			container.menu_items.remove(added_item)
-		discount = 1
+		discount = Decimal('1.0')
 		if is_happy_hour() == True:
-			discount = 0.5
+			discount = Decimal('0.5')
 		for drink_id in drinks_to_pay:
 			added_drink = DrinkOrder.objects.get(id=drink_id)
 			new_split.drinks.add(added_drink)
-			total_price = total_price + added_drink.drink.price * discount
+			total_price = total_price + (added_drink.drink.price * discount)
 			container.drinks.remove(added_drink)
 		new_split.total_price = total_price
 		new_split.save()
