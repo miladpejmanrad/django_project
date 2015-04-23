@@ -223,7 +223,7 @@ def drinks(request, drink_id):
 		if existing_order.exists():
 			# Calculate the new total price
 			if is_happy_hour(existing_order.get().timestamp_created) == True:
-				discount = 0.5
+				discount = Decimal('0.5')
 			total_price = existing_order.get().total_price + new_drink.drink.price * discount
 			existing_order.update(total_price=total_price)
 			existing_order.get().drinks.add(new_drink)
@@ -231,7 +231,7 @@ def drinks(request, drink_id):
 		
 		else:
 			if is_happy_hour() == True:
-				discount = 0.5
+				discount = Decimal('0.5')
 			new_order = Order(
 				table_number = settings.TABLE_NUMBER,
 				status = 'ordering',
