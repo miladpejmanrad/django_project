@@ -222,7 +222,9 @@ def drinks(request, drink_id):
 			# Calculate the new total price
 			if is_happy_hour():
 				discount = Decimal('0.5')
-			total_price = "{0:.2f}".format(existing_order.get().total_price + (new_drink.drink.price * discount))
+				total_price = "{0:.2f}".format(existing_order.get().total_price + round(new_drink.drink.price * discount, 2))
+			else:
+				total_price = existing_order.get().total_price + new_drink.drink.price
 			existing_order.update(total_price=total_price)
 			existing_order.get().drinks.add(new_drink)
 			existing_order.get().save()
@@ -233,7 +235,7 @@ def drinks(request, drink_id):
 			new_order = Order(
 				table_number = settings.TABLE_NUMBER,
 				status = 'ordering',
-				total_price = new_drink.drink.price * discount,
+				total_price = "{0:.2f}".format(new_drink.drink.price * discount),
 			)
 			new_order.save()
 			new_order.drinks.add(new_drink)
@@ -290,10 +292,12 @@ def place_order(request):
 			initial={
 				'status': 'in-progress'
 			}, instance=order_to_send.get())
+		original_drinks = list(order_to_send.get().drinks.all())
 			
 		if is_happy_hour():
 			discount = Decimal('0.5')
 			for drink in ordered_drinks:
+				drink.drink.original_price = drink.drink.price
 				drink.drink.price = round(drink.drink.price * discount, 2)
 			
 		kids_meals = order_to_send.get().menu_items.filter(category__id=8).count()
@@ -309,9 +313,11 @@ def place_order(request):
 			'order': order_to_send.get(),
 			'ordered_items': ordered_items,
 			'ordered_drinks': ordered_drinks,
+			'original_drinks': original_drinks,
 			'form': order_form,
 			'free_kidsmeals': free_kidsmeals,
-			'is_monday': is_monday
+			'is_monday': is_monday,
+			'is_happy_hour': is_happy_hour()
 		}
 		return render(request, 'menu/review-order.html', context)
 	

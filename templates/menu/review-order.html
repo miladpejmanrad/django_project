@@ -17,10 +17,14 @@
 			{% endif %}
 		</tr>
 	{% endfor %}
-	{% for drink in ordered_drinks %}
+	{% for this_drink in ordered_drinks %}
 		<tr>
-			<td>{{ drink.drink }} (Flavor: {{ drink.flavor }})</td>
-			<td>${{ drink.drink.price }}</td>
+			<td>{{ this_drink.drink }} (Flavor: {{ this_drink.flavor }})</td>
+			{% if is_happy_hour %}
+				<td><s>${{ this_drink.drink.original_price }}</s> ${{ this_drink.drink.price }}</td>
+			{% else %}
+				<td>${{ this_drink.drink.price }}</td>
+			{% endif %}
 		</tr>
 	{% endfor %}
 	<tr class="info">
