@@ -178,7 +178,8 @@ def menu_items(request, menu_item_id):
 def is_happy_hour(t = datetime.datetime.now()) :
 	#try:
 		tnow = int(t.strftime('%H'))
-		if tnow >= 16 and tnow < 19:
+		#if tnow >= 16 and tnow < 19:
+		if tnow >= 13 and tnow < 19:
 			return True
 		else:
 			return False
