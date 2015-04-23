@@ -189,7 +189,7 @@ def is_happy_hour(t = datetime.datetime.now()) :
 '''
 
 def is_happy_hour() :
-	currentHour = datetime.now().hour
+	currentHour = datetime.datetime.now().hour
 	if currentHour >= 13 and currentHour <= 19:
 		return True
 	else:
