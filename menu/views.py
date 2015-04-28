@@ -29,7 +29,7 @@ def categories(request, category_id):
 	
 	# Check if it's Monday. We'll use this to print a notification on the menu about the Monday deal.
 	today = datetime.date.today()
-	if today.today().weekday() is 3:
+	if today.today().weekday() is 0:
 		is_monday = True
 	else:
 		is_monday = False
@@ -93,6 +93,13 @@ def low_calorie(request, category_id):
 	}
 	return render(request, 'menu/menu.html', context)
 
+def is_happy_hour() :
+	currentHour = datetime.datetime.now().hour
+	if currentHour >= 16 and currentHour <= 19:
+		return True
+	else:
+		return False
+
 # This builds the menu item order form and returns the information for an individual menu item using the menu-item.html template
 def menu_items(request, menu_item_id):
 	
@@ -104,7 +111,7 @@ def menu_items(request, menu_item_id):
 		
 	# Check if it's Monday. We'll use this to help calculate the price of the order based on the Monday deal.
 	today = datetime.date.today()
-	if today.today().weekday() is 3:
+	if today.today().weekday() is 0:
 		is_monday = True
 	else:
 		is_monday = False
@@ -129,10 +136,15 @@ def menu_items(request, menu_item_id):
 			kids_meals += 1
 		if menu_item.category.id is 5:
 			entrees += 1
-		free_kidsmeals = entrees - kids_meals
+		if kids_meals >= entrees:
+			free_kidsmeals = entrees
+		elif entrees > kids_meals:
+			free_kidsmeals = kids_meals
+		else:
+			free_kidsmeals = 0
 		
 		for item in ordered_items:
-			if is_monday and free_kidsmeals >= 0:
+			if is_monday and free_kidsmeals > 0:
 				# Take off the price of a kid's meal for each entree if applicable.
 				if not MenuItem.objects.get(id=item.id).category.id is 8:
 					item_price = MenuItem.objects.get(id=item.id)
@@ -143,10 +155,15 @@ def menu_items(request, menu_item_id):
 			else:
 				item_price = MenuItem.objects.get(id=item.id)
 				total_price = total_price + item_price.price
-				
+		
+		if is_happy_hour():
+			discount = Decimal('0.5')
+		else:
+			discount = Decimal('1.0')
+
 		for drink in ordered_drinks:
 			drink_price = Drink.objects.get(id=drink.drink.id)
-			total_price = total_price + drink_price.price
+			total_price = "{0:.2f}".format(total_price + (drink_price.price * discount))
 		
 		# Set the form to use the new data
 		order_form = AddItemToOrderForm(
@@ -175,13 +192,6 @@ def menu_items(request, menu_item_id):
 	}
 			
 	return render(request, 'menu/menu-item.html', context)
-
-def is_happy_hour() :
-	currentHour = datetime.datetime.now().hour
-	if currentHour >= 13 and currentHour <= 19:
-		return True
-	else:
-		return False
 
 # This returns and sets up the contexts for drinks
 def drinks(request, drink_id):
@@ -272,7 +282,7 @@ def place_order(request):
 	
 	# Check to see if it's Monday.
 	today = datetime.date.today()
-	if today.today().weekday() is 3:
+	if today.today().weekday() is 0:
 		is_monday = True
 	else:
 		is_monday = False
@@ -292,7 +302,6 @@ def place_order(request):
 			initial={
 				'status': 'in-progress'
 			}, instance=order_to_send.get())
-		original_drinks = list(order_to_send.get().drinks.all())
 			
 		if is_happy_hour():
 			discount = Decimal('0.5')
@@ -309,11 +318,18 @@ def place_order(request):
 		else:
 			free_kidsmeals = 0
 		
+		kids_meals_check = free_kidsmeals
+		for item in ordered_items:
+			if kids_meals_check > 0 and item.category.id is 8 and is_monday:
+				item.is_free = True
+				kids_meals_check = kids_meals_check - 1
+			else:
+				item.is_free = False
+		
 		context = {
 			'order': order_to_send.get(),
 			'ordered_items': ordered_items,
 			'ordered_drinks': ordered_drinks,
-			'original_drinks': original_drinks,
 			'form': order_form,
 			'free_kidsmeals': free_kidsmeals,
 			'is_monday': is_monday,
@@ -330,14 +346,49 @@ def order_summary(request):
 	order_to_pay = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='served')
 	context = {}
 	
+	# Check to see if it's Monday.
+	today = datetime.date.today()
+	if today.today().weekday() is 0:
+		is_monday = True
+	else:
+		is_monday = False
+	
 	# Build the context for the template if an order is ready to be paid.
 	if order_to_pay.exists():
 		ordered_items = list(order_to_pay.get().menu_items.all()) # Get the menu items already on the order
 		ordered_drinks = list(order_to_pay.get().drinks.all()) # Get the ordered drinks
+		
+		if is_happy_hour():
+			discount = Decimal('0.5')
+			for drink in ordered_drinks:
+				drink.drink.original_price = drink.drink.price
+				drink.drink.price = round(drink.drink.price * discount, 2)
+			
+		kids_meals = order_to_pay.get().menu_items.filter(category__id=8).count()
+		entrees = order_to_pay.get().menu_items.filter(category__id=5).count()
+		if kids_meals >= entrees:
+			free_kidsmeals = entrees
+		elif entrees > kids_meals:
+			free_kidsmeals = kids_meals
+		else:
+			free_kidsmeals = 0
+		
+		kids_meals_check = free_kidsmeals
+		for item in ordered_items:
+			if kids_meals_check > 0 and item.category.id is 8 and is_monday:
+				item.is_free = True
+				kids_meals_check = kids_meals_check - 1
+			else:
+				item.is_free = False
+			
+		
 		context = {
 			'order': order_to_pay.get(),
 			'ordered_items': ordered_items,
-			'ordered_drinks': ordered_drinks
+			'ordered_drinks': ordered_drinks,
+			'free_kidsmeals': free_kidsmeals,
+			'is_monday': is_monday,
+			'is_happy_hour': is_happy_hour()
 		}
 	
 	return render(request, 'payment/order-summary.html', context)
@@ -506,11 +557,11 @@ def receipt(request, receipt_type):
 	last_paid_order = Order.objects.filter(table_number=settings.TABLE_NUMBER, status='paid')
 	context = {}
 	
-	discount = 1
+	discount = Decimal('1.0')
 	# If the user wants to email their receipt, send a copy of it to the entered email.
 	if request.method == "POST":
 		if is_happy_hour() == True:
-			discount = 0.5
+			discount = Decimal('0.5')
 		email = request.POST['email_address']
 		receipt_contents = 'Here is a copy of your receipt.\r\n'
 		for items in last_paid_order.latest('id').menu_items.all():
@@ -530,11 +581,19 @@ def receipt(request, receipt_type):
 			discount = Decimal('0.5')
 		ordered_items = list(last_paid_order.latest('id').menu_items.all()) # Get the menu items on the order
 		ordered_drinks = list(last_paid_order.latest('id').drinks.all()) # Get the drinks on the order
+		
+		if is_happy_hour():
+			discount = Decimal('0.5')
+			for drink in ordered_drinks:
+				drink.drink.original_price = drink.drink.price
+				drink.drink.price = round(drink.drink.price * discount, 2)
+		
 		context = {
 			'order': last_paid_order.latest('id'),
 			'ordered_items': ordered_items,
 			'ordered_drinks': ordered_drinks,
-			'receipt_type': receipt_type
+			'receipt_type': receipt_type,
+			'is_happy_hour': is_happy_hour()
 		}
 	
 	return render(request, 'payment/receipt.html', context)

@@ -10,8 +10,8 @@
 	{% for item in ordered_items %}
 		<tr>
 			<td>{{ item.name }}</td>
-			{% if is_monday and free_kidsmeals > 0 and item.category.id == 8 %}
-					<td><s>${{ item.price }}</s></td>
+			{% if is_monday and free_kidsmeals > 0 and item.category.id == 8 and item.is_free == True %}
+					<td><s>${{ item.price }}</s> Free!</td>
 			{% else %}
 				<td>${{ item.price }}</td>
 			{% endif %}
